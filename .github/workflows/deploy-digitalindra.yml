@@ -28,6 +28,7 @@ jobs:
           cp 'Digital Indra/Index.html' deploy/site/index.html
           cp 'Case Study_JoraIQ.html' deploy/site/Case\ Study_JoraIQ.html
           cp 'Indrajeet_Resume.pdf' deploy/site/Indrajeet_Resume.pdf
+          cp -R Jora deploy/site/Jora
           cp deploy/.htaccess deploy/site/.htaccess
 
       - name: Upload to Hostinger
