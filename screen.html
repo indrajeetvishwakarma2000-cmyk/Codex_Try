@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Flashcards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for 3D flip effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        /* Smooth color transitions */
+        .card-inner {
+            transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+        
+        /* Stop text selection while rapidly clicking */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-[#f8f9ff] min-h-screen flex flex-col font-sans text-gray-800 selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
+
+    <!-- Top Header Navigation -->
+    <header class="w-full flex justify-end items-center p-4 gap-3 sm:gap-4 max-w-7xl mx-auto">
+        <!-- XP Badge -->
+        <div class="flex items-center gap-1.5 bg-[#fef3c7] text-[#b45309] px-3 py-1.5 rounded-full text-sm font-bold shadow-sm">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>655 XP</span>
+        </div>
+        
+        <!-- Level Progress -->
+        <div class="hidden sm:flex items-center gap-3 bg-white rounded-full px-4 py-1.5 border border-gray-100 shadow-sm">
+            <span class="text-xs font-bold text-gray-700">Level 1</span>
+            <div class="w-24 h-1.5 bg-[#f3e8ff] rounded-full overflow-hidden">
+                <div class="bg-[#8b5cf6] w-[66%] h-full rounded-full"></div>
+            </div>
+            <span class="text-xs text-gray-500 font-medium">66%</span>
+        </div>
+        
+        <!-- Notifications -->
+        <button class="p-2 bg-white rounded-full border border-gray-100 text-gray-600 hover:bg-gray-50 transition-colors shadow-sm">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+        </button>
+        
+        <!-- User Profile -->
+        <div class="flex items-center gap-2 bg-[#e0f2fe] rounded-full pl-1 pr-4 py-1 cursor-pointer hover:bg-[#bae6fd] transition-colors shadow-sm">
+            <div class="w-8 h-8 rounded-full bg-[#0ea5e9] text-white flex items-center justify-center font-bold text-sm">S</div>
+            <span class="text-sm font-bold text-gray-800">student15</span>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-5xl mx-auto">
+        
+        <!-- Large Outer Container -->
+        <div class="w-full bg-[#f3f0fb] rounded-[2.5rem] border border-[#ebe7f8] p-4 sm:p-8 md:p-12 shadow-sm flex flex-col items-center relative">
+            
+            <!-- 3D Card Scene -->
+            <div id="card-scene" class="w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] perspective-1000 relative">
+                
+                <!-- The Flippable Card -->
+                <div id="flashcard" class="card-inner w-full h-full transform-style-3d relative cursor-pointer shadow-lg rounded-3xl" onclick="toggleFlip()">
+                    
+                    <!-- ================= FRONT OF CARD ================= -->
+                    <div class="absolute inset-0 backface-hidden bg-white rounded-3xl p-6 sm:p-10 flex flex-col justify-between border border-gray-50">
+                        
+                        <!-- Top Bar -->
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[#6366f1] font-bold text-lg sm:text-xl card-counter">1/10</span>
+                            <button onclick="speakText(event, 'question')" class="text-[#6366f1] hover:bg-[#f5f3ff] p-2 rounded-full transition-colors" title="Read Question">
+                                <i data-lucide="volume-2" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Center Content -->
+                        <div class="flex flex-col items-center justify-center flex-grow text-center no-select px-4">
+                            <span class="text-[#a5b4fc] font-bold tracking-widest text-xs sm:text-sm uppercase mb-6 sm:mb-10">Question</span>
+                            <h2 id="question-text" class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-8">What is the basic unit of life?</h2>
+                            <p class="text-gray-400 font-medium text-sm sm:text-base">Tap or press Space to flip</p>
+                        </div>
+                        
+                        <!-- Bottom Spacer -->
+                        <div class="h-10"></div> 
+                    </div>
+
+                    <!-- ================= BACK OF CARD ================= -->
+                    <div class="absolute inset-0 backface-hidden bg-white rounded-3xl p-6 sm:p-10 flex flex-col justify-between border border-gray-50 rotate-y-180">
+                        
+                        <!-- Top Bar -->
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[#6366f1] font-bold text-lg sm:text-xl card-counter">1/10</span>
+                            <div class="flex gap-2">
+                                <button onclick="speakText(event, 'answer')" class="text-[#6366f1] hover:bg-[#f5f3ff] p-2 rounded-full transition-colors" title="Read Answer">
+                                    <i data-lucide="volume-2" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+                                </button>
+                                <button onclick="stopEvent(event)" class="text-[#6366f1] hover:bg-[#f5f3ff] p-2 rounded-full transition-colors" title="Hint">
+                                    <i data-lucide="lightbulb" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Center Content -->
+                        <div class="flex flex-col items-center justify-center flex-grow text-center px-2 sm:px-10">
+                            <span class="text-[#a5b4fc] font-bold tracking-widest text-xs sm:text-sm uppercase mb-4 sm:mb-6">Answer</span>
+                            <p id="answer-text" class="text-xl sm:text-2xl md:text-3xl font-medium text-gray-800 leading-snug mb-6">
+                                The basic unit of life is the cell, which can be prokaryotic or eukaryotic, depending on its structure and complexity.
+                            </p>
+                            
+                            <!-- Context Box -->
+                            <div class="bg-[#f8fafc] border border-gray-100 rounded-xl p-4 sm:p-5 max-w-xl mx-auto">
+                                <p id="context-text" class="text-gray-500 italic text-sm sm:text-base leading-relaxed">
+                                    "You've been studying data structures! This is a core concept for search efficiency."
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom Action Buttons -->
+                        <div class="flex justify-center gap-4 sm:gap-6 w-full pt-4">
+                            <button onclick="handleAnswer(event, false)" class="flex items-center gap-2 px-6 sm:px-8 py-3 rounded-full font-bold text-[#ef4444] bg-[#fef2f2] border border-[#fca5a5] hover:bg-[#fee2e2] transition-colors shadow-sm">
+                                <i data-lucide="x" class="w-5 h-5"></i> Unmastered (<span id="count-unmastered">0</span>)
+                            </button>
+                            <button onclick="handleAnswer(event, true)" class="flex items-center gap-2 px-6 sm:px-8 py-3 rounded-full font-bold text-[#22c55e] bg-[#f0fdf4] border border-[#bbf7d0] hover:bg-[#dcfce7] transition-colors shadow-sm">
+                                <i data-lucide="check" class="w-5 h-5"></i> Mastered (<span id="count-mastered">0</span>)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= FINISH SCREEN (Hidden by default) ================= -->
+            <div id="finish-screen" class="hidden w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] bg-white rounded-3xl p-8 sm:p-12 flex-col items-center justify-center border border-gray-50 shadow-lg text-center">
+                
+                <div class="w-20 h-20 sm:w-24 sm:h-24 bg-[#f0fdf4] text-[#22c55e] rounded-full flex items-center justify-center mb-6 shadow-sm border border-[#bbf7d0]">
+                    <i data-lucide="award" class="w-10 h-10 sm:w-12 sm:h-12"></i>
+                </div>
+                
+                <h2 class="text-3xl sm:text-5xl font-bold text-gray-900 mb-4 tracking-tight">Deck Completed!</h2>
+                <p class="text-gray-500 text-base sm:text-lg mb-10 max-w-lg">Awesome work! You've reviewed all the cards in this deck. Here is a summary of your study session.</p>
+                
+                <!-- Stats Row -->
+                <div class="flex gap-4 sm:gap-8 w-full max-w-md mb-10">
+                    <div class="flex-1 bg-[#f0fdf4] border border-[#bbf7d0] rounded-2xl p-4 sm:p-6 shadow-sm">
+                        <p class="text-[#16a34a] font-black text-3xl sm:text-4xl mb-1" id="final-mastered">0</p>
+                        <p class="text-[#15803d] text-xs sm:text-sm font-bold uppercase tracking-wider">Mastered</p>
+                    </div>
+                    <div class="flex-1 bg-[#fef2f2] border border-[#fca5a5] rounded-2xl p-4 sm:p-6 shadow-sm">
+                        <p class="text-[#dc2626] font-black text-3xl sm:text-4xl mb-1" id="final-unmastered">0</p>
+                        <p class="text-[#b91c1c] text-xs sm:text-sm font-bold uppercase tracking-wider">Unmastered</p>
+                    </div>
+                </div>
+
+                <button onclick="restartDeck()" class="px-8 sm:px-10 py-3 sm:py-4 bg-[#6366f1] hover:bg-[#4f46e5] text-white rounded-full font-bold transition-all shadow-md hover:shadow-lg flex items-center gap-2 transform hover:-translate-y-0.5">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                    Review Deck Again
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Footer Navigation Hints -->
+        <div class="mt-8 text-gray-400 font-medium text-sm sm:text-base flex items-center justify-center gap-2 flex-wrap text-center" id="footer-hints">
+            Press <kbd class="px-2 py-1 bg-[#e2e8f0] text-gray-600 rounded-md font-sans border border-gray-300 shadow-sm">Space</kbd> to flip, 
+            <kbd class="px-2 py-1 bg-[#e2e8f0] text-gray-600 rounded-md font-sans border border-gray-300 shadow-sm">→</kbd> / 
+            <kbd class="px-2 py-1 bg-[#e2e8f0] text-gray-600 rounded-md font-sans border border-gray-300 shadow-sm">←</kbd> to navigate
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Application State
+        let currentIndex = 0;
+        let isFlipped = false;
+        let masteredCount = 0;
+        let unmasteredCount = 0;
+        const synth = window.speechSynthesis;
+
+        // Sample Data
+        const deck = [
+            {
+                question: "What is the basic unit of life?",
+                answer: "The basic unit of life is the cell, which can be prokaryotic or eukaryotic, depending on its structure and complexity.",
+                context: "You've been studying data structures! This is a core concept for search efficiency."
+            },
+            {
+                question: "What is the powerhouse of the cell?",
+                answer: "The mitochondria is often referred to as the powerhouse of the cell because it generates most of the cell's supply of adenosine triphosphate (ATP).",
+                context: "Think about where the cell gets its energy to function."
+            },
+            {
+                question: "What process do plants use to make food?",
+                answer: "Photosynthesis is the process used by plants, algae, and certain bacteria to harness energy from sunlight and turn it into chemical energy.",
+                context: "This process requires sunlight, water, and carbon dioxide."
+            },
+            {
+                question: "What is DNA short for?",
+                answer: "Deoxyribonucleic acid. It is the molecule that carries genetic information for the development and functioning of an organism.",
+                context: "It forms a double helix structure."
+            }
+        ];
+
+        // DOM Elements
+        const cardScene = document.getElementById('card-scene');
+        const cardElement = document.getElementById('flashcard');
+        const finishScreen = document.getElementById('finish-screen');
+        const questionEl = document.getElementById('question-text');
+        const answerEl = document.getElementById('answer-text');
+        const contextEl = document.getElementById('context-text');
+        const counterEls = document.querySelectorAll('.card-counter');
+        const countMasteredEl = document.getElementById('count-mastered');
+        const countUnmasteredEl = document.getElementById('count-unmastered');
+        const footerHints = document.getElementById('footer-hints');
+
+        // Render the current card data into the DOM
+        function renderCard() {
+            const card = deck[currentIndex];
+            questionEl.textContent = card.question;
+            answerEl.textContent = card.answer;
+            contextEl.textContent = `"${card.context}"`;
+            
+            // Update all counter elements (front and back)
+            counterEls.forEach(el => {
+                el.textContent = `${currentIndex + 1}/${deck.length}`;
+            });
+        }
+
+        // Card Flip Logic
+        function toggleFlip() {
+            // Prevent flipping if we are on the finish screen
+            if(finishScreen.classList.contains('flex')) return;
+
+            isFlipped = !isFlipped;
+            if (isFlipped) {
+                cardElement.classList.add('rotate-y-180');
+            } else {
+                cardElement.classList.remove('rotate-y-180');
+            }
+            synth.cancel();
+        }
+
+        // Navigation Logic
+        function nextCard() {
+            if (currentIndex < deck.length - 1) {
+                currentIndex++;
+                resetAndRender();
+            } else {
+                showFinishScreen();
+            }
+        }
+
+        function prevCard() {
+            // Can't go back from finish screen easily in this simple flow without restoring state, 
+            // so we'll just ignore left arrow on finish screen.
+            if(finishScreen.classList.contains('flex')) return;
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                resetAndRender();
+            }
+        }
+
+        function resetAndRender() {
+            isFlipped = false;
+            cardElement.classList.remove('rotate-y-180');
+            synth.cancel();
+            
+            setTimeout(() => {
+                renderCard();
+            }, 150); 
+        }
+
+        // Handlers for Mastered/Unmastered buttons
+        function stopEvent(e) {
+            e.stopPropagation();
+        }
+
+        function handleAnswer(e, isMastered) {
+            e.stopPropagation(); 
+            
+            // Update session counters
+            if (isMastered) {
+                masteredCount++;
+                countMasteredEl.textContent = masteredCount;
+            } else {
+                unmasteredCount++;
+                countUnmasteredEl.textContent = unmasteredCount;
+            }
+            
+            // Progress to next screen
+            nextCard();
+        }
+
+        // Finish Screen Logic
+        function showFinishScreen() {
+            synth.cancel();
+            
+            // Hide card, show completion
+            cardScene.classList.add('hidden');
+            finishScreen.classList.remove('hidden');
+            finishScreen.classList.add('flex');
+            footerHints.classList.add('hidden');
+
+            // Populate final stats
+            document.getElementById('final-mastered').textContent = masteredCount;
+            document.getElementById('final-unmastered').textContent = unmasteredCount;
+        }
+
+        function restartDeck() {
+            // Reset state
+            currentIndex = 0;
+            masteredCount = 0;
+            unmasteredCount = 0;
+            
+            // Reset DOM counters
+            countMasteredEl.textContent = '0';
+            countUnmasteredEl.textContent = '0';
+            
+            // Toggle visibility back to cards
+            finishScreen.classList.add('hidden');
+            finishScreen.classList.remove('flex');
+            cardScene.classList.remove('hidden');
+            footerHints.classList.remove('hidden');
+            
+            resetAndRender();
+        }
+
+        // Text-to-Speech Functionality
+        function speakText(e, side) {
+            e.stopPropagation(); 
+            synth.cancel();
+
+            const textToSpeak = side === 'question' ? deck[currentIndex].question : deck[currentIndex].answer;
+            
+            if (textToSpeak) {
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                synth.speak(utterance);
+            }
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if(finishScreen.classList.contains('hidden')) {
+                    e.preventDefault();
+                    toggleFlip();
+                }
+            } else if (e.code === 'ArrowRight') {
+                nextCard();
+            } else if (e.code === 'ArrowLeft') {
+                prevCard();
+            }
+        });
+
+        // Initialize
+        renderCard();
+
+    </script>
+</body>
+</html>

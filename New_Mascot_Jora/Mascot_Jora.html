@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mascot Character</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Keyframe Animations (Replacing Framer Motion) */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    @keyframes bounce-correct {
+      0%, 100% { transform: translateY(0) scale(1); }
+      25% { transform: translateY(-20px) scale(1.15); }
+      50% { transform: translateY(0) scale(1); }
+      75% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    @keyframes bounce-wrong {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-10px) rotate(-5deg); }
+      50% { transform: translateY(0) rotate(5deg); }
+      75% { transform: translateY(-6px) rotate(-5deg); }
+    }
+
+    @keyframes bounce-victory {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      20% { transform: translateY(-25px) rotate(-8deg) scale(1.2); }
+      40% { transform: translateY(0) rotate(8deg) scale(0.95); }
+      60% { transform: translateY(-15px) rotate(-5deg) scale(1.1); }
+      80% { transform: translateY(-8px) rotate(5deg) scale(1); }
+    }
+
+    @keyframes bounce-failed {
+      0%, 100% { transform: translateY(0); }
+      33% { transform: translateY(-15px); }
+      66% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse-eye {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes heart-beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    @keyframes star-spin {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(15deg) scale(1.1); }
+      75% { transform: rotate(-15deg) scale(1.1); }
+    }
+
+    @keyframes wiggle-left {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    @keyframes wiggle-right {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(10deg); }
+      75% { transform: rotate(-5deg); }
+    }
+
+    @keyframes particle-fly {
+      0% { opacity: 0; transform: scale(0) translateY(0) rotate(0deg); }
+      20% { opacity: 1; transform: scale(1.2) translateY(-20px) rotate(45deg); }
+      100% { opacity: 0; transform: scale(0.5) translateY(-100px) rotate(180deg); }
+    }
+
+    @keyframes pop-in {
+      0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Utility Animation Classes */
+    .anim-float { animation: float 3s ease-in-out infinite; }
+    .anim-correct { animation: bounce-correct 0.8s ease-in-out; }
+    .anim-wrong { animation: bounce-wrong 0.8s ease-in-out; }
+    .anim-victory { animation: bounce-victory 0.8s ease-in-out; }
+    .anim-failed { animation: bounce-failed 0.8s ease-in-out; }
+    
+    .eye-pulse { animation: pulse-eye 2s infinite; transform-origin: center; }
+    .eye-heart { animation: heart-beat 0.6s infinite; transform-origin: center; }
+    .eye-star { animation: star-spin 1s ease-in-out infinite; transform-origin: center; }
+    
+    .wiggle-l { animation: wiggle-left 0.8s ease-in-out; }
+    .wiggle-r { animation: wiggle-right 0.8s ease-in-out; }
+    
+    .particle { animation: particle-fly 1.5s ease-out forwards; position: absolute; }
+    .pop-in { animation: pop-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+    .transform-origin-center { transform-origin: center; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-8">
+
+  <!-- Mascot Component -->
+  <div class="flex flex-col items-center relative font-sans w-full max-w-sm">
+    
+    <!-- Message Bubble -->
+    <div id="message-container" class="relative mb-3 max-w-[250px] opacity-0 transition-opacity duration-300 hidden">
+      <div id="message-bubble" class="px-4 py-2.5 rounded-2xl text-center text-sm font-semibold shadow-lg transition-all duration-300">
+        <span id="message-text"></span>
+      </div>
+      <div id="message-tail" class="absolute left-1/2 -translate-x-1/2 -bottom-2 w-4 h-4 rotate-45 transition-all duration-300"></div>
+    </div>
+
+    <!-- XP Badge -->
+    <div id="xp-badge" class="absolute -top-2 -right-2 z-10 hidden pop-in">
+      <div id="xp-text" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold text-sm px-3 py-1 rounded-full shadow-lg">
+        +0 XP
+      </div>
+    </div>
+
+    <!-- Mascot Wrapper -->
+    <div id="mascot-wrapper" class="relative w-40 h-40 md:w-48 md:h-48 anim-float">
+      
+      <!-- Glow effect -->
+      <div id="bg-glow" class="absolute inset-0 rounded-full blur-2xl transition-colors duration-500 opacity-80"></div>
+
+      <!-- Shadow -->
+      <div id="shadow" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-4 rounded-full bg-black/10 blur-md transition-transform duration-300"></div>
+
+      <!-- Particles Container -->
+      <div id="particles-container" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+
+      <!-- SVG Mascot -->
+      <svg viewBox="0 0 200 200" class="w-full h-full relative z-10">
+        <!-- Body -->
+        <ellipse id="body" cx="100" cy="120" rx="65" ry="70" class="transition-colors duration-300" />
+        
+        <!-- Belly -->
+        <ellipse cx="100" cy="135" rx="40" ry="45" fill="white" opacity="0.25" />
+        
+        <!-- Ears -->
+        <path id="left-ear" d="M50 65 L35 25 L70 55 Z" class="transition-colors duration-300" style="transform-origin: 50px 65px;" />
+        <path id="right-ear" d="M150 65 L165 25 L130 55 Z" class="transition-colors duration-300" style="transform-origin: 150px 65px;" />
+        
+        <!-- Eye whites -->
+        <circle cx="75" cy="95" r="22" fill="white" />
+        <circle cx="125" cy="95" r="22" fill="white" />
+        
+        <!-- Dynamic Pupils/Eyes Group -->
+        <g id="eyes-group"></g>
+        
+        <!-- Beak -->
+        <path id="beak" fill="#F59E0B" class="transition-all duration-300" />
+        
+        <!-- Blush Marks -->
+        <g id="blush-marks" class="opacity-0 transition-opacity duration-300">
+          <ellipse cx="50" cy="115" rx="10" ry="6" fill="#FDA4AF" opacity="0.6" />
+          <ellipse cx="150" cy="115" rx="10" ry="6" fill="#FDA4AF" opacity="0.6" />
+        </g>
+        
+        <!-- Feet -->
+        <ellipse id="left-foot" cx="80" cy="188" rx="18" ry="8" opacity="0.7" class="transition-colors duration-300" />
+        <ellipse id="right-foot" cx="120" cy="188" rx="18" ry="8" opacity="0.7" class="transition-colors duration-300" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Demo Control Panel (For testing) -->
+  <div class="mt-16 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 text-center">Test Expressions</h3>
+    <div class="flex flex-wrap gap-2 justify-center max-w-lg">
+      <button onclick="setExpression('idle')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">Idle</button>
+      <button onclick="setExpression('thinking')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">Thinking</button>
+      <button onclick="setExpression('loading')" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">Loading</button>
+      <button onclick="setExpression('correct', 50)" class="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-lg text-sm font-medium transition-colors">Correct</button>
+      <button onclick="setExpression('wrong')" class="px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-200 rounded-lg text-sm font-medium transition-colors">Wrong</button>
+      <button onclick="setExpression('victory', 100)" class="px-4 py-2 bg-amber-100 text-amber-700 hover:bg-amber-200 rounded-lg text-sm font-medium transition-colors">Victory</button>
+      <button onclick="setExpression('failed')" class="px-4 py-2 bg-red-100 text-red-700 hover:bg-red-200 rounded-lg text-sm font-medium transition-colors">Failed</button>
+    </div>
+  </div>
+
+  <script>
+    const EXPRESSIONS = {
+      idle: { emoji: "🦉", eyes: "normal", mouth: "smile", color: "#6C3CE1", bgGlow: "rgba(108, 60, 225, 0.15)", message: "" },
+      thinking: { emoji: "🤔", eyes: "squint", mouth: "hmm", color: "#6C3CE1", bgGlow: "rgba(108, 60, 225, 0.2)", message: "Hmm, let me think..." },
+      correct: { emoji: "🎉", eyes: "star", mouth: "big-smile", color: "#10B981", bgGlow: "rgba(16, 185, 129, 0.2)", message: "" },
+      wrong: { emoji: "💡", eyes: "encouraging", mouth: "smile", color: "#F97316", bgGlow: "rgba(249, 115, 22, 0.18)", message: "" },
+      victory: { emoji: "🏆", eyes: "heart", mouth: "open-smile", color: "#F59E0B", bgGlow: "rgba(245, 158, 11, 0.25)", message: "" },
+      failed: { emoji: "💪", eyes: "determined", mouth: "smile", color: "#F59E0B", bgGlow: "rgba(245, 158, 11, 0.2)", message: "" },
+      loading: { emoji: "⏳", eyes: "normal", mouth: "smile", color: "#6C3CE1", bgGlow: "rgba(108, 60, 225, 0.15)", message: "Generating your quiz..." },
+    };
+
+    const BEAK_PATHS = {
+      "big-smile": "M85 118 L100 135 L115 118 Z",
+      "frown": "M90 125 L100 118 L110 125 Z",
+      "open-smile": "M85 115 L100 138 L115 115 Z",
+      "hmm": "M92 118 L100 125 L108 118 Z",
+      "smile": "M90 115 L100 130 L110 115 Z"
+    };
+
+    const MESSAGES = {
+      correct: ["Woohoo! You nailed it! 🔥", "Brilliant! You're on fire! ⚡", "That's absolutely right! 💪", "Genius move! Keep going! 🚀", "Perfect answer! Amazing! 🌟"],
+      wrong: ["Missed it — now you'll never forget! 🔥", "That's how we learn! Keep going! 💪", "Wrong answer = free lesson! 🧠✨", "One step closer to getting it right! 🚀", "Every mistake is progress in disguise! 💡"],
+      victory: ["You're a quiz champion! 🏆", "What an incredible performance! 🌟", "You absolutely crushed it! 💥"],
+      failed: ["You've got this! Try again! 💪", "Every attempt makes you stronger! 🔥", "Champions don't quit — go again! 🏆"]
+    };
+
+    function getRandomMessage(expression) {
+      if (MESSAGES[expression]) {
+        const arr = MESSAGES[expression];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+      return EXPRESSIONS[expression]?.message || "";
+    }
+
+    function getEyesSVG(eyeType) {
+      switch(eyeType) {
+        case "normal": return `
+          <circle cx="78" cy="95" r="10" fill="#1a1a2e" class="eye-pulse" style="transform-origin: 78px 95px" />
+          <circle cx="128" cy="95" r="10" fill="#1a1a2e" class="eye-pulse" style="transform-origin: 128px 95px" />
+          <circle cx="82" cy="90" r="3" fill="white" />
+          <circle cx="132" cy="90" r="3" fill="white" />`;
+        case "star": return `
+          <text x="75" y="105" font-size="22" text-anchor="middle" class="eye-star" style="transform-origin: 75px 95px">⭐</text>
+          <text x="125" y="105" font-size="22" text-anchor="middle" class="eye-star" style="transform-origin: 125px 95px">⭐</text>`;
+        case "sad": return `
+          <circle cx="75" cy="100" r="9" fill="#1a1a2e" />
+          <circle cx="125" cy="100" r="9" fill="#1a1a2e" />
+          <circle cx="79" cy="96" r="3" fill="white" />
+          <circle cx="129" cy="96" r="3" fill="white" />
+          <line x1="60" y1="78" x2="88" y2="84" stroke="#1a1a2e" stroke-width="3" stroke-linecap="round" />
+          <line x1="140" y1="78" x2="112" y2="84" stroke="#1a1a2e" stroke-width="3" stroke-linecap="round" />
+          <ellipse cx="58" cy="115" rx="4" ry="7" fill="#60A5FA" opacity="0.7" />
+          <ellipse cx="148" cy="115" rx="4" ry="7" fill="#60A5FA" opacity="0.7" />`;
+        case "heart": return `
+          <text x="75" y="105" font-size="22" text-anchor="middle" class="eye-heart" style="transform-origin: 75px 95px">❤️</text>
+          <text x="125" y="105" font-size="22" text-anchor="middle" class="eye-heart" style="transform-origin: 125px 95px" style="animation-delay: 0.3s">❤️</text>`;
+        case "determined": return `
+          <circle cx="75" cy="95" r="13" fill="#1a1a2e" class="eye-pulse" style="transform-origin: 75px 95px" />
+          <circle cx="125" cy="95" r="13" fill="#1a1a2e" class="eye-pulse" style="transform-origin: 125px 95px" />
+          <circle cx="80" cy="89" r="4" fill="white" />
+          <circle cx="130" cy="89" r="4" fill="white" />
+          <circle cx="70" cy="98" r="2" fill="white" opacity="0.7" />
+          <circle cx="120" cy="98" r="2" fill="white" opacity="0.7" />
+          <path d="M57 76 Q75 68 90 74" fill="none" stroke="#1a1a2e" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M110 74 Q125 68 143 76" fill="none" stroke="#1a1a2e" stroke-width="3.5" stroke-linecap="round" />`;
+        case "encouraging": return `
+          <circle cx="75" cy="96" r="11" fill="#1a1a2e" />
+          <circle cx="125" cy="96" r="11" fill="#1a1a2e" />
+          <circle cx="79" cy="91" r="3.5" fill="white" />
+          <circle cx="129" cy="91" r="3.5" fill="white" />
+          <path d="M58 78 Q74 71 90 76" fill="none" stroke="#1a1a2e" stroke-width="3" stroke-linecap="round" />
+          <path d="M110 76 Q126 71 142 78" fill="none" stroke="#1a1a2e" stroke-width="3" stroke-linecap="round" />`;
+        case "squint": return `
+          <line x1="60" y1="95" x2="90" y2="97" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" />
+          <line x1="110" y1="95" x2="140" y2="97" stroke="#1a1a2e" stroke-width="4" stroke-linecap="round" />`;
+      }
+      return "";
+    }
+
+    function spawnParticles(expression) {
+      const container = document.getElementById("particles-container");
+      container.innerHTML = ""; // Clear existing
+
+      if (!["correct", "victory", "failed"].includes(expression)) return;
+
+      const isFailed = expression === "failed";
+      const isVictory = expression === "victory";
+      const particleTypes = isFailed 
+        ? ["💪", "🔥", "⚡", "🚀", "✨"] 
+        : (isVictory ? ["🌟", "✨", "🎉", "🏆", "💫", "⭐", "🎊", "💥"] : ["✨", "💫", "⭐", "+XP"]);
+      
+      const count = isVictory ? 8 : 5;
+
+      for(let i=0; i<count; i++) {
+        const p = document.createElement("div");
+        p.className = "particle text-lg font-bold z-20";
+        p.innerText = particleTypes[i % particleTypes.length];
+        
+        // Random starting positions and delays
+        const startX = 60 + Math.random() * 80;
+        const delay = i * 0.1;
+        const duration = 1.2 + Math.random() * 0.8;
+        const targetX = (Math.random() - 0.5) * 200; // Move left/right
+
+        p.style.left = `${startX}px`;
+        p.style.top = `100px`;
+        p.style.animationDelay = `${delay}s`;
+        p.style.animationDuration = `${duration}s`;
+        
+        // Pass a CSS variable for the random horizontal drift
+        p.style.setProperty('--tx', `${targetX}px`);
+
+        container.appendChild(p);
+      }
+    }
+
+    function setExpression(expKey, xpGained = 0) {
+      const exp = EXPRESSIONS[expKey] || EXPRESSIONS.idle;
+      const msg = getRandomMessage(expKey);
+
+      // DOM Elements
+      const body = document.getElementById("body");
+      const lEar = document.getElementById("left-ear");
+      const rEar = document.getElementById("right-ear");
+      const lFoot = document.getElementById("left-foot");
+      const rFoot = document.getElementById("right-foot");
+      const glow = document.getElementById("bg-glow");
+      const eyesGrp = document.getElementById("eyes-group");
+      const beak = document.getElementById("beak");
+      const blush = document.getElementById("blush-marks");
+      const wrapper = document.getElementById("mascot-wrapper");
+
+      // 1. Update Colors
+      body.setAttribute("fill", exp.color);
+      lEar.setAttribute("fill", exp.color);
+      rEar.setAttribute("fill", exp.color);
+      lFoot.setAttribute("fill", exp.color);
+      rFoot.setAttribute("fill", exp.color);
+      glow.style.background = exp.bgGlow;
+
+      // 2. Update Beak & Eyes
+      beak.setAttribute("d", BEAK_PATHS[exp.mouth] || BEAK_PATHS["smile"]);
+      eyesGrp.innerHTML = getEyesSVG(exp.eyes);
+
+      // 3. Update Blush
+      if (["correct", "victory", "wrong", "failed"].includes(expKey)) {
+        blush.classList.remove("opacity-0");
+        blush.classList.add("opacity-100");
+      } else {
+        blush.classList.add("opacity-0");
+        blush.classList.remove("opacity-100");
+      }
+
+      // 4. Update Main Animations (Mascot Bouncing)
+      wrapper.className = "relative w-40 h-40 md:w-48 md:h-48"; // Reset
+      // Trigger reflow to restart animation
+      void wrapper.offsetWidth; 
+      
+      if (expKey === "correct") wrapper.classList.add("anim-correct");
+      else if (expKey === "wrong") wrapper.classList.add("anim-wrong");
+      else if (expKey === "victory") wrapper.classList.add("anim-victory");
+      else if (expKey === "failed") wrapper.classList.add("anim-failed");
+      else wrapper.classList.add("anim-float"); // Idle/Loading/Thinking
+
+      // 5. Update Ear Wiggles
+      lEar.classList.remove("wiggle-l");
+      rEar.classList.remove("wiggle-r");
+      if (expKey === "correct" || expKey === "wrong") {
+        void lEar.offsetWidth; void rEar.offsetWidth;
+        lEar.classList.add("wiggle-l");
+        rEar.classList.add("wiggle-r");
+      }
+
+      // 6. Handle Message Bubble
+      const msgContainer = document.getElementById("message-container");
+      const msgBubble = document.getElementById("message-bubble");
+      const msgTail = document.getElementById("message-tail");
+      const msgText = document.getElementById("message-text");
+
+      if (msg) {
+        msgText.innerText = msg;
+        msgBubble.style.background = `linear-gradient(135deg, ${exp.color}15, ${exp.color}25)`;
+        msgBubble.style.border = `2px solid ${exp.color}30`;
+        msgBubble.style.color = exp.color;
+        
+        msgTail.style.background = `${exp.color}20`;
+        msgTail.style.borderRight = `2px solid ${exp.color}30`;
+        msgTail.style.borderBottom = `2px solid ${exp.color}30`;
+
+        msgContainer.classList.remove("hidden");
+        // small timeout for transition to apply after display block
+        setTimeout(() => {
+          msgContainer.classList.remove("opacity-0");
+          msgContainer.classList.add("pop-in");
+        }, 10);
+      } else {
+        msgContainer.classList.add("opacity-0");
+        setTimeout(() => msgContainer.classList.add("hidden"), 300);
+      }
+
+      // 7. Handle XP Badge
+      const xpBadge = document.getElementById("xp-badge");
+      const xpText = document.getElementById("xp-text");
+      if (expKey === "correct" && xpGained > 0) {
+        xpText.innerText = `+${xpGained} XP`;
+        xpBadge.classList.remove("hidden");
+        // Reflow for animation
+        xpBadge.classList.remove("pop-in");
+        void xpBadge.offsetWidth;
+        xpBadge.classList.add("pop-in");
+      } else {
+        xpBadge.classList.add("hidden");
+      }
+
+      // 8. Spawn Particles
+      spawnParticles(expKey);
+    }
+
+    // Initialize state on load
+    window.onload = () => {
+      setExpression("idle");
+    };
+  </script>
+</body>
+</html>

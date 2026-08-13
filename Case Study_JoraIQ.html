@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoraIQ Product Design Case Study | Indra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        jora: {
+                            purple: '#7E57C2', // JoraIQ primary accent
+                            bg: '#F7F7F5',
+                            surface: '#FFFFFF',
+                            textPrimary: '#111111',
+                            textSecondary: '#6B6B6B',
+                            border: '#E8E8E8',
+                            dark: '#111111'
+                        }
+                    },
+                    borderRadius: {
+                        '4xl': '20px',
+                    },
+                    transitionTimingFunction: {
+                        'custom-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F5;
+            color: #111111;
+            scroll-behavior: smooth;
+        }
+
+        /* Typography Fluidity */
+        .text-fluid-hero { font-size: clamp(40px, 8vw, 140px); line-height: 1.1; letter-spacing: -0.02em; }
+        .text-fluid-section { font-size: clamp(32px, 5vw, 80px); line-height: 1.2; letter-spacing: -0.02em; }
+        .text-fluid-body { font-size: clamp(16px, 2vw, 20px); line-height: 1.6; }
+
+        /* Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1), transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Image Placeholder Style */
+        .img-placeholder {
+            background-color: #E8E8E8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #6B6B6B;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px; /* Default min height */
+        }
+        
+        .img-placeholder::after {
+            content: "IMAGE PLACEHOLDER\A" attr(data-filename);
+            white-space: pre;
+            position: absolute;
+            z-index: 10;
+        }
+
+        .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0; /* Hide real img tag if empty, we rely on the placeholder bg */
+            transition: opacity 0.3s;
+        }
+        
+        /* Show image if src is valid (for local testing later) */
+        .img-placeholder img[src]:not([src=""]) {
+             opacity: 1;
+             z-index: 20;
+        }
+
+        /* Scroll Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #7E57C2;
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s;
+        }
+
+        /* Sticky Navigation */
+        .sticky-nav {
+            position: sticky;
+            top: 20px;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background-color: rgba(247, 247, 245, 0.8);
+        }
+
+        /* Hide scrollbar for horizontal galleries */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        section {
+            padding-top: 96px;
+            padding-bottom: 96px;
+        }
+        @media (min-width: 768px) {
+            section {
+                padding-top: 160px;
+                padding-bottom: 160px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="progress-bar"></div>
+
+    <header id="overview" class="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 max-w-[1440px] mx-auto pt-20">
+        <div class="max-w-[1200px] mx-auto w-full fade-up">
+            <p class="text-jora-textSecondary font-semibold tracking-widest text-xs mb-6 uppercase">Product Design Case Study</p>
+            <h1 class="text-fluid-hero font-bold tracking-tight text-jora-dark mb-6">Reimagining JoraIQ</h1>
+            <p class="text-fluid-body text-jora-textSecondary max-w-[650px] mb-12">Redesigning an existing learning platform and shaping a new mobile experience around personalization, engagement and continuous progress.</p>
+            
+            <div class="flex flex-wrap gap-8 border-t border-jora-border pt-8 mb-16">
+                <div>
+                    <p class="text-xs text-jora-textSecondary uppercase tracking-wider mb-1">Role</p>
+                    <p class="font-medium text-jora-dark">Product Designer</p>
+                </div>
+                <div>
+                    <p class="text-xs text-jora-textSecondary uppercase tracking-wider mb-1">Scope</p>
+                    <p class="font-medium text-jora-dark">Web + Mobile + Brand</p>
+                </div>
+                <div>
+                    <p class="text-xs text-jora-textSecondary uppercase tracking-wider mb-1">Focus</p>
+                    <p class="font-medium text-jora-dark">Learning Experience</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full max-w-[1200px] mx-auto h-[60vh] md:h-[70vh] rounded-4xl img-placeholder fade-up" data-filename="hero_joraiq_mockup.png" title="Prompt: Premium product design portfolio hero image showing a modern JoraIQ AI learning platform displayed across a large desktop browser and smartphone, clean white studio background, purple accent, sophisticated SaaS UI, personalized learning dashboard, realistic high-end product mockup, editorial portfolio photography, soft shadows, no people, 16:9">
+            <img src="/Jora/1st.png" alt="JoraIQ Hero Mockup">
+        </div>
+    </header>
+
+    <main>
+        <section class="px-6 md:px-12 max-w-[1200px] mx-auto">
+            <div class="max-w-[720px] fade-up">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">The product already existed. <br>The experience needed to evolve.</h2>
+                <p class="text-fluid-body text-jora-textSecondary mb-16">JoraIQ started with an existing LMS experience. The challenge was to rethink the product experience, bring consistency to the interface, introduce a clearer learning journey and extend the experience into mobile.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 py-12 fade-up">
+                <div class="rounded-4xl border border-purple-200 bg-purple-100 p-6 min-h-[150px] flex flex-col justify-between">
+                    <p class="text-sm font-medium text-purple-700 mb-4">Existing Product</p>
+                    <p class="text-xl font-bold text-purple-950">Simple LMS</p>
+                </div>
+                <div class="rounded-4xl border border-blue-200 bg-blue-100 p-6 min-h-[150px] flex flex-col justify-between">
+                    <p class="text-sm font-medium text-blue-700 mb-4">New Product</p>
+                    <p class="text-xl font-bold text-blue-950">Mobile App + Web</p>
+                </div>
+                <div class="rounded-4xl border border-emerald-200 bg-emerald-100 p-6 min-h-[150px] flex flex-col justify-between">
+                    <p class="text-sm font-medium text-emerald-700 mb-4">Core Focus</p>
+                    <p class="text-xl font-bold text-emerald-950">Personalized Learning</p>
+                </div>
+                <div class="rounded-4xl border border-orange-200 bg-orange-100 p-6 min-h-[150px] flex flex-col justify-between">
+                    <p class="text-sm font-medium text-orange-700 mb-4">Design Challenge</p>
+                    <p class="text-xl font-bold text-orange-950">Engagement + Clarity</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenge" class="px-6 md:px-12 max-w-[1200px] mx-auto">
+            <div class="fade-up mb-12">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">01 — The Challenge</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-8">The LMS worked. The experience didn't.</h2>
+                <p class="text-fluid-body text-jora-textSecondary max-w-[720px]">The existing LMS had the foundation of a learning platform, but the experience felt inconsistent, manual and difficult to navigate.</p>
+            </div>
+
+            <div class="space-y-8 fade-up">
+                <div class="w-full h-[50vh] md:h-[60vh] rounded-4xl img-placeholder" data-filename="old_lms_dashboard.png">
+                    <img src="jora/Existing LMS Dashboard.png" alt="Existing LMS Dashboard">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="h-64 rounded-4xl img-placeholder" data-filename="old_lms_navigation_annotation.png">
+                         <img src="jora/Navigation issues.png" alt="Navigation issues">
+                    </div>
+                    <div class="h-64 rounded-4xl img-placeholder" data-filename="old_lms_visual_audit.png">
+                         <img src="jora/Visual inconsistency.png" alt="Visual inconsistency">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 fade-up">
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">Inconsistent visual language</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">Too many competing UI elements</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">Unclear learning progression</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">Manual learning experience</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">Limited engagement mechanisms</p>
+                </div>
+                <div class="p-6 bg-white rounded-2xl border border-jora-border">
+                    <p class="font-medium">No strong mobile-first experience</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="research" class="px-6 md:px-12 max-w-[1200px] mx-auto bg-white rounded-[40px] py-24 my-24">
+            <div class="fade-up mb-16 px-4 md:px-12">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">03 — Research</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-8">I started with the learner, not the interface.</h2>
+                <p class="text-fluid-body text-jora-textSecondary max-w-[720px]">Before jumping into high-fidelity screens, I spoke with learners already using the platform to understand their frustrations, expectations and learning behavior.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 md:px-12 mb-16 fade-up">
+                <div class="h-[250px] md:h-[400px] rounded-4xl img-placeholder" data-filename="student_interview_notes.jpg">
+                     <img src="jora/google meet.png" alt="Research Notes">
+                </div>
+                <div class="h-[250px] md:h-[400px] rounded-4xl img-placeholder" data-filename="affinity_mapping.png">
+                     <img src="jora/affinity mapping.jpg" alt="Affinity Mapping">
+                </div>
+            </div>
+
+            <div class="px-4 md:px-12 fade-up">
+                 <h3 class="text-xl font-bold mb-6">Key Questions Asked</h3>
+                 <ul class="space-y-4 text-jora-textSecondary text-lg max-w-[800px]">
+                     <li class="flex items-start"><span class="mr-4 font-bold text-jora-purple">Q:</span> "What is the hardest part about learning through the current platform?"</li>
+                     <li class="flex items-start"><span class="mr-4 font-bold text-jora-purple">Q:</span> "Do you always know what you should study next?"</li>
+                     <li class="flex items-start"><span class="mr-4 font-bold text-jora-purple">Q:</span> "What makes you lose motivation while learning?"</li>
+                 </ul>
+            </div>
+        </section>
+
+        <section id="insights" class="px-6 md:px-12 max-w-[1200px] mx-auto">
+             <div class="fade-up mb-16">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">04 — What I Learned</p>
+                <h2 class="text-fluid-section font-bold tracking-tight">The problem wasn't just usability. It was motivation.</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-up">
+                <div class="p-6 md:p-10 bg-white rounded-4xl border border-jora-border">
+                    <p class="text-sm font-bold text-jora-purple tracking-widest uppercase mb-6">Direction</p>
+                    <h3 class="text-2xl font-medium mb-6">"I don't always know what I should learn next."</h3>
+                    <p class="text-jora-textSecondary border-l-2 border-jora-border pl-4">Solution: Make the learning path visible.</p>
+                </div>
+                <div class="p-6 md:p-10 bg-white rounded-4xl border border-jora-border">
+                    <p class="text-sm font-bold text-jora-purple tracking-widest uppercase mb-6">Motivation</p>
+                    <h3 class="text-2xl font-medium mb-6">"Learning can feel repetitive after a while."</h3>
+                    <p class="text-jora-textSecondary border-l-2 border-jora-border pl-4">Solution: Introduce meaningful feedback and progress.</p>
+                </div>
+                 <div class="p-6 md:p-10 bg-white rounded-4xl border border-jora-border">
+                    <p class="text-sm font-bold text-jora-purple tracking-widest uppercase mb-6">Confidence</p>
+                    <h3 class="text-2xl font-medium mb-6">"I want to know if I'm actually improving."</h3>
+                    <p class="text-jora-textSecondary border-l-2 border-jora-border pl-4">Solution: Make progress measurable.</p>
+                </div>
+                 <div class="p-6 md:p-10 bg-white rounded-4xl border border-jora-border">
+                    <p class="text-sm font-bold text-jora-purple tracking-widest uppercase mb-6">Support</p>
+                    <h3 class="text-2xl font-medium mb-6">"Sometimes I just need a little help."</h3>
+                    <p class="text-jora-textSecondary border-l-2 border-jora-border pl-4">Solution: Bring contextual AI assistance into the learning flow.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ai-prototyping" class="px-6 md:px-12 max-w-[1200px] mx-auto mt-32">
+            <div class="fade-up mb-12">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">07 — Rapid Prototyping</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-8">Before polishing the product, I made the idea tangible.</h2>
+                <p class="text-fluid-body text-jora-textSecondary max-w-[720px]">The founders wanted to see how the new experience could feel. I used AI-assisted prototyping tools (Claude, ChatGPT, Lovable) to rapidly turn ideas into an interactive direction that could be reviewed and challenged.</p>
+                <p class="mt-4 font-medium italic text-jora-dark">Note: The AI prototype was not the final product. It was a fast alignment tool.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 fade-up">
+                 <div class="h-[400px] rounded-4xl img-placeholder" data-filename="ai_prompt_to_ui.png">
+                     <img src="jora/quick view.png" alt="AI Prompt to UI">
+                </div>
+                <div class="h-[400px] rounded-4xl img-placeholder" data-filename="rough_prototype.png">
+                     <img src="jora/quick view_A.png" alt="Rough Prototype">
+                </div>
+            </div>
+        </section>
+
+        <section id="redesign" class="px-6 md:px-12 max-w-[1440px] mx-auto mt-32">
+             <div class="max-w-[1200px] mx-auto fade-up mb-16">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">09 — LMS Redesign</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-12">A calmer interface for a more intelligent product.</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div>
+                        <h4 class="font-bold mb-2">Clarity</h4>
+                        <p class="text-sm text-jora-textSecondary">Reduce visual noise and strengthen hierarchy.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold mb-2">Personalization</h4>
+                        <p class="text-sm text-jora-textSecondary">Make each learner's path visible.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold mb-2">Consistency</h4>
+                        <p class="text-sm text-jora-textSecondary">Build reusable components and patterns.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold mb-2">Momentum</h4>
+                        <p class="text-sm text-jora-textSecondary">Make progress and next actions obvious.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Comparison Slider -->
+            <div class="max-w-[1200px] mx-auto fade-up mb-24">
+                <h3 class="text-2xl font-bold mb-6">Dashboard Redesign</h3>
+                <div class="relative w-full overflow-hidden rounded-[24px] cursor-ew-resize select-none aspect-[4/3] md:aspect-[16/10] bg-jora-border comparison-slider shadow-sm touch-pan-y" id="slider-dashboard">
+                    <!-- AFTER (Base) -->
+                    <img src="jora/new dashboard.png" alt="New Dashboard" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0">
+                    
+                    <!-- BEFORE (Overlay with Clip-Path) -->
+                    <img src="jora/old dashboard.png" alt="Old Dashboard" class="slider-img-before absolute inset-0 w-full h-full object-cover pointer-events-none z-10" style="clip-path: inset(0 50% 0 0);">
+                    
+                    <!-- HANDLE -->
+                    <div class="slider-handle absolute top-0 bottom-0 left-[50%] w-1 bg-white z-20 -translate-x-1/2 flex items-center justify-center pointer-events-none">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="rotate-180"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-jora-textSecondary mt-4">Drag to compare Old vs. New</p>
+            </div>
+
+             <!-- Learning Path Comparison Slider -->
+             <div class="max-w-[1200px] mx-auto fade-up mb-24">
+                <h3 class="text-2xl font-bold mb-6">Learning Path Redesign</h3>
+                <div class="relative w-full overflow-hidden rounded-[24px] cursor-ew-resize select-none aspect-[4/3] md:aspect-[16/10] bg-jora-border comparison-slider shadow-sm touch-pan-y" id="slider-path">
+                    <!-- AFTER (Base) -->
+                    <img src="jora/New Learning Path.png" alt="New Learning Path" class="absolute inset-0 w-full h-full object-cover pointer-events-none z-0">
+                    
+                    <!-- BEFORE (Overlay with Clip-Path) -->
+                    <img src="jora/Old Learning Path.png" alt="Old Learning Path" class="slider-img-before absolute inset-0 w-full h-full object-cover pointer-events-none z-10" style="clip-path: inset(0 50% 0 0);">
+                    
+                    <!-- HANDLE -->
+                    <div class="slider-handle absolute top-0 bottom-0 left-[50%] w-1 bg-white z-20 -translate-x-1/2 flex items-center justify-center pointer-events-none">
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] flex items-center justify-center">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="rotate-180"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="jora" class="px-6 md:px-12 max-w-[1200px] mx-auto mt-16 bg-jora-dark text-white rounded-[40px] py-24">
+             <div class="max-w-[720px] mx-auto text-center fade-up mb-16">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">12 — Meet Jora</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-8">A learning product needed a learning companion.</h2>
+                <p class="text-fluid-body text-gray-400">I designed Jora as a visual and emotional layer across the product — helping the experience feel more human, approachable and expressive.</p>
+            </div>
+
+            <!-- Mascot Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 md:px-12 mb-24 fade-up">
+                 <div class="h-80 rounded-3xl bg-gray-800 img-placeholder" data-filename="jora_sketches.png">
+                     <img src="jora/All Emotion copy.png" alt="Jora Sketches">
+                 </div>
+                 <div class="h-80 rounded-3xl bg-gray-800 img-placeholder" data-filename="jora_shape_exploration.png">
+                     <img src="jora/All Emotion.png" alt="Jora Shapes">
+                 </div>
+                 <div class="h-80 rounded-3xl bg-gray-800 img-placeholder" data-filename="jora_final.png">
+                     <img src="jora/Jora mascots.png" alt="Jora Final">
+                 </div>
+            </div>
+
+            <div class="max-w-[1000px] mx-auto px-4 md:px-12 fade-up">
+                <h3 class="text-3xl font-bold mb-12 text-center">Jora reacts to the learner, not just the screen.</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 text-center">
+                    <div>
+                        <div class="h-40 bg-gray-800 rounded-2xl mb-4 img-placeholder" data-filename="jora_correct.png">
+                            <img src="jora/Correct.png" alt="Correct Reaction">
+                        </div>
+                        <p class="font-bold">Correct</p>
+                        <p class="text-sm text-gray-400">Celebration</p>
+                    </div>
+                     <div>
+                        <div class="h-40 bg-gray-800 rounded-2xl mb-4 img-placeholder" data-filename="jora_wrong.png">
+                            <img src="jora/Incorrect.png" alt="Incorrect Reaction">
+                        </div>
+                        <p class="font-bold">Incorrect</p>
+                        <p class="text-sm text-gray-400">Encouragement</p>
+                    </div>
+                     <div>
+                        <div class="h-40 bg-gray-800 rounded-2xl mb-4 img-placeholder" data-filename="jora_help.png">
+                            <img src="jora/Need Help.png" alt="Need Help Reaction">
+                        </div>
+                        <p class="font-bold">Need Help</p>
+                        <p class="text-sm text-gray-400">Support</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mobile" class="px-6 md:px-12 max-w-[1440px] mx-auto mt-32 overflow-hidden">
+            <div class="max-w-[1200px] mx-auto fade-up mb-16">
+                <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">14 — Mobile Experience</p>
+                <h2 class="text-fluid-section font-bold tracking-tight mb-8">The learning journey shouldn't stop when the laptop closes.</h2>
+                <p class="text-fluid-body text-jora-textSecondary max-w-[720px]">Alongside the LMS redesign, I explored a mobile experience designed around quick learning sessions, progress and daily engagement.</p>
+            </div>
+
+            <!-- Horizontal Scroll Gallery for Mobile Mockups -->
+            <div class="flex space-x-6 md:space-x-8 overflow-x-auto pb-12 pt-8 px-6 md:px-12 hide-scrollbar cursor-grab active:cursor-grabbing snap-x snap-mandatory" id="mobile-gallery">
+                <!-- Creating multiple placeholders for mobile screens -->
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 snap-center" data-filename="mobile_onboarding.png"></div>
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 mt-0 md:mt-8 snap-center" data-filename="mobile_goal.png"></div>
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 snap-center" data-filename="mobile_roadmap.png"></div>
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 mt-0 md:mt-8 snap-center" data-filename="mobile_quiz.png"></div>
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 snap-center" data-filename="mobile_progress.png"></div>
+                <div class="flex-none w-[260px] md:w-[280px] h-[540px] md:h-[580px] rounded-[40px] shadow-2xl img-placeholder bg-white border border-gray-100 mt-0 md:mt-8 snap-center" data-filename="mobile_mentor.png"></div>
+            </div>
+            <p class="text-center text-sm text-jora-textSecondary mt-4">Swipe to explore screens</p>
+        </section>
+
+        <section class="px-6 md:px-12 max-w-[1200px] mx-auto mt-32 border-t border-jora-border pt-32">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                
+                <!-- Impact -->
+                <div class="fade-up">
+                    <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">18 — Impact</p>
+                    <h2 class="text-3xl font-bold tracking-tight mb-8">The redesign changed more than the interface.</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="border-b border-jora-border pb-4">
+                            <p class="text-sm text-jora-textSecondary uppercase tracking-wider mb-1">Product</p>
+                            <h4 class="font-bold text-lg mb-1">Clearer learning journey</h4>
+                            <p class="text-jora-textSecondary text-sm">The experience was reframed around goals, progression and next actions.</p>
+                        </div>
+                        <div class="border-b border-jora-border pb-4">
+                            <p class="text-sm text-jora-textSecondary uppercase tracking-wider mb-1">Engagement</p>
+                            <h4 class="font-bold text-lg mb-1">More human</h4>
+                            <p class="text-jora-textSecondary text-sm">Jora, feedback states and gamification introduce emotional reinforcement.</p>
+                        </div>
+                        <div class="border-b border-jora-border pb-4">
+                            <p class="text-sm text-jora-textSecondary uppercase tracking-wider mb-1">Platform</p>
+                            <h4 class="font-bold text-lg mb-1">Web + Mobile</h4>
+                            <p class="text-jora-textSecondary text-sm">The experience expanded from an LMS into a broader learning ecosystem.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learnings -->
+                <div class="fade-up">
+                    <p class="text-jora-purple font-semibold tracking-widest text-xs mb-4 uppercase">19 — Reflection</p>
+                    <h2 class="text-3xl font-bold tracking-tight mb-8">What this project taught me.</h2>
+                    
+                    <div class="grid gap-6">
+                        <div class="bg-white p-6 rounded-2xl border border-jora-border">
+                            <span class="text-jora-purple font-bold mr-2">01.</span>
+                            <span class="font-bold">Don't redesign screens. Redesign experiences.</span>
+                            <p class="text-sm text-jora-textSecondary mt-2">The biggest opportunity was not visual polish. It was changing how learners move through the product.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-jora-border">
+                            <span class="text-jora-purple font-bold mr-2">02.</span>
+                            <span class="font-bold">Prototype early.</span>
+                            <p class="text-sm text-jora-textSecondary mt-2">A rough prototype can align a team faster than a polished presentation.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-2xl border border-jora-border">
+                            <span class="text-jora-purple font-bold mr-2">03.</span>
+                            <span class="font-bold">Personality can be functional.</span>
+                            <p class="text-sm text-jora-textSecondary mt-2">Jora became part of the product's feedback language, not just a decorative mascot.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-jora-dark text-white mt-32 pt-32 pb-12 rounded-t-[60px]">
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12 text-center fade-up mb-32">
+            <h2 class="text-fluid-hero font-bold tracking-tight mb-4">JoraIQ</h2>
+            <p class="text-2xl text-gray-400">A more personal way to learn.</p>
+        </div>
+
+        <div class="max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center border-t border-gray-800 pt-8 mt-16 text-sm text-gray-400">
+            <div>
+                <p class="font-bold text-white text-lg mb-1">Let's build something meaningful.</p>
+                <p>Indra — Product Designer</p>
+            </div>
+            <div class="flex space-x-6 mt-6 md:mt-0">
+                <a href="#" class="hover:text-white transition-colors">Portfolio</a>
+                <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
+                <a href="#" class="hover:text-white transition-colors">Email</a>
+            </div>
+            <button onclick="window.scrollTo(0,0)" class="mt-6 md:mt-0 hover:text-white transition-colors flex items-center">
+                Back to Top <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Scroll Progress Bar
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+
+            // 2. Fade Up Animations on Scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 3. Before/After Comparison Sliders
+            const sliders = document.querySelectorAll('.comparison-slider');
+            
+            sliders.forEach(slider => {
+                const beforeImage = slider.querySelector('.slider-img-before');
+                const handle = slider.querySelector('.slider-handle');
+                let isDragging = false;
+
+                const moveSlider = (x) => {
+                    const rect = slider.getBoundingClientRect();
+                    // Calculate percentage, constrain between 0 and 100
+                    let percentage = ((x - rect.left) / rect.width) * 100;
+                    percentage = Math.max(0, Math.min(100, percentage));
+                    
+                    // Use clip-path inset from the right for buttery smooth masking
+                    beforeImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+                    handle.style.left = `${percentage}%`;
+                };
+
+                // Mouse Events on the whole slider for better UX
+                slider.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    moveSlider(e.clientX);
+                });
+                
+                window.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    moveSlider(e.clientX);
+                });
+
+                // Touch Events for Mobile
+                slider.addEventListener('touchstart', (e) => {
+                    isDragging = true;
+                    moveSlider(e.touches[0].clientX);
+                }, { passive: true });
+                
+                window.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+                
+                slider.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    if (e.cancelable) {
+                        e.preventDefault(); // Prevents swipe-navigation or accidental dragging on mobile
+                    }
+                    moveSlider(e.touches[0].clientX);
+                }, { passive: false });
+            });
+
+            // 4. Horizontal Drag to Scroll for Mobile Gallery
+            const mobileGallery = document.getElementById('mobile-gallery');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            mobileGallery.addEventListener('mousedown', (e) => {
+                isDown = true;
+                mobileGallery.classList.remove('cursor-grab');
+                mobileGallery.classList.add('cursor-grabbing');
+                startX = e.pageX - mobileGallery.offsetLeft;
+                scrollLeft = mobileGallery.scrollLeft;
+            });
+            
+            mobileGallery.addEventListener('mouseleave', () => {
+                isDown = false;
+                mobileGallery.classList.remove('cursor-grabbing');
+                mobileGallery.classList.add('cursor-grab');
+            });
+            
+            mobileGallery.addEventListener('mouseup', () => {
+                isDown = false;
+                mobileGallery.classList.remove('cursor-grabbing');
+                mobileGallery.classList.add('cursor-grab');
+            });
+            
+            mobileGallery.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - mobileGallery.offsetLeft;
+                const walk = (x - startX) * 2; // Scroll speed multiplier
+                mobileGallery.scrollLeft = scrollLeft - walk;
+            });
+        });
+    </script>
+</body>
+</html>

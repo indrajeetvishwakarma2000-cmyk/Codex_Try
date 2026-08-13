@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoralQ - Simplified UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6b46c1',
+                        'primary-light': '#805ad5',
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        },
+                        dark: {
+                            bg: '#0f111a',
+                            panel: '#1a1d2d',
+                            border: '#2a2e45'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Custom Scrollbar for side navigation if needed */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569; 
+        }
+
+        /* Utility class for full-screen mode */
+        .fullscreen-mode #sidebar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-800 antialiased dark:bg-dark-bg dark:text-slate-200">
+
+    <div id="app-container" class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar (Desktop) -->
+        <aside id="sidebar" class="hidden md:flex w-64 flex-col border-r border-gray-200 bg-white dark:bg-dark-panel dark:border-dark-border transition-all duration-300">
+            <!-- Logo Area -->
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 flex items-center justify-center text-white shadow-sm">
+                    <i class="ph-bold ph-cube"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">JoralQ</span>
+            </div>
+
+            <!-- User Profile Widget -->
+            <div class="px-4 mb-6">
+                <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100 relative dark:bg-dark-bg dark:border-dark-border">
+                    <button class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                        <i class="ph ph-eye-slash text-lg"></i>
+                    </button>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold text-lg relative">
+                            I
+                            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-dark-bg rounded-full"></div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900 dark:text-white leading-tight">Indrajeet</h3>
+                            <div class="flex items-center gap-1 text-xs font-medium text-amber-600 dark:text-amber-500">
+                                <i class="ph-fill ph-star"></i> Bronze
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            <span>Level 1</span>
+                            <span>24%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                            <div class="bg-indigo-600 h-1.5 rounded-full" style="width: 24%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4 px-3 dark:text-gray-500">Main</p>
+                
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-brand-50 text-brand-600 font-medium dark:bg-brand-500/10 dark:text-brand-400">
+                    <i class="ph ph-squares-four text-xl"></i>
+                    <div>
+                        <div class="leading-tight">Dashboard</div>
+                        <div class="text-[10px] font-normal text-brand-500/70 dark:text-brand-400/70">Overview & stats</div>
+                    </div>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5 transition-colors group">
+                    <i class="ph ph-book-open text-xl group-hover:text-gray-900 dark:group-hover:text-gray-200"></i>
+                    <div class="flex-1">
+                        <div class="leading-tight group-hover:text-gray-900 dark:group-hover:text-gray-200">My Courses</div>
+                        <div class="text-[10px] text-gray-400">Learning paths</div>
+                    </div>
+                    <span class="text-[10px] font-semibold bg-green-100 text-green-700 px-2 py-0.5 rounded-full dark:bg-green-500/20 dark:text-green-400">2 Active</span>
+                </a>
+
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5 transition-colors group">
+                    <i class="ph ph-magic-wand text-xl group-hover:text-gray-900 dark:group-hover:text-gray-200"></i>
+                    <div>
+                        <div class="leading-tight group-hover:text-gray-900 dark:group-hover:text-gray-200">Playground</div>
+                        <div class="text-[10px] text-gray-400">Hands-on sandbox</div>
+                    </div>
+                </a>
+                
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5 transition-colors group">
+                    <i class="ph ph-robot text-xl group-hover:text-gray-900 dark:group-hover:text-gray-200"></i>
+                    <div>
+                        <div class="leading-tight group-hover:text-gray-900 dark:group-hover:text-gray-200">AI Coach</div>
+                        <div class="text-[10px] text-gray-400">Teacher AI agents</div>
+                    </div>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6 px-3 dark:text-gray-500">Account</p>
+
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5 transition-colors group">
+                    <i class="ph ph-user text-xl group-hover:text-gray-900 dark:group-hover:text-gray-200"></i>
+                    <span class="font-medium group-hover:text-gray-900 dark:group-hover:text-gray-200">Profile</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5 transition-colors group">
+                    <i class="ph ph-gear text-xl group-hover:text-gray-900 dark:group-hover:text-gray-200"></i>
+                    <span class="font-medium group-hover:text-gray-900 dark:group-hover:text-gray-200">Settings</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative transition-all duration-300">
+            
+            <!-- Top Header (Desktop) -->
+            <header class="hidden md:flex h-16 items-center justify-between px-8 bg-transparent">
+                <!-- Full Screen Toggle -->
+                <button id="fullScreenToggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors mr-4" title="Toggle Full Screen">
+                    <i class="ph ph-arrows-out text-xl" id="fullScreenIcon"></i>
+                </button>
+
+                <div class="flex-1"></div> <!-- Spacer -->
+                
+                <div class="flex items-center gap-4">
+                     <!-- Theme Toggle Button -->
+                     <button id="themeToggle" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
+                        <i class="ph ph-moon text-xl dark:hidden"></i>
+                        <i class="ph ph-sun text-xl hidden dark:block"></i>
+                    </button>
+
+                    <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 font-medium text-sm border border-amber-100 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-500">
+                        <i class="ph-fill ph-sparkle"></i> <span id="user-xp">235</span> XP
+                    </div>
+                    
+                    <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 dark:border-dark-border dark:text-gray-300 dark:hover:bg-dark-panel transition-colors">
+                        <i class="ph ph-bell text-lg"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Mobile Header -->
+            <header class="md:hidden flex items-center justify-between px-4 h-16 bg-white border-b border-gray-200 dark:bg-dark-panel dark:border-dark-border">
+                <div class="flex items-center gap-2">
+                    <button class="p-2 -ml-2 text-gray-600 dark:text-gray-300">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 flex items-center justify-center text-white shadow-sm">
+                        <i class="ph-bold ph-cube"></i>
+                    </div>
+                    <span class="font-bold text-slate-900 dark:text-white">JoralQ</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="themeToggleMobile" class="w-8 h-8 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400">
+                        <i class="ph ph-moon text-lg dark:hidden"></i>
+                        <i class="ph ph-sun text-lg hidden dark:block"></i>
+                    </button>
+                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-medium text-xs border border-amber-100 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-500">
+                        <i class="ph-fill ph-sparkle"></i> <span id="user-xp-mobile">235</span>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-semibold text-sm">
+                        I
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Scroll Area -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+                <div class="max-w-4xl mx-auto space-y-6">
+
+                    <!-- Header Card -->
+                    <div class="bg-white rounded-2xl p-5 md:p-6 shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4 dark:bg-dark-panel dark:border-dark-border">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                                <i class="ph-fill ph-cards text-2xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-white leading-tight">Flashcards</h1>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">UI/UX & Product Design Fundamentals</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between md:justify-end gap-6 md:w-1/2">
+                            <div class="flex-1 max-w-xs">
+                                <div class="flex justify-between text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                                    <span>Review Progress</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-2 dark:bg-gray-800">
+                                    <div id="progress-bar-fill" class="bg-gradient-to-r from-brand-500 to-blue-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span id="progress-text" class="px-3 py-1 bg-green-500 text-white text-sm font-bold rounded-full shadow-sm">1/4</span>
+                                <button class="px-4 py-2 rounded-xl bg-red-50 text-red-600 font-medium text-sm hover:bg-red-100 transition-colors flex items-center gap-2 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20">
+                                    <i class="ph-bold ph-x"></i> Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Flashcard Area -->
+                    <div id="flashcard-container" class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-200 dark:bg-dark-panel dark:border-dark-border relative pb-24 md:pb-32 transition-opacity duration-300">
+                        
+                        <!-- CONCEPT TAG -->
+                        <span id="card-tag" class="inline-block px-3 py-1 rounded bg-brand-50 text-brand-600 text-xs font-bold uppercase tracking-wider mb-4 border border-brand-100 dark:bg-brand-500/10 dark:border-brand-500/20 dark:text-brand-400">
+                            Concept
+                        </span>
+
+                        <h2 id="card-title" class="text-2xl md:text-3xl font-bold text-slate-900 mb-3 dark:text-white">Loading...</h2>
+                        <p id="card-desc" class="text-gray-600 text-base md:text-lg mb-6 dark:text-gray-300">
+                            Loading description...
+                        </p>
+
+                        <!-- Optional Image Area -->
+                        <div id="card-image-wrapper" class="hidden mb-8 rounded-2xl overflow-hidden border border-gray-200 dark:border-dark-border bg-gray-50 dark:bg-dark-bg">
+                            <img id="card-image" src="" alt="Concept Illustration" class="w-full h-auto object-cover max-h-[300px]">
+                        </div>
+
+                        <!-- Key Points Section (Simplified checkmarks to dots) -->
+                        <div class="mb-10">
+                            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 dark:text-slate-300">
+                                <i class="ph-fill ph-list-dashes text-brand-500"></i>
+                                Key Points
+                            </h3>
+                            
+                            <ul id="key-points-list" class="space-y-4 pl-1">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- Question Section -->
+                        <div class="border-t border-gray-200 pt-8 dark:border-dark-border">
+                            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 dark:text-slate-300">
+                                <i class="ph-fill ph-question text-indigo-500"></i>
+                                Knowledge Check
+                            </h3>
+                            
+                            <p id="card-question" class="text-lg md:text-xl font-medium text-slate-900 mb-2 dark:text-white">
+                                Loading question...
+                            </p>
+                            <p class="text-sm text-gray-500 mb-6 dark:text-gray-400">
+                                Try to answer it in your head first, then reveal.
+                            </p>
+
+                            <!-- Answer Reveal Toggle -->
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-sm font-semibold text-gray-400 dark:text-gray-500">Answer</span>
+                                <button id="btn-toggle-answer" onclick="toggleAnswer()" class="text-sm font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1.5 dark:text-brand-400 dark:hover:text-brand-300 transition-colors px-3 py-1 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-500/10">
+                                    <i id="toggle-answer-icon" class="ph-bold ph-eye"></i> 
+                                    <span id="toggle-answer-text">Reveal</span>
+                                </button>
+                            </div>
+
+                            <!-- Answer Area -->
+                            <div id="answer-box" class="hidden p-5 rounded-xl bg-green-50 border border-green-100 dark:bg-green-900/20 dark:border-green-900/30 transition-all duration-300 opacity-0 transform translate-y-2">
+                                <p id="card-answer" class="text-green-800 font-medium md:text-lg dark:text-green-300 text-center">
+                                    Loading answer...
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Action Bar (Absolute positioning inside the card) -->
+                        <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6 border-t border-gray-100 bg-gray-50/80 backdrop-blur-md rounded-b-3xl flex items-center justify-between dark:border-dark-border dark:bg-dark-panel/90">
+                            <button id="btn-prev" onclick="prevCard()" class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium hover:bg-gray-50 flex items-center gap-2 transition-colors dark:bg-transparent dark:border-dark-border dark:text-gray-300 dark:hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="ph-bold ph-caret-left"></i> Previous
+                            </button>
+                            
+                            <div class="flex items-center gap-3">
+                                <button onclick="restartCards()" class="p-2.5 text-brand-600 hover:bg-brand-50 rounded-xl font-medium flex items-center gap-2 transition-colors dark:text-brand-400 dark:hover:bg-brand-500/10 hidden md:flex">
+                                    <i class="ph-bold ph-arrows-clockwise"></i> Restart
+                                </button>
+                                <button id="btn-next" onclick="nextCard()" class="px-8 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-indigo-500 text-white font-medium hover:opacity-90 shadow-md shadow-brand-500/20 flex items-center gap-2 transition-all">
+                                    Next <i class="ph-bold ph-caret-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- End Screen (Hidden by default) -->
+                    <div id="end-screen" class="hidden bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-200 dark:bg-dark-panel dark:border-dark-border text-center">
+                        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 dark:bg-amber-500/10 shadow-inner relative">
+                            <i class="ph-fill ph-trophy text-5xl"></i>
+                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white border-2 border-white dark:border-dark-panel">
+                                <i class="ph-bold ph-check text-sm"></i>
+                            </div>
+                        </div>
+                        
+                        <h2 class="text-3xl font-bold text-slate-900 mb-3 dark:text-white">Deck Completed!</h2>
+                        <p class="text-gray-600 text-lg mb-8 dark:text-gray-300 max-w-md mx-auto">
+                            Great job! You've reviewed all the flashcards in this deck. You are mastering UI/UX concepts.
+                        </p>
+
+                        <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-amber-50 border border-amber-100 text-amber-700 font-bold text-lg mb-10 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-500">
+                            <i class="ph-fill ph-sparkle text-xl"></i>
+                            +40 XP Earned
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <button onclick="restartCards()" class="w-full sm:w-auto px-6 py-3 rounded-xl border border-gray-200 bg-white text-gray-700 font-medium hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors dark:bg-transparent dark:border-dark-border dark:text-gray-300 dark:hover:bg-white/5">
+                                <i class="ph-bold ph-arrows-clockwise text-lg"></i> Review Again
+                            </button>
+                            <button class="w-full sm:w-auto px-8 py-3 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 flex items-center justify-center gap-2 transition-all dark:bg-white dark:text-slate-900 dark:hover:bg-gray-100">
+                                Back to Courses
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Ask Jora Floating Button -->
+                <button class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 bg-white rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.15)] transition-all dark:bg-dark-panel dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_6px_16px_rgba(0,0,0,0.35)] group">
+                    <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 dark:bg-brand-500/20 dark:text-brand-400">
+                        <i class="ph-fill ph-robot text-xl"></i>
+                    </div>
+                    <span class="font-semibold text-slate-900 dark:text-white text-base pr-1">Ask Jora</span>
+                </button>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- Theme Toggling Logic ---
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeToggleBtnMobile = document.getElementById('themeToggleMobile');
+        const htmlElement = document.documentElement;
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                htmlElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            } else {
+                htmlElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            }
+        }
+
+        // Init theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            applyTheme(true);
+        } else {
+            applyTheme(false);
+        }
+
+        const toggleHandler = () => applyTheme(!htmlElement.classList.contains('dark'));
+        themeToggleBtn.addEventListener('click', toggleHandler);
+        if(themeToggleBtnMobile) themeToggleBtnMobile.addEventListener('click', toggleHandler);
+
+        // --- Full Screen Toggling Logic ---
+        const fullScreenToggleBtn = document.getElementById('fullScreenToggle');
+        const fullScreenIcon = document.getElementById('fullScreenIcon');
+        const appContainer = document.getElementById('app-container');
+        let isFullScreen = false;
+
+        if (fullScreenToggleBtn) {
+            fullScreenToggleBtn.addEventListener('click', () => {
+                isFullScreen = !isFullScreen;
+                if (isFullScreen) {
+                    appContainer.classList.add('fullscreen-mode');
+                    fullScreenIcon.classList.replace('ph-arrows-out', 'ph-arrows-in');
+                } else {
+                    appContainer.classList.remove('fullscreen-mode');
+                    fullScreenIcon.classList.replace('ph-arrows-in', 'ph-arrows-out');
+                }
+            });
+        }
+
+
+        // --- Flashcard Application Logic ---
+        
+        // 1. Data Structure (UI/UX Concepts)
+        const flashcards = [
+            {
+                tag: "Process",
+                title: "Recall: what comes first?",
+                desc: "Focus on the core process, then use the explanation and key points below to lock in the idea.",
+                image: null,
+                points: [
+                    "Before sketching, learn about the users and their pain points.",
+                    "Good design starts with a problem definition, not a color choice or a button style."
+                ],
+                question: "What crucial step should happen before drawing the very first screen?",
+                answer: "User research and problem understanding."
+            },
+            {
+                tag: "Concept",
+                title: "Wireframes vs. Prototypes",
+                desc: "Understand the fidelity spectrum in design deliverables.",
+                // Using a placeholder image to demonstrate the image capability
+                image: "https://placehold.co/800x400/e2e8f0/475569?text=Wireframe+(Structure)+vs+Prototype+(Interaction)",
+                points: [
+                    "Wireframes are low-fidelity structural blueprints. They show layout, not design.",
+                    "Prototypes are interactive models simulating the final product flow and behavior."
+                ],
+                question: "Which deliverable would you use to test a complex interactive user flow with participants?",
+                answer: "A prototype, because it allows users to click and experience the flow firsthand."
+            },
+            {
+                tag: "Principle",
+                title: "Fitts's Law",
+                desc: "A fundamental principle of human-computer interaction regarding movement.",
+                image: "https://placehold.co/800x350/ede9fe/6b46c1?text=Time+to+target+=+Distance+/+Size",
+                points: [
+                    "The time required to rapidly move to a target is a function of the ratio between the distance to the target and the width of the target.",
+                    "In simple terms: Larger, closer buttons are much faster to click."
+                ],
+                question: "According to Fitts's Law, how should you design your primary call-to-action (CTA) buttons?",
+                answer: "Make them sufficiently large and place them close to where the user's cursor or thumb naturally rests."
+            },
+            {
+                tag: "Heuristic",
+                title: "Visibility of System Status",
+                desc: "Nielsen's first heuristic: Keep users informed about what is going on.",
+                image: null,
+                points: [
+                    "The system should always keep users informed through appropriate feedback within a reasonable time.",
+                    "Users shouldn't have to guess if their action (like clicking 'Save') succeeded or failed."
+                ],
+                question: "If a user uploads a heavy 50MB file, what UI element is essential to satisfy this heuristic?",
+                answer: "A progress bar or loading spinner with an estimated time remaining."
+            }
+        ];
+
+        // State variables
+        let currentIndex = 0;
+        let isAnswerRevealed = false;
+        let currentXP = 235; // Base XP from original design
+
+        // DOM Elements
+        const elContainer = document.getElementById('flashcard-container');
+        const elEndScreen = document.getElementById('end-screen');
+        const elTag = document.getElementById('card-tag');
+        const elTitle = document.getElementById('card-title');
+        const elDesc = document.getElementById('card-desc');
+        const elImgWrapper = document.getElementById('card-image-wrapper');
+        const elImg = document.getElementById('card-image');
+        const elPointsList = document.getElementById('key-points-list');
+        const elQuestion = document.getElementById('card-question');
+        const elAnswer = document.getElementById('card-answer');
+        const elAnswerBox = document.getElementById('answer-box');
+        
+        const btnToggleAns = document.getElementById('btn-toggle-answer');
+        const iconToggleAns = document.getElementById('toggle-answer-icon');
+        const textToggleAns = document.getElementById('toggle-answer-text');
+        
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const progressFill = document.getElementById('progress-bar-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const xpTextDesktop = document.getElementById('user-xp');
+        const xpTextMobile = document.getElementById('user-xp-mobile');
+
+        // Functions
+        function renderCard() {
+            // Check if reached the end
+            if (currentIndex >= flashcards.length) {
+                showEndScreen();
+                return;
+            }
+
+            const card = flashcards[currentIndex];
+            
+            // Update Text content
+            elTag.textContent = card.tag;
+            elTitle.textContent = card.title;
+            elDesc.textContent = card.desc;
+            elQuestion.textContent = card.question;
+            elAnswer.textContent = card.answer;
+
+            // Update Image
+            if (card.image) {
+                elImg.src = card.image;
+                elImgWrapper.classList.remove('hidden');
+            } else {
+                elImgWrapper.classList.add('hidden');
+            }
+
+            // Update Key Points (Using clean minimal dots instead of checkmarks)
+            elPointsList.innerHTML = '';
+            card.points.forEach(point => {
+                const li = document.createElement('li');
+                li.className = "flex items-start gap-3 relative";
+                li.innerHTML = `
+                    <div class="mt-2 w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0 dark:bg-brand-400"></div>
+                    <span class="text-slate-700 font-medium dark:text-slate-300 text-base leading-relaxed">${point}</span>
+                `;
+                elPointsList.appendChild(li);
+            });
+
+            // Reset Answer State
+            isAnswerRevealed = false;
+            elAnswerBox.classList.add('hidden', 'opacity-0', 'translate-y-2');
+            elAnswerBox.classList.remove('opacity-100', 'translate-y-0');
+            iconToggleAns.className = 'ph-bold ph-eye';
+            textToggleAns.textContent = 'Reveal';
+
+            // Update Buttons & Progress
+            btnPrev.disabled = currentIndex === 0;
+            
+            // Update Progress Bar
+            const percent = ((currentIndex + 1) / flashcards.length) * 100;
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `${currentIndex + 1}/${flashcards.length}`;
+            
+            // Smooth fade in
+            elContainer.style.opacity = '0';
+            setTimeout(() => { elContainer.style.opacity = '1'; }, 50);
+        }
+
+        function toggleAnswer() {
+            isAnswerRevealed = !isAnswerRevealed;
+            if (isAnswerRevealed) {
+                elAnswerBox.classList.remove('hidden');
+                // Small timeout to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    elAnswerBox.classList.remove('opacity-0', 'translate-y-2');
+                    elAnswerBox.classList.add('opacity-100', 'translate-y-0');
+                }, 10);
+                iconToggleAns.className = 'ph-bold ph-eye-slash';
+                textToggleAns.textContent = 'Hide';
+            } else {
+                elAnswerBox.classList.add('opacity-0', 'translate-y-2');
+                elAnswerBox.classList.remove('opacity-100', 'translate-y-0');
+                setTimeout(() => {
+                    elAnswerBox.classList.add('hidden');
+                }, 300); // match transition duration
+                iconToggleAns.className = 'ph-bold ph-eye';
+                textToggleAns.textContent = 'Reveal';
+            }
+        }
+
+        function nextCard() {
+            if (currentIndex < flashcards.length) {
+                currentIndex++;
+                renderCard();
+            }
+        }
+
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCard();
+            }
+        }
+
+        function showEndScreen() {
+            elContainer.classList.add('hidden');
+            elEndScreen.classList.remove('hidden');
+            
+            // Update XP for gamification
+            const newXP = currentXP + 40;
+            xpTextDesktop.textContent = newXP;
+            if(xpTextMobile) xpTextMobile.textContent = newXP;
+        }
+
+        function restartCards() {
+            currentIndex = 0;
+            elEndScreen.classList.add('hidden');
+            elContainer.classList.remove('hidden');
+            
+            // Reset XP back just for demo purposes (optional)
+            xpTextDesktop.textContent = currentXP;
+            if(xpTextMobile) xpTextMobile.textContent = currentXP;
+            
+            renderCard();
+        }
+
+        // Initialize first card on load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCard();
+        });
+
+    </script>
+</body>
+</html>

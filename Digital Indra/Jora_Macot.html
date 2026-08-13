@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walking Owl Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fcfbfe;
+            overflow: hidden;
+        }
+
+        @keyframes walk {
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(-8deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-15px) rotate(8deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        @keyframes moveRight {
+            0% { left: -250px; }
+            100% { left: 100vw; }
+        }
+
+        @keyframes legWalkLeft {
+            0% { transform: rotate(10deg) translateY(0); }
+            25% { transform: rotate(10deg) translateY(-10px); }
+            50% { transform: rotate(10deg) translateY(0); }
+            75% { transform: rotate(10deg) translateY(0); }
+            100% { transform: rotate(10deg) translateY(0); }
+        }
+
+        @keyframes legWalkRight {
+            0% { transform: rotate(-10deg) translateY(0); }
+            25% { transform: rotate(-10deg) translateY(0); }
+            50% { transform: rotate(-10deg) translateY(0); }
+            75% { transform: rotate(-10deg) translateY(-10px); }
+            100% { transform: rotate(-10deg) translateY(0); }
+        }
+
+        .owl-container {
+            position: absolute;
+            animation: moveRight 15s linear infinite;
+        }
+
+        .owl-wrapper {
+            position: relative;
+            width: 240px;
+            height: 280px;
+            /* Removed full body walk animation */
+            transform-origin: bottom center;
+        }
+
+        .owl-body {
+            position: absolute;
+            bottom: 20px; /* Leave room for feet */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background-color: #6a34db;
+            border-radius: 50%;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .owl-belly {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background-color: #8c5ff1;
+            border-radius: 50%;
+        }
+
+        .ear {
+            position: absolute;
+            top: 20px;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 70px solid #6a34db;
+            z-index: 1;
+        }
+
+        .ear-left {
+            left: 5px;
+            transform: rotate(-25deg);
+        }
+
+        .ear-right {
+            right: 5px;
+            transform: rotate(25deg);
+        }
+
+        .eye {
+            position: absolute;
+            top: 50px;
+            width: 65px;
+            height: 65px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .eye-left {
+            left: 30px;
+        }
+
+        .eye-right {
+            right: 30px;
+        }
+
+        .pupil {
+            width: 32px;
+            height: 32px;
+            background-color: #1a1a2e;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pupil::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .beak {
+            position: absolute;
+            top: 105px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #df8914;
+            z-index: 4;
+            border-radius: 4px;
+        }
+
+        .foot {
+            position: absolute;
+            bottom: 5px;
+            width: 45px;
+            height: 25px;
+            background-color: #8c5ff1;
+            border-radius: 20px;
+            z-index: 1;
+        }
+
+        .foot-left {
+            left: 55px;
+            transform: rotate(10deg);
+            animation: legWalkLeft 1s ease-in-out infinite;
+        }
+
+        .foot-right {
+            right: 55px;
+            transform: rotate(-10deg);
+            animation: legWalkRight 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="owl-container">
+        <div class="owl-wrapper">
+            <div class="ear ear-left"></div>
+            <div class="ear ear-right"></div>
+            
+            <div class="owl-body">
+                <div class="owl-belly"></div>
+            </div>
+
+            <div class="eye eye-left">
+                <div class="pupil"></div>
+            </div>
+            <div class="eye eye-right">
+                <div class="pupil"></div>
+            </div>
+
+            <div class="beak"></div>
+
+            <div class="foot foot-left"></div>
+            <div class="foot foot-right"></div>
+        </div>
+    </div>
+
+</body>
+</html>

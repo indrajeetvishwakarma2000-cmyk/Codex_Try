@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JoraIQ Mobile App</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6B4EFF', // Deep Purple from new splash
+                        primaryLight: '#818CF8',
+                        secondary: '#10B981', // Mint Green
+                        accent: '#F59E0B', // Gamification Gold
+                        surface: '#F8FAFC',
+                        textMain: '#1E293B',
+                        textMuted: '#64748B'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'floating': '0 20px 40px -20px rgba(107,78,255,0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Load React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Load Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E2E8F0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* iPhone 16 Pro Dimensions Simulation */
+        #mobile-container {
+            width: 393px;
+            height: 852px;
+            background-color: #F8FAFC;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 44px;
+            border: 8px solid #000;
+        }
+
+        .scrollable-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 120px; /* Space for bottom nav & home indicator */
+            padding-top: 54px; /* Space for dynamic island & status bar */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollable-content::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Splash specific scroll reset */
+        .splash-content {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // =========================================================================
+        // 🛠️ EDIT THIS VARIABLE TO USE YOUR OWN MASCOT GIF
+        // Replace this URL with 'mascot.gif' or the path to your mascot image
+        // Examples: "Showing thumbs up(1).gif", "mascot.gif", "path/to/jora.gif"
+        // =========================================================================
+        const MASCOT_IMAGE_URL = "Showing thumbs up(1).gif";
+        
+        // For easy customization, you can also hardcode alternative mascots here:
+        // const MASCOT_IMAGE_URL = "https://example.com/jora.gif"; // Remote URL
+        // const MASCOT_IMAGE_URL = "./assets/mascots/jora-dancing.gif"; // Local path
+
+        const Icons = {
+            GraduationCap: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.42 10.922a2 2 0 0 1-.019 3.022l-7.1 7.1a2 2 0 0 1-2.827 0l-7.1-7.1a2 2 0 0 1-.018-3.022l2.2-2.184a2 2 0 0 1 2.808 0l2.096 2.083 4.904-4.872a2 2 0 0 1 2.827 0l2.229 2.201Z"/><path d="m14 7-3-3-3 3"/><path d="M12.5 13.5v-2"/><path d="M7 11.5v-2"/><path d="M18.5 13.5v-2"/></svg>,
+            Trophy: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+            Briefcase: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+            ChevronRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
+            ChevronLeft: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>,
+            Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+            Play: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+            Home: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+            Map: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>,
+            Bot: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>,
+            User: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            Target: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+            Zap: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+            BookOpen: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+            ShieldAlert: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>,
+            Send: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>,
+            Rocket: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 3.82-13 1.5 1.5 0 0 1 2.18 2.18A22 22 0 0 1 15 12l-3 3z"/><path d="m9 15 3 3a22 22 0 0 0 13-3.82 1.5 1.5 0 0 0-2.18-2.18A22 22 0 0 0 12 9l-3 3z"/></svg>,
+            BookHeart: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="M12 13s2-2 2-3.5a2 2 0 1 0-4 0c0 1.5 2 3.5 2 3.5z"/></svg>,
+            ShieldCheck: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>,
+            // iOS Status Bar Icons
+            Cellular: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2V14H2v8zm4 0h2V10H6v12zm4 0h2V6h-2v16zm4 0h2V2h-2v20zm4 0h2v-8h-2v8z"/></svg>,
+            Wifi: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.95 3 2.33 5.3 0 8.78L12 22 24 8.78C21.67 5.3 17.05 3 12 3zm0 4.5c2.95 0 5.6.15 7.5 3.3L12 18.5 4.5 10.8C6.4 7.65 9.05 7.5 12 7.5z"/></svg>,
+            Battery: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H3V8h14v8zM21 9h2v6h-2zM5 10h10v4H5z"/></svg>,
+        };
+
+        const IOSStatusBar = ({ isLight }) => (
+            <div className={`absolute top-0 left-0 w-full h-[54px] flex justify-between items-end pb-3 px-6 z-50 pointer-events-none transition-colors duration-300 ${isLight ? 'text-white' : 'text-textMain'}`}>
+                <div className="font-semibold text-[15px] w-14 text-center tracking-tight">9:41</div>
+                {/* Dynamic Island */}
+                <div className="w-[120px] h-[32px] bg-black rounded-full absolute left-1/2 -translate-x-1/2 top-2.5"></div>
+                <div className="flex items-center gap-1.5 w-14 justify-end">
+                    <Icons.Cellular />
+                    <Icons.Wifi />
+                    <Icons.Battery />
+                </div>
+            </div>
+        );
+
+        const IOSHomeIndicator = () => (
+            <div className="absolute bottom-0 left-0 w-full h-[34px] flex justify-center items-end pb-2 z-50 pointer-events-none">
+                <div className="w-[134px] h-[5px] bg-black/80 rounded-full"></div>
+            </div>
+        );
+
+        // Floating Mascot Component
+        const FloatingMascot = () => (
+            <div className="absolute bottom-[90px] right-[20px] z-40 w-16 h-16 rounded-full bg-white shadow-lg border-2 border-primary overflow-hidden flex items-center justify-center cursor-pointer hover:scale-105 transition-transform slide-up p-1.5">
+                <img src={MASCOT_IMAGE_URL} alt="Jora Mascot" className="w-full h-full object-contain" />
+            </div>
+        );
+
+        const App = () => {
+            const [currentView, setCurrentView] = useState('splash');
+            const [activeTab, setActiveTab] = useState('roadmap');
+            const [userData, setUserData] = useState({
+                goalType: null,
+                role: null,
+                skills: [],
+                level: null
+            });
+            const [activeModule, setActiveModule] = useState(null);
+
+            const navigate = (view) => {
+                setCurrentView(view);
+                window.scrollTo(0,0);
+            };
+
+            const updateUserData = (key, value) => {
+                setUserData(prev => ({...prev, [key]: value}));
+            };
+
+            // Determine if status bar should be light text (for splash) or dark (for others)
+            const isLightStatusBar = currentView === 'splash' || currentView === 'flashcards';
+            
+            // Show mascot on all screens EXCEPT splash and assessment
+            const showMascot = currentView !== 'splash' && currentView !== 'assessment' && currentView !== 'flashcards';
+
+            return (
+                <div id="mobile-container">
+                    <IOSStatusBar isLight={isLightStatusBar} />
+                    
+                    <div className={`scrollable-content relative ${currentView === 'splash' || currentView === 'flashcards' ? 'splash-content' : ''}`}>
+                        {currentView === 'splash' && <SplashScreen navigate={navigate} />}
+                        {currentView === 'goals' && <GoalSelection navigate={navigate} updateData={updateUserData} />}
+                        {currentView === 'onboarding' && <OnboardingFlow navigate={navigate} userData={userData} updateData={updateUserData} />}
+                        {currentView === 'assessment' && <AssessmentScreen navigate={navigate} userData={userData} updateData={updateUserData} />}
+                        {currentView === 'dashboard' && activeTab === 'roadmap' && <RoadmapDashboard navigate={navigate} setActiveModule={setActiveModule} />}
+                        {currentView === 'dashboard' && activeTab === 'mentor' && <AiMentorChat />}
+                        {currentView === 'dashboard' && activeTab === 'profile' && <ProfileScreen />}
+                        {currentView === 'module_detail' && <ModuleDetail navigate={navigate} module={activeModule} />}
+                        {currentView === 'flashcards' && <FlashcardPlayer navigate={navigate} />}
+                        {currentView === 'weakness' && <WeaknessBuilderScreen navigate={navigate} />}
+                    </div>
+                    
+                    {/* Show Floating Mascot on appropriate screens */}
+                    {showMascot && <FloatingMascot />}
+
+                    {/* Show Bottom Nav only on main dashboard tabs */}
+                    {currentView === 'dashboard' && (
+                        <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                    )}
+
+                    <IOSHomeIndicator />
+                </div>
+            );
+        };
+
+        const SplashScreen = ({ navigate }) => (
+            <div className="min-h-full w-full flex flex-col justify-between pt-16 pb-10 px-6 fade-in text-white relative bg-gradient-to-b from-[#F2F0FA] via-[#E4DEFA] to-[#5C3DF5]">
+                
+                {/* Sparkle Icons Background */}
+                <div className="absolute top-16 left-6 text-primaryLight/60">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/></svg>
+                </div>
+                <div className="absolute top-1/2 right-6 text-primaryLight/40 scale-75">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z"/></svg>
+                </div>
+
+                <div className="flex flex-col items-center mt-12 slide-up relative z-10">
+                    {/* Character / Mascot */}
+                    <div className="w-64 h-64 relative mb-6">
+                        <div className="absolute inset-0 bg-white/20 rounded-full blur-3xl"></div>
+                        <img src={MASCOT_IMAGE_URL} alt="Jora Mascot" className="w-full h-full object-contain relative z-10" />
+                    </div>
+                    
+                    <h1 className="text-5xl font-extrabold tracking-tight mb-4 text-[#1E293B]">
+                        Jora<span className="text-primary">IQ</span>
+                    </h1>
+                    
+                    <div className="flex gap-1.5 mb-6">
+                        <div className="w-3 h-1 bg-primary rounded-full opacity-50"></div>
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                        <div className="w-3 h-1 bg-primary rounded-full opacity-50"></div>
+                    </div>
+
+                    <h2 className="text-xl font-bold text-center text-[#1E293B] mb-2 leading-tight">
+                        Your smart companion<br/>
+                        <span className="text-primary">for learning, everywhere.</span>
+                    </h2>
+                    
+                    <p className="text-center text-[#475569] text-sm mt-2">
+                        Learn better. Remember more.<br/>
+                        Achieve your goals with <span className="font-semibold text-primary">JoraIQ</span>.
+                    </p>
+                </div>
+
+                <div className="flex flex-col gap-3 w-full slide-up mt-6" style={{animationDelay: '0.2s'}}>
+                    <button onClick={() => navigate('goals')} className="w-full bg-primary hover:bg-[#5C3DF5] text-white py-4 px-5 rounded-2xl font-bold flex justify-between items-center shadow-floating transition-all active:scale-95">
+                        <div className="flex items-center gap-2">
+                            <Icons.Rocket />
+                            <span className="text-lg">Get Started</span>
+                        </div>
+                        <Icons.ChevronRight />
+                    </button>
+                    
+                    <button onClick={() => navigate('goals')} className="w-full bg-white/10 border border-white/20 backdrop-blur-sm text-white py-4 px-5 rounded-2xl font-bold flex justify-between items-center transition-all active:scale-95">
+                        <div className="flex items-center gap-2 flex-1 overflow-hidden pr-2">
+                            <div className="shrink-0"><Icons.User /></div>
+                            <span className="text-[15px] truncate font-medium">I already have an account</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-white/80 shrink-0">
+                            <span className="text-sm">Login</span>
+                            <Icons.ChevronRight />
+                        </div>
+                    </button>
+                </div>
+
+                {/* Bottom 3 Icons Section */}
+                <div className="flex justify-between w-full px-1 mt-6 mb-2 slide-up" style={{animationDelay: '0.3s'}}>
+                    <div className="flex flex-col items-center text-center gap-1.5 w-1/3">
+                        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mb-1">
+                            <Icons.BookHeart />
+                        </div>
+                        <span className="text-[10px] text-white/80 font-medium leading-tight">Personalized<br/>Learning</span>
+                    </div>
+                    <div className="flex flex-col items-center text-center gap-1.5 w-1/3">
+                        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mb-1">
+                            <Icons.Target />
+                        </div>
+                        <span className="text-[10px] text-white/80 font-medium leading-tight">Track Your<br/>Progress</span>
+                    </div>
+                    <div className="flex flex-col items-center text-center gap-1.5 w-1/3">
+                        <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center mb-1">
+                            <Icons.ShieldCheck />
+                        </div>
+                        <span className="text-[10px] text-white/80 font-medium leading-tight">Achieve Your<br/>Goals</span>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const GoalSelection = ({ navigate, updateData }) => {
+            const goals = [
+                { id: 'school', title: 'School Learning', desc: 'For students from any grade', icon: Icons.GraduationCap, color: 'bg-[#3B82F6]' },
+                { id: 'exams', title: 'Competitive Exams', desc: 'CAT, JEE, NEET, UPSC & more', icon: Icons.Trophy, color: 'bg-[#EF4444]' },
+                { id: 'jobs', title: 'Job Skills', desc: 'Learn in-demand skills & get job ready', icon: Icons.Briefcase, color: 'bg-secondary' }
+            ];
+
+            const handleSelect = (id) => {
+                updateData('goalType', id);
+                navigate('onboarding');
+            };
+
+            return (
+                <div className="h-full w-full bg-surface p-6 flex flex-col fade-in">
+                    <div className="mt-8 mb-8 slide-up">
+                        <h2 className="text-[32px] leading-tight font-extrabold text-[#1E293B] mb-2">What do you want to achieve?</h2>
+                        <p className="text-textMuted text-[17px]">We'll personalize everything for you.</p>
+                    </div>
+
+                    <div className="space-y-4 slide-up" style={{animationDelay: '0.1s'}}>
+                        {goals.map((g) => (
+                            <button 
+                                key={g.id}
+                                onClick={() => handleSelect(g.id)}
+                                className="w-full bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 hover:shadow-md transition-all active:scale-95 text-left"
+                            >
+                                <div className={`w-14 h-14 ${g.color} rounded-2xl flex items-center justify-center text-white shrink-0 shadow-inner`}>
+                                    <g.icon />
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-[#1E293B] text-lg">{g.title}</h3>
+                                    <p className="text-textMuted text-sm mt-0.5">{g.desc}</p>
+                                </div>
+                                <Icons.ChevronRight className="text-gray-400" />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const OnboardingFlow = ({ navigate, userData, updateData }) => {
+            const [step, setStep] = useState(1);
+
+            const handleNext = () => {
+                if (step < 3) setStep(step + 1);
+                else {
+                    // If user selected intermediate or advanced, show assessment
+                    if (userData.level === 'intermediate' || userData.level === 'advanced') {
+                        navigate('assessment');
+                    } else {
+                        navigate('dashboard');
+                    }
+                }
+            };
+
+            const roles = ['Data Analyst', 'Software Developer', 'AI Engineer', 'Product Manager'];
+            const skills = ['SQL', 'Python', 'Power BI', 'Excel'];
+            const levels = [
+                {id: 'beginner', title: 'Beginner', desc: 'I am just starting out'},
+                {id: 'intermediate', title: 'Intermediate', desc: 'I know the basics well'},
+                {id: 'advanced', title: 'Advanced', desc: 'I am looking for expert topics'}
+            ];
+
+            return (
+                <div className="min-h-full bg-white p-6 fade-in flex flex-col">
+                    <div className="flex items-center pt-4 mb-8">
+                        <button onClick={() => step > 1 ? setStep(step-1) : navigate('goals')} className="p-2 -ml-2 text-textMuted">
+                            <Icons.ChevronLeft />
+                        </button>
+                        <div className="flex-1 flex justify-center gap-2">
+                            {[1,2,3].map(i => (
+                                <div key={i} className={`h-1.5 rounded-full ${i <= step ? 'w-8 bg-primary' : 'w-4 bg-gray-200'} transition-all duration-300`} />
+                            ))}
+                        </div>
+                        <div className="w-8"></div>
+                    </div>
+
+                    <div className="flex-1 slide-up">
+                        {step === 1 && (
+                            <div>
+                                <h2 className="text-2xl font-bold text-textMain mb-6">Let's understand your goal</h2>
+                                <label className="block text-sm font-semibold text-textMuted mb-3">What role do you want to prepare for?</label>
+                                <div className="grid grid-cols-1 gap-3 mb-8">
+                                    {roles.map(r => (
+                                        <button key={r} 
+                                            onClick={() => updateData('role', r)}
+                                            className={`p-4 rounded-xl border-2 text-left font-medium transition-all ${userData.role === r ? 'border-primary bg-primary/5 text-primary' : 'border-gray-100 text-textMain hover:border-gray-200'}`}>
+                                            {r}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 2 && (
+                            <div>
+                                <h2 className="text-2xl font-bold text-textMain mb-6">What skills do you want to master?</h2>
+                                <p className="text-textMuted mb-6">Select the primary skill to start your journey.</p>
+                                <div className="flex flex-wrap gap-3">
+                                    {skills.map(s => (
+                                        <button key={s} 
+                                            onClick={() => updateData('skills', [s])}
+                                            className={`px-5 py-3 rounded-full border-2 font-medium transition-all ${userData.skills.includes(s) ? 'border-primary bg-primary text-white' : 'border-gray-200 text-textMuted'}`}>
+                                            {s}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {step === 3 && (
+                            <div>
+                                <h2 className="text-2xl font-bold text-textMain mb-6">What is your current level?</h2>
+                                <p className="text-textMuted mb-6">We'll adapt the curriculum based on this.</p>
+                                <div className="space-y-4">
+                                    {levels.map(l => (
+                                        <button key={l.id} 
+                                            onClick={() => updateData('level', l.id)}
+                                            className={`w-full p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between ${userData.level === l.id ? 'border-primary bg-primary/5' : 'border-gray-100 hover:border-gray-200'}`}>
+                                            <div>
+                                                <h3 className={`font-bold text-lg ${userData.level === l.id ? 'text-primary' : 'text-textMain'}`}>{l.title}</h3>
+                                                <p className="text-textMuted text-sm mt-1">{l.desc}</p>
+                                            </div>
+                                            {userData.level === l.id && <Icons.Check className="text-primary" />}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="pt-6">
+                        <button 
+                            onClick={handleNext}
+                            disabled={(step === 1 && !userData.role) || (step === 2 && userData.skills.length === 0) || (step === 3 && !userData.level)}
+                            className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-floating disabled:opacity-50 disabled:shadow-none transition-all active:scale-95"
+                        >
+                            {step === 3 ? 'Generate My Learning Path' : 'Continue'}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const RoadmapDashboard = ({ navigate, setActiveModule }) => {
+            const progress = 38;
+            
+            const modules = [
+                { id: 'm1', title: 'SQL Foundations Refresh', status: 'completed', score: 100 },
+                { id: 'm2', title: 'Joins', status: 'active', score: 65, desc: 'Learn inner, left, right and full joins.' },
+                { id: 'm3', title: 'Subqueries', status: 'locked', score: 0 },
+                { id: 'm4', title: 'Window Functions', status: 'locked', score: 0 },
+            ];
+
+            const handleModuleClick = (mod) => {
+                if (mod.status !== 'locked') {
+                    setActiveModule(mod);
+                    navigate('module_detail');
+                }
+            };
+
+            return (
+                <div className="min-h-full bg-surface fade-in">
+                    <div className="bg-primary rounded-b-[40px] px-6 pt-6 pb-24 relative overflow-hidden text-white">
+                        <div className="absolute top-0 right-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
+                            <Icons.Map size={200} />
+                        </div>
+                        <div className="relative z-10">
+                            <div className="flex justify-between items-center mb-6">
+                                <div>
+                                    <p className="text-primaryLight font-medium">Data Analyst Roadmap</p>
+                                    <h1 className="text-3xl font-bold">Welcome back!</h1>
+                                </div>
+                                <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 shadow-sm">
+                                    <div className="text-center leading-none">
+                                        <span className="text-accent text-lg font-bold block">12</span>
+                                        <span className="text-[10px] uppercase font-bold tracking-wider">Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-3xl flex items-center gap-5">
+                                <div className="relative w-16 h-16 shrink-0">
+                                    <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                                        <path className="text-white/20" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
+                                        <path className="text-secondary" strokeDasharray={`${progress}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+                                    </svg>
+                                    <div className="absolute inset-0 flex items-center justify-center font-bold text-sm">
+                                        {progress}%
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg mb-1">Overall Progress</h3>
+                                    <p className="text-primaryLight text-sm">Estimated time: 4 Months</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="px-6 -mt-16 relative z-20 space-y-4">
+                        {modules.map((mod, idx) => (
+                            <div key={mod.id} className="relative slide-up" style={{animationDelay: `${idx * 0.1}s`}}>
+                                {idx !== modules.length - 1 && (
+                                    <div className={`absolute left-8 top-16 bottom-[-20px] w-0.5 ${mod.status === 'completed' ? 'bg-secondary' : 'bg-gray-200'} z-0`}></div>
+                                )}
+                                
+                                <button 
+                                    onClick={() => handleModuleClick(mod)}
+                                    className={`w-full relative z-10 p-5 rounded-3xl border-2 text-left transition-all flex gap-4 
+                                        ${mod.status === 'active' ? 'bg-white border-primary shadow-soft transform scale-[1.02]' : 
+                                          mod.status === 'completed' ? 'bg-white border-transparent shadow-sm' : 
+                                          'bg-gray-50 border-transparent opacity-70'}`}
+                                >
+                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 shadow-sm
+                                        ${mod.status === 'completed' ? 'bg-secondary text-white' : 
+                                          mod.status === 'active' ? 'bg-primary text-white border-4 border-primaryLight' : 
+                                          'bg-gray-200 text-gray-400'}`}>
+                                        {mod.status === 'completed' ? <Icons.Check /> : 
+                                         mod.status === 'active' ? <Icons.Play /> : 
+                                         <span className="font-bold">{idx + 1}</span>}
+                                    </div>
+                                    <div className="flex-1 py-1">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <h3 className={`font-bold text-lg ${mod.status === 'active' ? 'text-primary' : 'text-textMain'}`}>{mod.title}</h3>
+                                            {mod.status !== 'locked' && (
+                                                <span className={`text-xs font-bold px-2 py-1 rounded-full ${mod.status === 'completed' ? 'bg-secondary/10 text-secondary' : 'bg-primary/10 text-primary'}`}>
+                                                    {mod.score}%
+                                                </span>
+                                            )}
+                                        </div>
+                                        {mod.status === 'active' && <p className="text-textMuted text-sm">{mod.desc}</p>}
+                                    </div>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const ModuleDetail = ({ navigate, module }) => {
+            if (!module) return null;
+
+            const actions = [
+                { id: 'flashcards', title: 'Flashcards', desc: 'Learn the concept visually', icon: Icons.BookOpen, color: 'text-blue-500', bg: 'bg-blue-50' },
+                { id: 'quiz', title: 'Adaptive Quiz', desc: 'Test your understanding', icon: Icons.Target, color: 'text-purple-500', bg: 'bg-purple-50' },
+                { id: 'practice', title: 'Practice Exercise', desc: 'Apply what you learned', icon: Icons.Briefcase, color: 'text-secondary', bg: 'bg-emerald-50' },
+                { id: 'weakness', title: 'Weakness Builder', desc: 'Strengthen weak areas', icon: Icons.ShieldAlert, color: 'text-red-500', bg: 'bg-red-50' },
+            ];
+
+            const handleAction = (actionId) => {
+                if (actionId === 'flashcards') navigate('flashcards');
+                else if (actionId === 'weakness') navigate('weakness');
+            };
+
+            return (
+                <div className="min-h-full bg-surface fade-in">
+                    <div className="pt-4 px-4 pb-4 flex items-center justify-between sticky top-[54px] bg-surface/80 backdrop-blur-md z-30">
+                        <button onClick={() => navigate('dashboard')} className="p-2 bg-white rounded-full shadow-sm text-textMain">
+                            <Icons.ChevronLeft />
+                        </button>
+                        <h2 className="font-bold text-lg">{module.title}</h2>
+                        <div className="w-10 h-10 relative">
+                            <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90 drop-shadow-sm">
+                                <path className="text-gray-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
+                                <path className="text-primary" strokeDasharray={`${module.score}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+                            </svg>
+                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[10px] font-bold text-primary">{module.score}%</span>
+                        </div>
+                    </div>
+
+                    <div className="px-6 mt-4">
+                        <p className="text-textMuted mb-8 leading-relaxed">
+                            Returns all rows from the left table and matched rows from the right table. Learn how to combine data efficiently.
+                        </p>
+
+                        <h3 className="font-bold text-lg mb-4 text-textMain">Today's Mission</h3>
+                        <div className="space-y-3">
+                            {actions.map((action, idx) => (
+                                <button 
+                                    key={action.id}
+                                    onClick={() => handleAction(action.id)}
+                                    className={`w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 transition-transform active:scale-95 slide-up ${action.id === 'flashcards' || action.id === 'weakness' ? 'ring-2 ring-primary border-transparent' : ''}`}
+                                    style={{animationDelay: `${idx * 0.1}s`}}
+                                >
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${action.bg} ${action.color}`}>
+                                        <action.icon />
+                                    </div>
+                                    <div className="flex-1 text-left">
+                                        <h4 className="font-bold text-textMain">{action.title}</h4>
+                                        <p className="text-textMuted text-xs mt-0.5">{action.desc}</p>
+                                    </div>
+                                    <Icons.ChevronRight className="text-gray-300" />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FlashcardPlayer = ({ navigate }) => {
+            const [cardIdx, setCardIdx] = useState(0);
+            const [isFlipped, setIsFlipped] = useState(false);
+
+            const cards = [
+                {
+                    title: 'What is a LEFT JOIN?',
+                    content: 'Returns all rows from the left table (A) and matched rows from the right table (B).',
+                    extra: 'Unmatched rows from B will result in NULL values in the output.',
+                    type: 'concept'
+                },
+                {
+                    title: 'Syntax Example',
+                    content: 'SELECT * FROM TableA LEFT JOIN TableB ON TableA.id = TableB.id;',
+                    extra: 'Notice the ON clause. This specifies the condition to match rows.',
+                    type: 'code'
+                }
+            ];
+
+            const handleNext = () => {
+                if (cardIdx < cards.length - 1) {
+                    setIsFlipped(false);
+                    setTimeout(() => setCardIdx(cardIdx + 1), 150);
+                } else {
+                    navigate('module_detail'); // Finish
+                }
+            };
+
+            return (
+                <div className="h-full bg-gray-900 flex flex-col p-6 text-white fade-in pt-[54px]">
+                    <div className="flex justify-between items-center mb-8">
+                        <button onClick={() => navigate('module_detail')} className="p-2 text-gray-400 hover:text-white">
+                            <Icons.ChevronLeft />
+                        </button>
+                        <span className="font-medium text-gray-400">Card {cardIdx + 1} of {cards.length}</span>
+                        <div className="w-8"></div>
+                    </div>
+
+                    <div className="flex-1 relative perspective-1000" onClick={() => setIsFlipped(!isFlipped)}>
+                        <div className={`w-full h-[60vh] bg-white rounded-3xl shadow-2xl p-8 flex flex-col justify-center items-center text-center transition-all duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+                             style={{transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0)'}}>
+                            
+                            <div className="absolute inset-0 backface-hidden p-8 flex flex-col justify-center items-center" style={{backfaceVisibility: 'hidden'}}>
+                                <span className="absolute top-6 left-6 text-xs font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wide">
+                                    {cards[cardIdx].type}
+                                </span>
+                                <h2 className="text-3xl font-bold text-gray-800 mb-6">{cards[cardIdx].title}</h2>
+                                {cards[cardIdx].type === 'concept' && (
+                                    <div className="w-48 h-32 mb-6 flex items-center justify-center relative">
+                                        <div className="w-24 h-24 rounded-full border-4 border-primary bg-primary/20 absolute left-4 flex items-center justify-center text-primary font-bold z-10">A</div>
+                                        <div className="w-24 h-24 rounded-full border-4 border-gray-300 absolute right-4 flex items-center justify-center text-gray-400">B</div>
+                                    </div>
+                                )}
+                                <p className="text-gray-500 font-medium">Tap to reveal explanation</p>
+                            </div>
+
+                            <div className="absolute inset-0 backface-hidden p-8 flex flex-col justify-center items-center" style={{backfaceVisibility: 'hidden', transform: 'rotateY(180deg)'}}>
+                                <div className={`text-xl font-medium text-gray-800 mb-6 ${cards[cardIdx].type === 'code' ? 'font-mono bg-gray-100 p-4 rounded-xl text-left w-full' : ''}`}>
+                                    {cards[cardIdx].content}
+                                </div>
+                                <p className="text-gray-500 text-sm leading-relaxed border-t pt-6 w-full">{cards[cardIdx].extra}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={`grid grid-cols-2 gap-4 mt-8 pb-8 transition-opacity duration-300 ${isFlipped ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                        <button onClick={handleNext} className="bg-gray-800 text-white py-4 rounded-2xl font-bold border border-gray-700 active:bg-gray-700">Need Review</button>
+                        <button onClick={handleNext} className="bg-secondary text-white py-4 rounded-2xl font-bold shadow-floating active:scale-95 transition-transform">Got It</button>
+                    </div>
+                </div>
+            );
+        };
+
+        const AiMentorChat = () => {
+            const [msgs, setMsgs] = useState([
+                { sender: 'ai', text: "Hi! I'm your JoraIQ mentor. I see you are learning SQL Joins. How can I help you today?" }
+            ]);
+            const [input, setInput] = useState('');
+            const chatEndRef = useRef(null);
+
+            const handleSend = () => {
+                if(!input.trim()) return;
+                const userText = input;
+                setMsgs(prev => [...prev, { sender: 'user', text: userText }]);
+                setInput('');
+                
+                setTimeout(() => {
+                    setMsgs(prev => [...prev, { sender: 'ai', text: "That's a great question about Joins! Imagine you have a list of Customers (Left table) and their Orders (Right table). A LEFT JOIN ensures you see EVERY customer, even if they haven't placed any orders yet. Does that make sense?" }]);
+                }, 1000);
+            };
+
+            useEffect(() => {
+                chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, [msgs]);
+
+            return (
+                <div className="h-full flex flex-col bg-surface fade-in">
+                    <div className="pt-4 px-6 pb-4 bg-white shadow-sm flex items-center gap-4 sticky top-[54px] z-10">
+                        <div className="w-10 h-10 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                            <Icons.Bot />
+                        </div>
+                        <div>
+                            <h2 className="font-bold text-textMain">AI Mentor</h2>
+                            <div className="flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                                <span className="text-xs text-textMuted font-medium">Online & ready to help</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                        {msgs.map((m, i) => (
+                            <div key={i} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'} slide-up`} style={{animationDelay: '0.1s'}}>
+                                <div className={`max-w-[80%] p-4 rounded-2xl ${m.sender === 'user' ? 'bg-primary text-white rounded-br-sm' : 'bg-white text-textMain border border-gray-100 shadow-sm rounded-bl-sm'}`}>
+                                    <p className="leading-relaxed text-sm">{m.text}</p>
+                                </div>
+                            </div>
+                        ))}
+                        <div ref={chatEndRef} />
+                    </div>
+
+                    <div className="p-4 bg-white border-t border-gray-100">
+                        <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-full border border-gray-200">
+                            <input 
+                                type="text" 
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                onKeyPress={e => e.key === 'Enter' && handleSend()}
+                                placeholder="Ask anything about SQL..."
+                                className="flex-1 bg-transparent border-none outline-none px-4 text-sm"
+                            />
+                            <button onClick={handleSend} className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-md active:scale-95 transition-transform shrink-0">
+                                <Icons.Send />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // New: Assessment Screen
+        const AssessmentScreen = ({ navigate, userData, updateData }) => {
+            const [currentQ, setCurrentQ] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [score, setScore] = useState(0);
+            const [finished, setFinished] = useState(false);
+
+            const questions = [
+                {
+                    q: "What does LEFT JOIN return?",
+                    options: [
+                        "All rows from left table and matched rows from right table",
+                        "Only matched rows from both tables",
+                        "All rows from both tables",
+                        "All rows from right table only"
+                    ],
+                    correct: 0
+                },
+                {
+                    q: "What is the syntax for joining two tables?",
+                    options: [
+                        "SELECT * FROM A ON B",
+                        "SELECT * FROM A LEFT JOIN B ON A.id = B.id",
+                        "SELECT * FROM A INNER B",
+                        "SELECT * A JOIN B"
+                    ],
+                    correct: 1
+                },
+                {
+                    q: "Which JOIN type is used most frequently?",
+                    options: [
+                        "FULL OUTER JOIN",
+                        "RIGHT JOIN",
+                        "INNER JOIN",
+                        "CROSS JOIN"
+                    ],
+                    correct: 2
+                },
+                {
+                    q: "What happens to unmatched rows in LEFT JOIN?",
+                    options: [
+                        "They are discarded",
+                        "They appear with NULL values",
+                        "They are duplicated",
+                        "They are merged"
+                    ],
+                    correct: 1
+                },
+                {
+                    q: "Can you join more than 2 tables?",
+                    options: [
+                        "No, maximum is 2",
+                        "Yes, multiple JOINs can be used",
+                        "Only with CROSS JOIN",
+                        "Only in advanced databases"
+                    ],
+                    correct: 1
+                }
+            ];
+
+            const handleAnswer = (idx) => {
+                setSelectedAnswer(idx);
+                setTimeout(() => {
+                    if (idx === questions[currentQ].correct) {
+                        setScore(score + 1);
+                    }
+                    if (currentQ < questions.length - 1) {
+                        setCurrentQ(currentQ + 1);
+                        setSelectedAnswer(null);
+                    } else {
+                        setFinished(true);
+                    }
+                }, 800);
+            };
+
+            if (finished) {
+                const percentage = Math.round((score / questions.length) * 100);
+                const isPassed = percentage >= 60;
+                return (
+                    <div className="min-h-full bg-surface p-6 fade-in flex flex-col justify-center items-center">
+                        <div className="w-24 h-24 mb-6 relative">
+                            <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                                <path className="text-gray-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
+                                <path className={isPassed ? "text-secondary" : "text-accent"} strokeDasharray={`${percentage}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+                            </svg>
+                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-2xl text-textMain">{percentage}%</span>
+                        </div>
+                        <h2 className="text-2xl font-bold text-textMain mb-2 text-center">Assessment Complete!</h2>
+                        <p className={`text-center mb-8 font-semibold ${isPassed ? 'text-secondary' : 'text-accent'}`}>
+                            {isPassed ? '🎉 Great job! You passed the assessment.' : '📚 Keep practicing to improve!'}
+                        </p>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm mb-8 w-full">
+                            <div className="mb-4">
+                                <p className="text-textMuted text-sm mb-1">Your Level: <span className="font-bold text-textMain">{isPassed ? 'Intermediate' : 'Early Intermediate'}</span></p>
+                                <p className="text-textMuted text-sm">Questions Correct: <span className="font-bold text-textMain">{score}/{questions.length}</span></p>
+                            </div>
+                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div className={`h-full rounded-full transition-all duration-700 ${isPassed ? 'bg-secondary' : 'bg-accent'}`} style={{width: `${percentage}%`}}></div>
+                            </div>
+                        </div>
+                        <button onClick={() => navigate('dashboard')} className="w-full bg-primary text-white py-4 rounded-2xl font-bold shadow-floating active:scale-95">
+                            Continue to Dashboard
+                        </button>
+                    </div>
+                );
+            }
+
+            const q = questions[currentQ];
+            const isAnswered = selectedAnswer !== null;
+
+            return (
+                <div className="min-h-full bg-white p-6 fade-in flex flex-col">
+                    <div className="flex items-center pt-4 mb-8">
+                        <button onClick={() => navigate('onboarding')} className="p-2 -ml-2 text-textMuted">
+                            <Icons.ChevronLeft />
+                        </button>
+                        <div className="flex-1 flex justify-center gap-2">
+                            {questions.map((_, i) => (
+                                <div key={i} className={`h-1.5 rounded-full ${i < currentQ ? 'w-8 bg-secondary' : i === currentQ ? 'w-8 bg-primary' : 'w-4 bg-gray-200'} transition-all duration-300`} />
+                            ))}
+                        </div>
+                        <div className="text-xs font-bold text-textMuted">{currentQ + 1}/{questions.length}</div>
+                    </div>
+
+                    <div className="flex-1 flex flex-col justify-center slide-up">
+                        <h2 className="text-2xl font-bold text-textMain mb-8">{q.q}</h2>
+                        <div className="space-y-3">
+                            {q.options.map((opt, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => handleAnswer(idx)}
+                                    disabled={isAnswered}
+                                    className={`w-full p-4 rounded-2xl border-2 text-left font-medium transition-all ${
+                                        selectedAnswer === idx
+                                            ? idx === q.correct
+                                                ? 'border-secondary bg-secondary/10 text-secondary'
+                                                : 'border-accent bg-accent/10 text-accent'
+                                            : isAnswered && idx === q.correct
+                                            ? 'border-secondary bg-secondary/10 text-secondary'
+                                            : 'border-gray-100 text-textMain hover:border-gray-200'
+                                    }`}
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span>{opt}</span>
+                                        {selectedAnswer === idx && (
+                                            <span className="text-lg">{idx === q.correct ? '✓' : '✗'}</span>
+                                        )}
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // New: Profile/Analytics Screen
+        const ProfileScreen = () => (
+            <div className="min-h-full bg-surface fade-in pb-8">
+                <div className="bg-primary rounded-b-[40px] px-6 pt-6 pb-8 text-white relative overflow-hidden">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <p className="text-primaryLight font-medium">Welcome</p>
+                            <h1 className="text-3xl font-bold">Indra Kumar</h1>
+                        </div>
+                        <div className="w-16 h-16 bg-white/20 border-2 border-white rounded-full flex items-center justify-center">
+                            <Icons.User size={32} />
+                        </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-3">
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+                            <p className="text-2xl font-bold">1,250</p>
+                            <p className="text-xs text-primaryLight mt-1">Total XP</p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+                            <p className="text-2xl font-bold">8</p>
+                            <p className="text-xs text-primaryLight mt-1">Day Streak</p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center border border-white/20">
+                            <p className="text-2xl font-bold">38%</p>
+                            <p className="text-xs text-primaryLight mt-1">Progress</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="px-6 mt-6 space-y-4">
+                    <div className="bg-white p-5 rounded-2xl shadow-sm">
+                        <h3 className="font-bold text-textMain mb-3">Recent Achievements</h3>
+                        <div className="flex gap-3">
+                            <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center text-xl">🏆</div>
+                            <div className="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center text-xl">🔥</div>
+                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-xl">⭐</div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-2xl shadow-sm">
+                        <h3 className="font-bold text-textMain mb-4">Settings</h3>
+                        <div className="space-y-3">
+                            <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                                <span className="text-textMain font-medium">Daily Reminders</span>
+                                <span className="text-accent">ON</span>
+                            </button>
+                            <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                                <span className="text-textMain font-medium">Notifications</span>
+                                <span className="text-secondary">ON</span>
+                            </button>
+                            <button className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                                <span className="text-textMain font-medium">Theme</span>
+                                <span className="text-primary">Light</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        // New: Weakness Builder Screen
+        const WeaknessBuilderScreen = ({ navigate }) => (
+            <div className="min-h-full bg-surface fade-in">
+                <div className="pt-4 px-4 pb-4 flex items-center justify-between sticky top-[54px] bg-surface/80 backdrop-blur-md z-30">
+                    <button onClick={() => navigate('module_detail')} className="p-2 bg-white rounded-full shadow-sm text-textMain">
+                        <Icons.ChevronLeft />
+                    </button>
+                    <h2 className="font-bold text-lg">Weakness Builder</h2>
+                    <div className="w-10"></div>
+                </div>
+
+                <div className="px-6 space-y-4 mt-4">
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-accent">
+                        <h3 className="font-bold text-textMain mb-2">Your Weak Areas</h3>
+                        <p className="text-textMuted text-sm mb-4">Based on your recent quiz performance, focus on these topics:</p>
+                        <div className="space-y-2">
+                            <div className="flex items-center justify-between p-3 bg-accent/10 rounded-xl">
+                                <span className="text-textMain font-medium">Complex Joins (65% accuracy)</span>
+                                <span className="text-accent font-bold">🔴</span>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-accent/10 rounded-xl">
+                                <span className="text-textMain font-medium">Window Functions (58% accuracy)</span>
+                                <span className="text-accent font-bold">🔴</span>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-yellow-100 rounded-xl">
+                                <span className="text-textMain font-medium">Subqueries (72% accuracy)</span>
+                                <span className="text-yellow-600 font-bold">🟡</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-2xl shadow-sm">
+                        <h3 className="font-bold text-textMain mb-4">Recommended Practice</h3>
+                        <button className="w-full bg-primary text-white py-4 rounded-2xl font-bold mb-3 shadow-floating active:scale-95">
+                            📝 Practice Complex Joins
+                        </button>
+                        <button className="w-full bg-secondary text-white py-4 rounded-2xl font-bold shadow-floating active:scale-95">
+                            🎯 Retake Quiz on Weak Topics
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const BottomNav = ({ activeTab, setActiveTab }) => {
+            const tabs = [
+                { id: 'home', icon: Icons.Home, label: 'Home' },
+                { id: 'roadmap', icon: Icons.Map, label: 'Roadmap' },
+                { id: 'mentor', icon: Icons.Bot, label: 'Mentor' },
+                { id: 'profile', icon: Icons.User, label: 'Profile' }
+            ];
+
+            return (
+                <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-6 pt-4 pb-[38px] flex justify-between items-center rounded-b-[36px] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] z-50">
+                    {tabs.map(tab => {
+                        const isActive = activeTab === tab.id;
+                        return (
+                            <button 
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex flex-col items-center gap-1.5 transition-colors ${isActive ? 'text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+                            >
+                                <div className={`relative ${isActive ? 'transform -translate-y-1 transition-transform' : ''}`}>
+                                    <tab.icon size={24} />
+                                    {isActive && <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-primary"></div>}
+                                </div>
+                                <span className={`text-[10px] font-semibold ${isActive ? 'opacity-100' : 'opacity-0'} transition-opacity`}>{tab.label}</span>
+                            </button>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

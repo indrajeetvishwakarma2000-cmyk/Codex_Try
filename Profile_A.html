@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JORA AI - Profile</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6D3EF7',
+                        'primary-light': '#8B64F9',
+                        'primary-dark': '#5529DE',
+                        background: '#F7F8FC',
+                        surface: '#FFFFFF',
+                        'surface-dark': '#1E1E24',
+                        text: {
+                            main: '#1A1D23',
+                            muted: '#6B7280'
+                        }
+                    },
+                    borderRadius: {
+                        'xl': '16px',
+                        '2xl': '24px',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'float': '0 10px 30px -5px rgba(109, 62, 247, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base & Reset */
+        body {
+            background-color: #F7F8FC;
+            color: #1A1D23;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Dark Mode overrides */
+        body.dark {
+            background-color: #121212;
+            color: #F3F4F6;
+        }
+        .dark .bg-surface { background-color: #1E1E24; }
+        .dark .text-text-main { color: #F3F4F6; }
+        .dark .text-text-muted { color: #9CA3AF; }
+        .dark .border-gray-100 { border-color: #2D2D35; }
+        .dark .bg-gray-50 { background-color: #25252D; }
+
+        /* Mobile App Container Simulation for Desktop view */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: inherit;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.05);
+        }
+        
+        .dark .app-container {
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+
+        /* View Routing Animations */
+        .page-view {
+            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Space for bottom nav */
+            background-color: inherit;
+            z-index: 10;
+        }
+
+        .page-view.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 20;
+        }
+
+        /* Utilities */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #6D3EF7;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #6D3EF7;
+        }
+        
+        /* Interactive element feedback */
+        .clickable:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+    </style>
+</head>
+<body class="antialiased transition-colors duration-300">
+
+<div class="app-container">
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-11/12 max-w-sm pointer-events-none"></div>
+
+    <!-- ========================================== -->
+    <!-- VIEW: MAIN PROFILE -->
+    <!-- ========================================== -->
+    <div id="view-profile" class="page-view active">
+        <!-- Header Profile Info -->
+        <div class="px-6 pt-12 pb-6 flex flex-col items-center">
+            <div class="relative group cursor-pointer" onclick="app.navigate('edit-profile')">
+                <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-primary to-blue-400 p-1 shadow-float">
+                    <img id="main-avatar" src="https://i.pravatar.cc/150?u=jora" alt="Profile" class="w-full h-full rounded-full object-cover border-4 border-surface bg-surface">
+                </div>
+                <div class="absolute bottom-0 right-0 w-6 h-6 bg-green-500 border-2 border-surface rounded-full"></div>
+                <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="ph ph-pencil-simple text-white text-xl"></i>
+                </div>
+            </div>
+            <h1 id="main-name" class="mt-4 text-2xl font-bold text-text-main">Alex Johnson</h1>
+            <p id="main-email" class="text-text-muted text-sm">alex.j@example.com</p>
+            <div class="mt-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-semibold">Pro Member</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="px-6 mb-8">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-surface rounded-2xl p-4 shadow-soft flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500">
+                        <i class="ph-fill ph-fire text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-text-muted">Streak</p>
+                        <p class="text-lg font-bold text-text-main">14 Days</p>
+                    </div>
+                </div>
+                <div class="bg-surface rounded-2xl p-4 shadow-soft flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                        <i class="ph-fill ph-lightning text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-text-muted">Total XP</p>
+                        <p class="text-lg font-bold text-text-main">2,450</p>
+                    </div>
+                </div>
+                <div class="bg-surface rounded-2xl p-4 shadow-soft flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-500">
+                        <i class="ph-fill ph-crown text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-text-muted">Rank</p>
+                        <p class="text-lg font-bold text-text-main">Diamond</p>
+                    </div>
+                </div>
+                <div class="bg-surface rounded-2xl p-4 shadow-soft flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-text-muted">Level</p>
+                        <p class="text-lg font-bold text-text-main">Lv 12</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings List -->
+        <div class="px-6 mb-8">
+            <h3 class="text-sm font-semibold text-text-muted mb-3 uppercase tracking-wider">Settings</h3>
+            <div class="bg-surface rounded-2xl shadow-soft overflow-hidden">
+                
+                <div class="menu-item flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 clickable" onclick="app.navigate('account')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+                            <i class="ph ph-user text-lg"></i>
+                        </div>
+                        <span class="font-medium text-text-main">Your Account</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-400"></i>
+                </div>
+
+                <div class="menu-item flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 clickable" onclick="app.navigate('subscription')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="ph ph-credit-card text-lg"></i>
+                        </div>
+                        <span class="font-medium text-text-main">My Subscription</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-400"></i>
+                </div>
+
+                <div class="menu-item flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 clickable" onclick="app.navigate('notifications')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 relative">
+                            <i class="ph ph-bell text-lg"></i>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </div>
+                        <span class="font-medium text-text-main">Notifications</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-400"></i>
+                </div>
+
+                <div class="menu-item flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 clickable" onclick="app.navigate('help')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+                            <i class="ph ph-question text-lg"></i>
+                        </div>
+                        <span class="font-medium text-text-main">Help & FAQs</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-400"></i>
+                </div>
+
+                <div class="menu-item flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 clickable" onclick="app.navigate('feedback')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+                            <i class="ph ph-chat-teardrop-text text-lg"></i>
+                        </div>
+                        <span class="font-medium text-text-main">Share Feedback</span>
+                    </div>
+                    <i class="ph ph-caret-right text-gray-400"></i>
+                </div>
+
+                <div class="menu-item flex items-center justify-between p-4 cursor-pointer hover:bg-red-50 clickable" onclick="app.showModal('modal-logout')">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                            <i class="ph ph-sign-out text-lg"></i>
+                        </div>
+                        <span class="font-medium text-red-500">Logout</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Bottom padding for nav -->
+        <div class="h-20"></div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW: EDIT PROFILE -->
+    <!-- ========================================== -->
+    <div id="view-edit-profile" class="page-view bg-surface">
+        <div class="sticky top-0 z-10 bg-surface/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-100 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Edit Profile</h2>
+            <div class="w-10"></div> <!-- Spacer for centering -->
+        </div>
+
+        <div class="p-6">
+            <div class="flex flex-col items-center mb-8">
+                <div class="relative w-28 h-28 mb-4">
+                    <img id="edit-avatar-preview" src="https://i.pravatar.cc/150?u=jora" class="w-full h-full rounded-full object-cover border-2 border-gray-200">
+                    <button class="absolute bottom-0 right-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center shadow-md clickable" onclick="app.showToast('File picker opened (Simulated)', 'info')">
+                        <i class="ph ph-camera text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <form onsubmit="app.handleFormSubmit(event, 'profile')" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Full Name</label>
+                    <input type="text" id="input-name" value="Alex Johnson" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none transition-colors" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Username</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-3 text-text-muted">@</span>
+                        <input type="text" value="alexj_ai" class="w-full pl-9 pr-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none transition-colors" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Email Address</label>
+                    <input type="email" id="input-email" value="alex.j@example.com" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none transition-colors" required>
+                </div>
+                
+                <div class="pt-6">
+                    <button type="submit" class="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-semibold shadow-float clickable transition-colors">
+                        Save Changes
+                    </button>
+                    <button type="button" onclick="app.navigate('profile')" class="w-full py-4 mt-3 text-text-muted hover:text-text-main font-medium rounded-xl clickable">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW: YOUR ACCOUNT -->
+    <!-- ========================================== -->
+    <div id="view-account" class="page-view bg-surface">
+        <div class="sticky top-0 z-10 bg-surface/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-100 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Your Account</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="p-6">
+            <h3 class="text-lg font-bold mb-4">Personal Information</h3>
+            <form onsubmit="app.handleFormSubmit(event, 'profile')" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Phone Number</label>
+                    <input type="tel" value="+1 (555) 019-2837" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-text-muted mb-1">Country</label>
+                        <select class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none appearance-none">
+                            <option>United States</option>
+                            <option>Canada</option>
+                            <option>United Kingdom</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-text-muted mb-1">City</label>
+                        <input type="text" value="San Francisco" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Occupation</label>
+                    <input type="text" value="Product Designer" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none">
+                </div>
+                
+                <div class="mt-8 p-4 bg-red-50 border border-red-100 rounded-xl">
+                    <h4 class="text-red-600 font-semibold mb-1">Danger Zone</h4>
+                    <p class="text-sm text-red-500 mb-3">Permanently delete your account and all data.</p>
+                    <button type="button" onclick="app.showToast('Account deletion initiated.', 'error')" class="px-4 py-2 bg-white text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50 clickable">
+                        Delete Account
+                    </button>
+                </div>
+
+                <div class="pt-6 sticky bottom-6 bg-surface">
+                    <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-semibold shadow-float clickable">
+                        Save Information
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW: SUBSCRIPTION -->
+    <!-- ========================================== -->
+    <div id="view-subscription" class="page-view">
+        <div class="sticky top-0 z-10 bg-background/80 backdrop-blur-md px-4 py-4 flex items-center justify-between">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-200 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Subscription</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="p-6">
+            <!-- Current Plan Card -->
+            <div class="bg-gradient-to-br from-[#1A1D23] to-[#2D313A] rounded-2xl p-6 text-white shadow-xl relative overflow-hidden mb-6">
+                <!-- Decorative element -->
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/30 rounded-full blur-2xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">PRO PLAN</span>
+                        <i class="ph-fill ph-crown text-2xl text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-1">$12.99<span class="text-sm font-normal text-gray-300">/month</span></h3>
+                    <p class="text-sm text-gray-300 mb-6">Renews on Aug 15, 2026</p>
+                    
+                    <button onclick="app.showToast('Already on Pro Plan', 'info')" class="w-full py-3 bg-white text-gray-900 rounded-xl font-semibold clickable hover:bg-gray-100 transition-colors">
+                        Manage Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <h3 class="text-lg font-bold mb-3 px-2">Pro Benefits</h3>
+            <div class="bg-surface rounded-2xl p-4 shadow-soft mb-6 space-y-3">
+                <div class="flex items-center gap-3">
+                    <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+                    <span class="text-sm">Unlimited AI generations</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+                    <span class="text-sm">Priority customer support</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+                    <span class="text-sm">Exclusive learning paths</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="ph-fill ph-check-circle text-primary text-xl"></i>
+                    <span class="text-sm">Ad-free experience</span>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <h3 class="text-lg font-bold mb-3 px-2">Payment Method</h3>
+            <div class="bg-surface rounded-2xl p-4 shadow-soft flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-8 bg-gray-100 rounded flex items-center justify-center">
+                        <i class="ph-fill ph-credit-card text-gray-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold">•••• 4242</p>
+                        <p class="text-xs text-text-muted">Expires 12/28</p>
+                    </div>
+                </div>
+                <button class="text-primary text-sm font-medium hover:underline p-2">Edit</button>
+            </div>
+
+            <button onclick="app.showToast('Cancel request initiated', 'info')" class="w-full py-4 text-red-500 font-medium rounded-xl clickable border border-transparent hover:border-red-100 hover:bg-red-50 transition-colors">
+                Cancel Membership
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW: NOTIFICATIONS -->
+    <!-- ========================================== -->
+    <div id="view-notifications" class="page-view bg-surface">
+        <div class="sticky top-0 z-10 bg-surface/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-100 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Notifications</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <!-- App Theme -->
+            <div>
+                <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">App Preferences</h3>
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                    <div>
+                        <p class="font-medium text-text-main">Dark Mode</p>
+                        <p class="text-xs text-text-muted">Adjust app appearance</p>
+                    </div>
+                    <!-- Toggle Switch -->
+                    <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" id="toggle-dark" name="toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300" onchange="app.toggleTheme(this)"/>
+                        <label for="toggle-dark" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Push Settings -->
+            <div>
+                <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">Push Notifications</h3>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                    <div>
+                        <p class="font-medium text-text-main">Daily Reminders</p>
+                        <p class="text-xs text-text-muted">Keep up your streak</p>
+                    </div>
+                    <div class="relative inline-block w-12 mr-2 align-middle">
+                        <input type="checkbox" id="toggle-1" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300"/>
+                        <label for="toggle-1" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                    <div>
+                        <p class="font-medium text-text-main">Leaderboard Alerts</p>
+                        <p class="text-xs text-text-muted">When you change ranks</p>
+                    </div>
+                    <div class="relative inline-block w-12 mr-2 align-middle">
+                        <input type="checkbox" id="toggle-2" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300"/>
+                        <label for="toggle-2" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between py-3">
+                    <div>
+                        <p class="font-medium text-text-main">New Features</p>
+                        <p class="text-xs text-text-muted">Updates from JORA AI</p>
+                    </div>
+                    <div class="relative inline-block w-12 mr-2 align-middle">
+                        <input type="checkbox" id="toggle-3" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300"/>
+                        <label for="toggle-3" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Email Settings -->
+             <div>
+                <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">Email Notifications</h3>
+                
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                    <div>
+                        <p class="font-medium text-text-main">Weekly Summary</p>
+                    </div>
+                    <div class="relative inline-block w-12 mr-2 align-middle">
+                        <input type="checkbox" id="toggle-4" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300"/>
+                        <label for="toggle-4" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+                 <div class="flex items-center justify-between py-3">
+                    <div>
+                        <p class="font-medium text-text-main">Marketing & Offers</p>
+                    </div>
+                    <div class="relative inline-block w-12 mr-2 align-middle">
+                        <input type="checkbox" id="toggle-5" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-all duration-300"/>
+                        <label for="toggle-5" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW: HELP & FAQS -->
+    <!-- ========================================== -->
+    <div id="view-help" class="page-view bg-surface">
+        <div class="sticky top-0 z-10 bg-surface/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-100 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Help & FAQs</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="p-6">
+            <!-- Search -->
+            <div class="relative mb-6">
+                <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-lg"></i>
+                <input type="text" placeholder="Search for answers..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-background focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all">
+            </div>
+
+            <!-- FAQ Accordion -->
+            <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">Popular Questions</h3>
+            
+            <div class="space-y-3">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-100 rounded-xl overflow-hidden">
+                    <button class="w-full px-4 py-4 flex justify-between items-center bg-white hover:bg-gray-50 focus:outline-none" onclick="app.toggleFaq(this)">
+                        <span class="font-medium text-left">How do I change my subscription?</span>
+                        <i class="ph ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-4 py-0 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 faq-content">
+                        <p class="text-sm text-text-muted pb-4">You can manage your subscription by going to Profile > My Subscription > Manage Plan. From there, you can upgrade, downgrade, or cancel.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-100 rounded-xl overflow-hidden">
+                    <button class="w-full px-4 py-4 flex justify-between items-center bg-white hover:bg-gray-50 focus:outline-none" onclick="app.toggleFaq(this)">
+                        <span class="font-medium text-left">How is my XP calculated?</span>
+                        <i class="ph ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-4 py-0 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 faq-content">
+                        <p class="text-sm text-text-muted pb-4">XP is earned by completing lessons, maintaining daily streaks, and participating in challenges. Bonus XP is awarded for perfect scores.</p>
+                    </div>
+                </div>
+
+                 <!-- FAQ Item 3 -->
+                 <div class="border border-gray-100 rounded-xl overflow-hidden">
+                    <button class="w-full px-4 py-4 flex justify-between items-center bg-white hover:bg-gray-50 focus:outline-none" onclick="app.toggleFaq(this)">
+                        <span class="font-medium text-left">I forgot my password</span>
+                        <i class="ph ph-caret-down text-gray-400 transition-transform duration-300"></i>
+                    </button>
+                    <div class="px-4 py-0 max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 faq-content">
+                        <p class="text-sm text-text-muted pb-4">Log out completely, then click 'Forgot Password' on the login screen. We will send a reset link to your registered email address.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="mt-8">
+                <h3 class="text-sm font-semibold text-text-muted uppercase tracking-wider mb-4">Still need help?</h3>
+                <div class="flex gap-4">
+                    <button onclick="app.showToast('Opening live chat...', 'info')" class="flex-1 py-3 bg-primary/10 text-primary rounded-xl font-semibold flex items-center justify-center gap-2 clickable hover:bg-primary/20">
+                        <i class="ph ph-chat-circle-dots text-xl"></i>
+                        Live Chat
+                    </button>
+                    <button onclick="app.showToast('Ticket system opened', 'info')" class="flex-1 py-3 bg-white border border-gray-200 text-text-main rounded-xl font-semibold flex items-center justify-center gap-2 clickable hover:bg-gray-50">
+                        <i class="ph ph-envelope-simple text-xl"></i>
+                        Email Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- VIEW: SHARE FEEDBACK -->
+    <!-- ========================================== -->
+    <div id="view-feedback" class="page-view bg-surface">
+        <div class="sticky top-0 z-10 bg-surface/80 backdrop-blur-md px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <button onclick="app.navigate('profile')" class="p-2 rounded-full hover:bg-gray-100 clickable">
+                <i class="ph ph-arrow-left text-xl"></i>
+            </button>
+            <h2 class="text-lg font-semibold">Share Feedback</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="p-6">
+            <div class="text-center mb-8">
+                <h3 class="text-xl font-bold mb-2">How are we doing?</h3>
+                <p class="text-sm text-text-muted">Your feedback helps us improve JORA AI.</p>
+            </div>
+
+            <form onsubmit="app.handleFormSubmit(event, 'profile', 'Thank you for your feedback!')" class="space-y-6">
+                
+                <!-- Rating -->
+                <div class="flex justify-center gap-2" id="star-rating">
+                    <i class="ph-fill ph-star text-4xl text-gray-200 cursor-pointer hover:text-yellow-400 transition-colors" data-value="1" onclick="app.setRating(1)"></i>
+                    <i class="ph-fill ph-star text-4xl text-gray-200 cursor-pointer hover:text-yellow-400 transition-colors" data-value="2" onclick="app.setRating(2)"></i>
+                    <i class="ph-fill ph-star text-4xl text-gray-200 cursor-pointer hover:text-yellow-400 transition-colors" data-value="3" onclick="app.setRating(3)"></i>
+                    <i class="ph-fill ph-star text-4xl text-gray-200 cursor-pointer hover:text-yellow-400 transition-colors" data-value="4" onclick="app.setRating(4)"></i>
+                    <i class="ph-fill ph-star text-4xl text-gray-200 cursor-pointer hover:text-yellow-400 transition-colors" data-value="5" onclick="app.setRating(5)"></i>
+                </div>
+                <input type="hidden" id="feedback-rating" required>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-2">Topic</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="border border-gray-200 rounded-xl p-3 text-center cursor-pointer hover:bg-primary/5 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary font-medium text-sm">
+                            <input type="radio" name="topic" value="bug" class="hidden"> Bug Report
+                        </label>
+                        <label class="border border-gray-200 rounded-xl p-3 text-center cursor-pointer hover:bg-primary/5 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary font-medium text-sm">
+                            <input type="radio" name="topic" value="feature" class="hidden"> Feature Request
+                        </label>
+                        <label class="border border-gray-200 rounded-xl p-3 text-center cursor-pointer hover:bg-primary/5 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary font-medium text-sm">
+                            <input type="radio" name="topic" value="content" class="hidden"> Content Issue
+                        </label>
+                        <label class="border border-gray-200 rounded-xl p-3 text-center cursor-pointer hover:bg-primary/5 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:text-primary font-medium text-sm">
+                            <input type="radio" name="topic" value="other" checked class="hidden"> Other
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Textarea -->
+                <div>
+                    <label class="block text-sm font-medium text-text-muted mb-1">Tell us more</label>
+                    <textarea rows="4" placeholder="What's on your mind?" class="w-full px-4 py-3 rounded-xl bg-background border border-transparent focus:border-primary focus:bg-white focus:outline-none resize-none" required></textarea>
+                </div>
+
+                <!-- Screenshot -->
+                <div>
+                    <button type="button" class="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl text-text-muted flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors" onclick="app.showToast('File picker opened', 'info')">
+                        <i class="ph ph-image text-xl"></i>
+                        <span>Upload Screenshot (Optional)</span>
+                    </button>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-4 bg-primary text-white rounded-xl font-semibold shadow-float clickable">
+                        Submit Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- MODALS -->
+    <!-- ========================================== -->
+    
+    <!-- Logout Modal -->
+    <div id="modal-logout" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="app.closeModal('modal-logout')"></div>
+        
+        <!-- Dialog -->
+        <div class="absolute bottom-0 left-0 w-full bg-surface rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 shadow-2xl max-w-[480px] left-1/2 -translate-x-1/2">
+            <div class="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-6"></div>
+            
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ph ph-sign-out text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Log Out</h3>
+                <p class="text-text-muted">Are you sure you want to log out of your account?</p>
+            </div>
+
+            <div class="space-y-3">
+                <button onclick="app.handleLogout()" class="w-full py-4 bg-red-500 text-white rounded-xl font-semibold shadow-md clickable hover:bg-red-600 transition-colors">
+                    Yes, Log Out
+                </button>
+                <button onclick="app.closeModal('modal-logout')" class="w-full py-4 bg-gray-100 text-text-main rounded-xl font-semibold clickable hover:bg-gray-200 transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- BOTTOM NAVIGATION (Visible only on main profile) -->
+    <!-- ========================================== -->
+    <div id="bottom-nav" class="fixed bottom-0 w-full max-w-[480px] bg-surface/90 backdrop-blur-lg border-t border-gray-100 px-6 py-4 flex justify-between items-center z-30 transition-transform duration-300">
+        <a href="#" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+            <i class="ph ph-house text-2xl mb-1"></i>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+            <i class="ph ph-book-open text-2xl mb-1"></i>
+            <span class="text-[10px] font-medium">Learn</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+            <i class="ph ph-trophy text-2xl mb-1"></i>
+            <span class="text-[10px] font-medium">Rank</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-primary transition-colors relative">
+            <i class="ph-fill ph-user text-2xl mb-1"></i>
+            <span class="text-[10px] font-medium">Profile</span>
+            <!-- Active Indicator -->
+            <div class="absolute -top-4 w-12 h-1 bg-primary rounded-b-full"></div>
+        </a>
+    </div>
+
+</div>
+
+<!-- Application Logic -->
+<script>
+    const app = {
+        currentView: 'profile',
+        history: [],
+
+        init() {
+            // Setup initial state
+            this.updateTheme();
+            
+            // Check system preference for dark mode initially
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // Uncomment to auto-enable dark mode based on OS
+                // document.getElementById('toggle-dark').checked = true;
+                // this.toggleTheme(document.getElementById('toggle-dark'));
+            }
+        },
+
+        navigate(viewId) {
+            if (this.currentView === viewId) return;
+
+            const currentEl = document.getElementById(`view-${this.currentView}`);
+            const targetEl = document.getElementById(`view-${viewId}`);
+            const bottomNav = document.getElementById('bottom-nav');
+
+            if (!targetEl) {
+                console.error(`View ${viewId} not found`);
+                return;
+            }
+
+            // Handle Bottom Nav visibility
+            if (viewId === 'profile') {
+                bottomNav.style.transform = 'translateY(0)';
+            } else {
+                bottomNav.style.transform = 'translateY(100%)';
+            }
+
+            // Animation classes based on navigation direction (simple implementation)
+            // A more complex implementation would determine direction based on history array
+            
+            // Outgoing
+            if (currentEl) {
+                currentEl.style.opacity = '0';
+                currentEl.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    currentEl.classList.remove('active');
+                }, 300); // match transition duration
+            }
+
+            // Incoming
+            targetEl.classList.add('active');
+            // Force reflow to ensure transition happens
+            void targetEl.offsetWidth;
+            
+            targetEl.style.opacity = '1';
+            targetEl.style.transform = 'translateX(0)';
+
+            this.history.push(this.currentView);
+            this.currentView = viewId;
+            
+            // Scroll to top
+            targetEl.scrollTop = 0;
+        },
+
+        showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const backdrop = modal.querySelector('.absolute.inset-0');
+            const dialog = modal.querySelector('.absolute.bottom-0');
+
+            modal.classList.remove('hidden');
+            
+            // Force reflow
+            void modal.offsetWidth;
+
+            backdrop.classList.remove('opacity-0');
+            dialog.classList.remove('translate-y-full');
+        },
+
+        closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const backdrop = modal.querySelector('.absolute.inset-0');
+            const dialog = modal.querySelector('.absolute.bottom-0');
+
+            backdrop.classList.add('opacity-0');
+            dialog.classList.add('translate-y-full');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // match transition duration
+        },
+
+        handleFormSubmit(e, returnView, customMessage) {
+            e.preventDefault();
+            
+            // Simple mock saving logic
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-xl"></i>';
+            btn.classList.add('opacity-80', 'pointer-events-none');
+
+            // Simulate network request
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('opacity-80', 'pointer-events-none');
+                
+                // If it was edit profile, update main profile DOM
+                if (e.target.querySelector('#input-name')) {
+                    document.getElementById('main-name').innerText = document.getElementById('input-name').value;
+                    document.getElementById('main-email').innerText = document.getElementById('input-email').value;
+                }
+
+                this.showToast(customMessage || 'Changes saved successfully!', 'success');
+                if(returnView) this.navigate(returnView);
+            }, 800);
+        },
+
+        handleLogout() {
+            this.showToast('Logging out...', 'info');
+            this.closeModal('modal-logout');
+            // Simulate logout redirect
+            setTimeout(() => {
+                document.body.innerHTML = '<div class="flex h-screen items-center justify-center bg-primary text-white text-2xl font-bold flex-col gap-4"><i class="ph ph-leaf text-5xl"></i>JORA AI<p class="text-sm font-normal">Logged Out</p></div>';
+            }, 1000);
+        },
+
+        showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let icon = 'info';
+            let bgClass = 'bg-gray-800 text-white';
+            
+            if (type === 'success') {
+                icon = 'check-circle';
+                bgClass = 'bg-green-600 text-white';
+            } else if (type === 'error') {
+                icon = 'warning-circle';
+                bgClass = 'bg-red-600 text-white';
+            }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg transform transition-all duration-300 translate-y-[-20px] opacity-0 ${bgClass}`;
+            toast.innerHTML = `
+                <i class="ph ph-${icon} text-xl"></i>
+                <span class="text-sm font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+            });
+
+            // Animate out and remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        },
+
+        toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+            
+            // Close others (optional accordion behavior)
+            /*
+            document.querySelectorAll('.faq-content').forEach(el => {
+                if (el !== content) {
+                    el.style.maxHeight = null;
+                    el.classList.remove('opacity-100', 'py-4');
+                    el.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                }
+            });
+            */
+
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('opacity-100', 'py-4');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('opacity-100', 'py-4');
+                content.style.maxHeight = content.scrollHeight + 32 + "px"; // 32 is roughly py-4 padding
+                icon.style.transform = 'rotate(180deg)';
+            }
+        },
+
+        setRating(value) {
+            document.getElementById('feedback-rating').value = value;
+            const stars = document.getElementById('star-rating').children;
+            
+            for (let i = 0; i < stars.length; i++) {
+                if (i < value) {
+                    stars[i].classList.add('text-yellow-400');
+                    stars[i].classList.remove('text-gray-200');
+                } else {
+                    stars[i].classList.remove('text-yellow-400');
+                    stars[i].classList.add('text-gray-200');
+                }
+            }
+        },
+
+        toggleTheme(checkbox) {
+            if (checkbox.checked) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        },
+
+        updateTheme() {
+            // Initial check if we wanted to persist theme, but for now just sync checkbox if needed
+        }
+    };
+
+    // Initialize application
+    document.addEventListener('DOMContentLoaded', () => {
+        app.init();
+    });
+
+</script>
+</body>
+</html>

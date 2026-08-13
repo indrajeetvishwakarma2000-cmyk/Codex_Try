@@ -1,0 +1,12 @@
+<script>
+        const riveInstance = new rive.Rive({
+            src: './jora.riv', 
+            canvas: document.getElementById('rive-canvas'),
+            autoplay: true,
+            // Explicitly calling the state machine found in your file
+            stateMachines: 'State Machine 1', 
+            onLoad: () => {
+                riveInstance.resizeDrawingSurfaceToCanvas();
+            }
+        });
+    </script>

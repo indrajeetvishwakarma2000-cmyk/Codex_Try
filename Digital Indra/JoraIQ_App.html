@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JoraIQ - Smart Learning</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            purple: '#7C3AED',
+                            lightPurple: '#EDE9FE',
+                            darkPurple: '#4C1D95',
+                            green: '#10B981',
+                            lightGreen: '#D1FAE5',
+                            red: '#EF4444',
+                            lightRed: '#FEE2E2',
+                            orange: '#F59E0B',
+                            bg: '#F8FAFC'
+                        }
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'bounce-slight': 'bounceSlight 2.5s infinite',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        bounceSlight: {
+                            '0%, 100%': { transform: 'translateY(-3%)' },
+                            '50%': { transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Exact Mobile Container: 390x844 without black bezels */
+        #app-container {
+            width: 390px;
+            height: 844px;
+            background-color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SVG Path Animation */
+        .path-line {
+            stroke-dasharray: 12;
+            animation: dash 3s linear infinite;
+        }
+        @keyframes dash { to { stroke-dashoffset: -24; } }
+
+        /* View Management */
+        .view-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+            padding-top: 44px; /* iOS Status Bar offset */
+        }
+        .view-screen.active { display: flex; }
+        
+        /* Nav offset */
+        .has-bottom-nav { padding-bottom: 90px; }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- 
+      ====================================================================
+      MASCOT EDIT SECTION
+      ====================================================================
+      Replace the URLs below with your actual mascot PNG/GIF links.
+    -->
+    <script>
+        const MASCOT_CONFIG = {
+            main: "/Showing thumbs up.gif", // Used on splash
+            small: "/Showing thumbs up.gif", // Used in nav/chat
+            trophy: "/Showing thumbs up.gif", // Used on results/dashboard
+            sad: "/Showing thumbs up.gif"    // Used on error
+        };
+    </script>
+    <!-- ==================================================================== -->
+
+    <div id="app-container">
+
+        <!-- iOS Status Bar Overlay -->
+        <div class="absolute top-0 left-0 w-full h-[44px] flex justify-between items-center px-6 z-[100] pointer-events-none">
+            <div class="font-semibold text-[15px] tracking-tight">9:41</div>
+            <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-signal text-[10px]"></i>
+                <i class="fa-solid fa-wifi text-[12px]"></i>
+                <i class="fa-solid fa-battery-full text-[14px]"></i>
+            </div>
+        </div>
+
+        <!-- VIEW 1: SPLASH -->
+        <div id="view-splash" class="view-screen active bg-gradient-to-b from-[#fdfbfb] to-[#ebedee]">
+            <div class="flex-1 flex flex-col items-center justify-center p-6 text-center -mt-10">
+                <img src="/Showing thumbs up.gif" class="mascot-main w-64 h-64 object-contain mb-8 animate-bounce-slight drop-shadow-xl" alt="Jora Mascot">
+                
+                <h1 class="text-5xl font-extrabold text-gray-900 mb-2 tracking-tight">Jora<span class="text-brand-purple">IQ</span></h1>
+                <p class="text-lg text-gray-600 mb-12 leading-tight">Your smart companion<br><span class="text-brand-purple font-medium">for learning, everywhere.</span></p>
+                
+                <div class="w-full space-y-4 mt-8">
+                    <button onclick="nav('view-onboarding')" class="w-full bg-brand-purple text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-purple-500/30 flex items-center justify-between px-6 hover:bg-brand-darkPurple transition active:scale-95">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Get Started</span>
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                    <button class="w-full bg-white text-brand-purple border border-brand-lightPurple py-4 rounded-2xl font-semibold text-lg flex items-center justify-between px-6 active:scale-95 transition">
+                        <i class="fa-regular fa-user"></i>
+                        <span>Already have an account? Login</span>
+                        <i class="fa-solid fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: ONBOARDING GOALS -->
+        <div id="view-onboarding" class="view-screen bg-brand-bg p-6">
+            <div class="flex items-center mb-6 pt-2">
+                <button onclick="nav('view-splash')" class="text-gray-600 text-xl mr-4"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="w-1/3 h-full bg-brand-purple rounded-full"></div>
+                </div>
+            </div>
+
+            <div class="flex items-end mb-8 relative animate-slide-up">
+                <div class="bg-white border-2 border-brand-lightPurple rounded-2xl p-4 shadow-sm relative w-[70%] z-10">
+                    <p class="text-gray-600 font-medium text-sm">Let's understand</p>
+                    <p class="text-brand-purple font-bold text-lg">your goal</p>
+                    <div class="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white border-r-2 border-t-2 border-brand-lightPurple rotate-45"></div>
+                </div>
+                <img src="" class="mascot-small w-24 h-24 object-contain absolute right-0 -bottom-2 z-0" alt="Mascot">
+            </div>
+
+            <div class="space-y-6 animate-slide-up" style="animation-delay: 0.1s;">
+                <div>
+                    <label class="block text-gray-800 font-semibold mb-2">What role do you want to prepare for?</label>
+                    <div class="relative">
+                        <select class="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-xl appearance-none focus:outline-none focus:border-brand-purple font-medium shadow-sm">
+                            <option>Data Analyst</option>
+                            <option>Product Designer</option>
+                            <option>Software Engineer</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-800 font-semibold mb-2">What skills do you want to learn?</label>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="px-4 py-2 rounded-full border-2 border-brand-purple text-brand-purple font-medium bg-brand-lightPurple flex items-center gap-2">All <i class="fa-solid fa-circle-check"></i></button>
+                        <button class="px-4 py-2 rounded-full border border-gray-300 text-gray-600 font-medium flex items-center gap-2 bg-white shadow-sm">SQL <i class="fa-solid fa-xmark text-gray-400"></i></button>
+                        <button class="px-4 py-2 rounded-full border border-gray-300 text-gray-600 font-medium flex items-center gap-2 bg-white shadow-sm">Excel <i class="fa-solid fa-xmark text-gray-400"></i></button>
+                        <button class="px-4 py-2 rounded-full border border-gray-300 text-gray-600 font-medium flex items-center gap-2 bg-white shadow-sm">Python <i class="fa-solid fa-xmark text-gray-400"></i></button>
+                        <button class="px-4 py-2 rounded-full border border-dashed border-gray-400 text-gray-500 font-medium flex items-center gap-2">Add more <i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto mb-4 animate-slide-up" style="animation-delay: 0.2s;">
+                <button onclick="nav('view-dashboard')" class="w-full bg-brand-purple text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-brand-darkPurple transition active:scale-95">CONTINUE</button>
+            </div>
+        </div>
+
+        <!-- VIEW 3: DASHBOARD (My Goals) -->
+        <div id="view-dashboard" class="view-screen bg-brand-bg has-bottom-nav">
+            <div class="px-5 pt-2 pb-24 h-full overflow-y-auto no-scrollbar">
+                
+                <div class="bg-brand-purple rounded-[28px] p-5 text-white flex justify-between items-center relative overflow-hidden shadow-lg mb-6 animate-slide-up">
+                    <div class="z-10 relative">
+                        <h2 class="text-2xl font-bold mb-1">Great progress,</h2>
+                        <h2 class="text-2xl font-bold mb-4">Indra! 🚀</h2>
+                        <div class="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full inline-flex items-center text-xs font-medium border border-white/30">
+                            <i class="fa-solid fa-star text-yellow-300 mr-1.5"></i> Keep pushing you've got this! 💪
+                        </div>
+                    </div>
+                    <img src="" class="mascot-trophy w-32 h-32 object-contain absolute -right-2 -bottom-2 z-0" alt="Winning Mascot">
+                </div>
+
+                <div class="mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+                    <div class="flex justify-between text-sm font-semibold mb-2">
+                        <span class="text-gray-700">Overall Progress</span>
+                        <span class="text-black text-lg">48%</span>
+                    </div>
+                    <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="w-[48%] h-full bg-brand-green rounded-full"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 animate-slide-up" style="animation-delay: 0.15s;">
+                    <h3 class="text-2xl font-bold text-gray-900">My Goals</h3>
+                    <button class="bg-brand-lightPurple text-brand-purple px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 active:scale-95 transition">
+                        <i class="fa-solid fa-plus"></i> Create New Goals
+                    </button>
+                </div>
+
+                <div class="space-y-4 animate-slide-up" style="animation-delay: 0.2s;">
+                    <div onclick="nav('view-path')" class="bg-white p-4 rounded-2xl flex items-center justify-between shadow-sm border border-gray-100 cursor-pointer active:scale-95 transition-transform">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-brand-purple rounded-xl flex items-center justify-center text-white text-2xl shadow-inner">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Data Analyst</h4>
+                                <p class="text-gray-500 text-sm flex items-center gap-1"><i class="fa-regular fa-calendar"></i> 4 Month</p>
+                            </div>
+                        </div>
+                        <div class="relative w-14 h-14">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-gray-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4" />
+                                <path class="text-brand-purple" stroke-dasharray="38, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-700">38%</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl flex items-center justify-between shadow-sm border border-gray-100">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-brand-green rounded-xl flex items-center justify-center text-white text-2xl shadow-inner">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Python</h4>
+                                <p class="text-gray-500 text-sm flex items-center gap-1"><i class="fa-regular fa-calendar"></i> 3 Month</p>
+                            </div>
+                        </div>
+                        <div class="relative w-14 h-14">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-gray-100" stroke-width="4" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"/>
+                                <path class="text-brand-green" stroke-dasharray="48, 100" stroke-width="4" fill="none" stroke="currentColor" stroke-linecap="round" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-700">48%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: LEARNING PATH -->
+        <div id="view-path" class="view-screen bg-[#f0faef] has-bottom-nav">
+            
+            <!-- FIXED SWITCH GOAL DROPDOWN STRUCTURE -->
+            <div id="switch-goal-backdrop" onclick="toggleSwitchGoal()" class="absolute inset-0 z-40 hidden"></div>
+            
+            <div class="bg-white px-5 pt-2 pb-5 rounded-b-[32px] shadow-sm z-20 relative animate-slide-up">
+                <div class="flex justify-between items-center mb-4">
+                    <!-- Dropdown Trigger -->
+                    <button onclick="toggleSwitchGoal()" class="bg-orange-100 text-orange-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 relative z-50 transition active:scale-95">
+                        <i class="fa-solid fa-chevron-down"></i> Switch Goal
+                    </button>
+                    
+                    <div class="flex gap-2">
+                        <span class="bg-orange-50 text-orange-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-orange-100 flex items-center gap-1"><i class="fa-solid fa-fire text-orange-500"></i> 3 Streak</span>
+                        <span class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-lg text-xs font-bold border border-emerald-100 flex items-center gap-1"><i class="fa-regular fa-gem text-emerald-500"></i> 225 XP</span>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between text-sm font-bold mb-2">
+                    <span class="text-gray-900">Product Designer</span>
+                    <span class="text-black">65%</span>
+                </div>
+                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="w-[65%] h-full bg-brand-purple rounded-full"></div>
+                </div>
+                
+                <!-- Dropdown Menu (Positioned Absolutely) -->
+                <div id="switch-goal-dropdown" class="absolute top-[52px] left-5 bg-[#fbf5eb] border border-[#f3e3cb] rounded-2xl p-2 shadow-xl z-50 hidden w-[250px] transform transition-all">
+                    <div class="text-xs font-bold text-gray-800 mb-2 px-2 pt-1">Choose your goal</div>
+                    <div class="space-y-1">
+                        <button onclick="toggleSwitchGoal()" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-3 hover:bg-white/60 transition">
+                            <div class="w-6 h-6 bg-brand-purple rounded-md flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-book-open"></i></div>
+                            <span class="text-sm font-semibold text-gray-700">Data Analyst</span>
+                        </button>
+                        <button onclick="toggleSwitchGoal()" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-3 hover:bg-white/60 transition">
+                            <div class="w-6 h-6 bg-blue-500 rounded-md flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-book-open"></i></div>
+                            <span class="text-sm font-semibold text-gray-700">Advanced Excel</span>
+                        </button>
+                        <button onclick="toggleSwitchGoal()" class="w-full text-left px-3 py-2 rounded-xl flex items-center gap-3 bg-[#e8f6e8] border border-green-200 transition">
+                            <div class="w-6 h-6 bg-brand-green rounded-md flex items-center justify-center text-white text-[10px]"><i class="fa-solid fa-book-open"></i></div>
+                            <span class="text-sm font-semibold text-brand-green">Introduction to UI/UX</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto no-scrollbar relative p-5 pb-32">
+                <div class="bg-blue-500 rounded-[24px] p-5 text-white shadow-md relative z-10 mb-8 animate-slide-up">
+                    <div class="text-[10px] tracking-wider font-bold bg-white/20 inline-block px-2 py-1 rounded mb-2"><i class="fa-solid fa-flag mr-1"></i> MODULE 1</div>
+                    <h2 class="text-xl font-bold w-4/5 leading-tight">Introduction to UI/UX & Product Design</h2>
+                    <i class="fa-solid fa-arrow-down absolute right-5 top-1/2 transform -translate-y-1/2 text-xl opacity-80"></i>
+                </div>
+
+                <!-- Winding Path -->
+                <div class="relative w-full h-[550px] mt-4 animate-slide-up" style="animation-delay: 0.1s;">
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 0;">
+                        <path d="M 100,30 Q 200,80 230,150" stroke="#bef264" stroke-width="14" fill="none" stroke-linecap="round"/>
+                        <path d="M 230,150 Q 150,250 140,320" stroke="#a78bfa" stroke-width="14" fill="none" class="path-line"/>
+                        <path d="M 140,320 Q 150,420 150,500" stroke="#e2e8f0" stroke-width="14" fill="none" stroke-linecap="round"/>
+                    </svg>
+
+                    <!-- Node 1 -->
+                    <div class="absolute top-[10px] left-[70px] z-10 flex items-center gap-3">
+                        <button onclick="toggleSheet('module-sheet')" class="w-[52px] h-[52px] bg-[#a3e635] rounded-full flex items-center justify-center text-white font-bold text-xl shadow-[0_5px_0_#65a30d] relative active:translate-y-1 active:shadow-none transition-all">
+                            1
+                            <div class="absolute top-2 left-2 w-2 h-2 bg-green-200 rounded-full"></div>
+                        </button>
+                        <div class="bg-[#f7fee7] border border-[#d9f99d] p-3 rounded-2xl rounded-tl-none shadow-sm w-44 relative">
+                            <div class="absolute -left-2 top-4 w-4 h-4 bg-[#f7fee7] border-l border-t border-[#d9f99d] rotate-[-45deg]"></div>
+                            <div class="text-[#65a30d] text-[10px] uppercase font-bold mb-0.5">100% Complete</div>
+                            <div class="text-gray-800 text-sm font-semibold leading-tight">Introduction to UI/UX Design</div>
+                        </div>
+                    </div>
+
+                    <!-- Node 2 -->
+                    <div class="absolute top-[130px] right-[40px] z-10 flex flex-row-reverse items-center gap-3">
+                        <button class="w-[52px] h-[52px] bg-brand-purple rounded-full flex items-center justify-center text-white font-bold text-xl shadow-[0_5px_0_#4c1d95] relative active:translate-y-1 active:shadow-none transition-all">
+                            2
+                            <div class="absolute top-2 left-2 w-2 h-2 bg-purple-300 rounded-full"></div>
+                        </button>
+                        <div class="bg-brand-lightPurple border border-purple-200 p-3 rounded-2xl rounded-tr-none shadow-sm w-44 text-right relative">
+                             <div class="absolute -right-2 top-4 w-4 h-4 bg-brand-lightPurple border-r border-t border-purple-200 rotate-45"></div>
+                            <div class="text-brand-purple text-[10px] uppercase font-bold mb-0.5">100% Complete</div>
+                            <div class="text-gray-800 text-sm font-semibold leading-tight">Low-Fidelity Wireframing</div>
+                        </div>
+                    </div>
+
+                    <!-- Node 3 -->
+                    <div class="absolute top-[290px] left-[100px] z-10 flex flex-col items-center">
+                        <img src="" class="mascot-small w-20 h-20 object-contain mb-[-12px] z-20 animate-bounce-slight drop-shadow-md" alt="Mascot Gift">
+                        <div class="flex items-center gap-3">
+                            <button class="w-[52px] h-[52px] bg-orange-400 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-[0_5px_0_#c2410c] relative">
+                                3
+                            </button>
+                            <div class="bg-[#fffbeb] border border-[#fef3c7] p-3 rounded-2xl rounded-tl-none shadow-sm w-44 relative mt-4">
+                                <div class="absolute -left-2 top-4 w-4 h-4 bg-[#fffbeb] border-l border-t border-[#fef3c7] rotate-[-45deg]"></div>
+                                <div class="text-orange-500 text-[10px] uppercase font-bold mb-0.5">0% Complete</div>
+                                <div class="text-gray-800 text-sm font-semibold leading-tight">Prototyping in Figma</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 5: QUIZ (MCQ) -->
+        <div id="view-quiz-mcq" class="view-screen bg-white">
+            <div class="px-6 pt-2 pb-6 h-full flex flex-col relative overflow-y-auto no-scrollbar">
+                <div class="flex items-center justify-between mb-6 animate-slide-up">
+                    <button onclick="nav('view-path')" class="text-gray-400 hover:text-gray-600 text-2xl transition"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="flex-1 mx-4">
+                        <div class="text-[10px] text-gray-400 text-center mb-1.5 font-bold uppercase tracking-wider">UI/UX & Product Design</div>
+                        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="w-[50%] h-full bg-brand-purple rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="w-9 h-9 bg-brand-green rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">2/4</div>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 animate-slide-up">
+                    <h2 class="text-2xl font-bold text-gray-900">Question</h2>
+                    <span class="text-brand-green border-2 border-brand-green bg-green-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Easy</span>
+                </div>
+                
+                <p class="text-gray-700 text-[17px] mb-8 leading-relaxed animate-slide-up">Which interactive component is best when you want users to select multiple items from a list while keeping the interface compact?</p>
+
+                <div class="space-y-3 flex-1" id="mcq-options">
+                    <!-- Options injected with animation delays via class -->
+                    <button class="quiz-option w-full border-2 border-gray-200 rounded-2xl p-4 text-left flex items-center gap-4 transition-all text-gray-700 font-semibold text-[15px] animate-slide-up" style="animation-delay: 0.1s" onclick="selectOption(this, true)">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 option-circle flex-shrink-0 transition-colors"></div>
+                        Multi-select dropdown
+                    </button>
+                    <button class="quiz-option w-full border-2 border-gray-200 rounded-2xl p-4 text-left flex items-center gap-4 transition-all text-gray-700 font-semibold text-[15px] animate-slide-up" style="animation-delay: 0.2s" onclick="selectOption(this, false)">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 option-circle flex-shrink-0 transition-colors"></div>
+                        Range slider
+                    </button>
+                    <button class="quiz-option w-full border-2 border-gray-200 rounded-2xl p-4 text-left flex items-center gap-4 transition-all text-gray-700 font-semibold text-[15px] animate-slide-up" style="animation-delay: 0.3s" onclick="selectOption(this, false)">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 option-circle flex-shrink-0 transition-colors"></div>
+                        Radio buttons
+                    </button>
+                    <button class="quiz-option w-full border-2 border-gray-200 rounded-2xl p-4 text-left flex items-center gap-4 transition-all text-gray-700 font-semibold text-[15px] animate-slide-up" style="animation-delay: 0.4s" onclick="selectOption(this, false)">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 option-circle flex-shrink-0 transition-colors"></div>
+                        Checkbox group
+                    </button>
+                </div>
+
+                <div class="mt-6 pb-2 animate-slide-up" style="animation-delay: 0.5s">
+                    <button id="mcq-submit-btn" class="w-full bg-gray-100 text-gray-400 py-4 rounded-2xl font-bold text-lg pointer-events-none transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Validation Toasts -->
+            <div id="toast-success" class="absolute bottom-0 left-0 w-full bg-brand-lightGreen p-6 pt-8 rounded-t-[36px] transform translate-y-full transition-transform duration-300 shadow-[0_-15px_30px_rgba(0,0,0,0.05)] z-20">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 bg-brand-purple rounded-xl flex items-center justify-center shrink-0 shadow-sm border-2 border-white">
+                        <span class="text-white font-bold text-xl">J</span>
+                    </div>
+                    <span class="text-brand-green font-bold text-lg bg-white px-5 py-3 rounded-2xl shadow-sm border border-green-100 flex-1 text-center">Woohoo! You nailed it!</span>
+                </div>
+            </div>
+
+            <div id="toast-error" class="absolute bottom-0 left-0 w-full bg-[#fee2e2] p-6 pt-8 rounded-t-[36px] transform translate-y-full transition-transform duration-300 shadow-[0_-15px_30px_rgba(0,0,0,0.05)] z-20">
+                <div class="flex items-center gap-4 mb-4">
+                    <img src="" class="mascot-sad w-16 h-16 object-contain drop-shadow-md shrink-0" alt="Sad Mascot">
+                    <button onclick="toggleSheet('hint-sheet')" class="flex-1 bg-white text-brand-red font-bold text-sm p-4 rounded-2xl shadow-sm border border-red-100 flex items-center justify-between active:scale-95 transition-transform">
+                        Oops! Don't worry, let's learn this! <i class="fa-solid fa-chevron-right text-gray-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 6: QUIZ (TEXT) -->
+        <div id="view-quiz-text" class="view-screen bg-white">
+             <div class="px-6 pt-2 pb-6 h-full flex flex-col">
+                <div class="flex items-center justify-between mb-6 animate-slide-up">
+                    <button onclick="nav('view-path')" class="text-gray-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="flex-1 mx-4">
+                        <div class="text-[10px] text-gray-400 text-center mb-1.5 font-bold uppercase tracking-wider">UI/UX & Product Design</div>
+                        <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="w-[75%] h-full bg-brand-purple rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="w-9 h-9 bg-brand-green rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">3/4</div>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 animate-slide-up">
+                    <h2 class="text-2xl font-bold text-gray-900">Question</h2>
+                    <span class="text-orange-500 border-2 border-orange-500 bg-orange-50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Medium</span>
+                </div>
+                
+                <p class="text-gray-700 text-[17px] mb-8 leading-relaxed animate-slide-up">Explain briefly why maintaining layer hierarchy is important when using Smart Animate in prototyping tools.</p>
+
+                <div class="flex justify-between items-end mb-3 animate-slide-up">
+                    <h3 class="font-bold text-gray-900 text-lg">Your answer</h3>
+                    <button onclick="toggleSheet('jora-hint-sheet')" class="flex items-center gap-2 bg-brand-lightPurple text-brand-purple px-3 py-1.5 rounded-xl text-xs font-bold transition hover:bg-purple-200">
+                        <img src="" class="mascot-small w-6 h-6 object-contain" alt="Mascot"> Need a hint?
+                    </button>
+                </div>
+                
+                <div class="relative flex-1 animate-slide-up">
+                    <textarea class="w-full h-48 border-2 border-gray-200 rounded-3xl p-5 text-gray-700 focus:outline-none focus:border-brand-purple resize-none placeholder-gray-400 text-lg transition-colors" placeholder="Type your answer here..."></textarea>
+                    <button class="absolute bottom-5 left-5 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+                <div class="mt-6 pb-2 animate-slide-up">
+                    <button onclick="nav('view-result')" class="w-full bg-brand-purple text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform">Check Answer</button>
+                </div>
+             </div>
+        </div>
+
+        <!-- VIEW 7: RESULTS -->
+        <div id="view-result" class="view-screen bg-gradient-to-b from-[#f0faef] to-white">
+            <div class="flex-1 flex flex-col items-center justify-center p-6 text-center">
+                <img src="" class="mascot-trophy w-64 h-64 object-contain mb-8 animate-bounce-slight drop-shadow-2xl" alt="Champion Mascot">
+                
+                <h1 class="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">Great job, champion! 🎉</h1>
+                <p class="text-gray-500 mb-10 text-[17px] px-4 leading-relaxed">0 mistakes. You're like a pristine, freshwater pearl.</p>
+                
+                <div class="flex gap-4 w-full mb-12">
+                    <div class="flex-1 bg-white p-4 rounded-3xl shadow-sm border border-purple-100 flex flex-col items-center gap-3 animate-slide-up" style="animation-delay: 0.1s">
+                        <div class="w-12 h-12 bg-brand-lightPurple text-brand-purple rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-list-ul"></i></div>
+                        <div class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Questions</div>
+                        <div class="text-2xl font-black text-brand-purple">10</div>
+                    </div>
+                    <div class="flex-1 bg-white p-4 rounded-3xl shadow-sm border border-green-100 flex flex-col items-center gap-3 animate-slide-up" style="animation-delay: 0.2s">
+                        <div class="w-12 h-12 bg-[#d1fae5] text-brand-green rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Accuracy</div>
+                        <div class="text-2xl font-black text-brand-green">100%</div>
+                    </div>
+                    <div class="flex-1 bg-white p-4 rounded-3xl shadow-sm border border-yellow-100 flex flex-col items-center gap-3 animate-slide-up" style="animation-delay: 0.3s">
+                        <div class="w-12 h-12 bg-[#fef3c7] text-yellow-600 rounded-2xl flex items-center justify-center text-xl"><i class="fa-regular fa-gem"></i></div>
+                        <div class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">XP Earned</div>
+                        <div class="text-2xl font-black text-yellow-500">50</div>
+                    </div>
+                </div>
+
+                <button onclick="nav('view-path')" class="w-full bg-brand-purple text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-brand-darkPurple transition active:scale-95 mt-auto mb-4 animate-slide-up" style="animation-delay: 0.4s">Continue</button>
+            </div>
+        </div>
+
+        <!-- VIEW 8: LEADERBOARD -->
+        <div id="view-leaderboard" class="view-screen bg-gray-50 has-bottom-nav">
+             <div class="p-6 h-full overflow-y-auto no-scrollbar">
+                 <h2 class="text-3xl font-extrabold text-center mb-8 text-gray-900 animate-slide-up">Leaderboard</h2>
+                 
+                 <div class="space-y-4">
+                     <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 flex items-center justify-between animate-slide-up" style="animation-delay: 0.1s">
+                         <div class="flex items-center gap-4">
+                             <div class="w-8 text-center font-bold text-gray-400">1</div>
+                             <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center border-2 border-orange-400 text-xl">🐶</div>
+                             <div class="font-bold text-gray-800">Alex Smith</div>
+                         </div>
+                         <div class="font-bold text-brand-purple">1200 XP</div>
+                     </div>
+                     <div class="bg-brand-lightPurple/40 rounded-3xl p-4 shadow-sm border border-brand-purple/20 flex items-center justify-between animate-slide-up" style="animation-delay: 0.2s">
+                         <div class="flex items-center gap-4">
+                             <div class="w-8 text-center font-bold text-brand-purple">2</div>
+                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center border-2 border-brand-purple text-xl">👦</div>
+                             <div class="font-bold text-brand-purple">Indra (You)</div>
+                         </div>
+                         <div class="font-bold text-brand-purple">950 XP</div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+
+        <!-- VIEW 9: PROFILE -->
+        <div id="view-profile" class="view-screen bg-gray-50 has-bottom-nav">
+            <div class="p-6 text-center animate-slide-up">
+                 <div class="w-28 h-28 bg-blue-100 rounded-full mx-auto flex items-center justify-center text-5xl mb-4 border-4 border-white shadow-md">👦</div>
+                 <h2 class="text-3xl font-extrabold text-gray-900 mb-1">Indra Dev</h2>
+                 <p class="text-gray-500 mb-8 font-medium">Aspiring Product Designer</p>
+
+                 <div class="bg-white rounded-[32px] shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-50 text-left">
+                     <div class="p-5 flex justify-between items-center hover:bg-gray-50 cursor-pointer transition">
+                         <span class="font-semibold text-gray-700 flex items-center gap-3"><div class="w-8 text-center"><i class="fa-solid fa-gear text-gray-400"></i></div> Settings</span> 
+                         <i class="fa-solid fa-chevron-right text-gray-300 text-sm"></i>
+                     </div>
+                     <div class="p-5 flex justify-between items-center hover:bg-gray-50 cursor-pointer transition">
+                         <span class="font-semibold text-gray-700 flex items-center gap-3"><div class="w-8 text-center"><i class="fa-solid fa-chart-line text-gray-400"></i></div> Statistics</span> 
+                         <i class="fa-solid fa-chevron-right text-gray-300 text-sm"></i>
+                     </div>
+                     <div class="p-5 flex justify-between items-center hover:bg-red-50 cursor-pointer transition text-red-500">
+                         <span class="font-semibold flex items-center gap-3"><div class="w-8 text-center"><i class="fa-solid fa-arrow-right-from-bracket"></i></div> Logout</span>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- VIEW 10: ASK JORA (Chat) -->
+        <div id="view-ask-jora" class="view-screen bg-gray-50 has-bottom-nav">
+             <div class="bg-white px-6 pt-4 pb-4 flex items-center gap-4 shadow-sm z-10">
+                 <div class="w-10 h-10 bg-brand-lightPurple rounded-full flex items-center justify-center p-1 border border-purple-100">
+                     <img src="" class="mascot-small w-full h-full object-contain" alt="Jora">
+                 </div>
+                 <div>
+                     <h2 class="font-bold text-gray-900">Jora Mentor</h2>
+                     <div class="flex items-center gap-1.5">
+                         <div class="w-2 h-2 rounded-full bg-brand-green"></div>
+                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Online</span>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="flex-1 p-5 overflow-y-auto flex flex-col gap-5 no-scrollbar">
+                 <div class="self-start flex gap-3 animate-slide-up">
+                     <img src="" class="mascot-small w-8 h-8 object-contain shrink-0 mt-2" alt="Mascot">
+                     <div class="bg-white p-4 rounded-3xl rounded-tl-sm shadow-sm max-w-[85%] border border-gray-100">
+                        <p class="text-gray-700 text-[15px] leading-relaxed">Hi Indra! I'm Jora. I'm here to help you learn faster. What's on your mind?</p>
+                     </div>
+                 </div>
+                 <div class="self-end bg-brand-purple text-white p-4 rounded-3xl rounded-tr-sm shadow-sm max-w-[80%] animate-slide-up" style="animation-delay: 0.1s">
+                     <p class="text-[15px] leading-relaxed">Can you explain what a Design System is?</p>
+                 </div>
+                  <div class="self-start flex gap-3 animate-slide-up" style="animation-delay: 0.2s">
+                     <img src="" class="mascot-small w-8 h-8 object-contain shrink-0 mt-2" alt="Mascot">
+                     <div class="bg-white p-4 rounded-3xl rounded-tl-sm shadow-sm max-w-[85%] border border-gray-100">
+                         <p class="text-gray-700 text-[15px] leading-relaxed">A design system is a complete set of standards intended to manage design at scale using reusable components and patterns! 🎨</p>
+                     </div>
+                 </div>
+             </div>
+             
+             <!-- Custom input area above bottom nav -->
+             <div class="p-4 bg-white border-t border-gray-100 absolute bottom-[90px] w-full flex gap-3 items-center z-10">
+                 <input type="text" placeholder="Ask anything..." class="flex-1 bg-gray-100 rounded-full px-5 py-3.5 focus:outline-none focus:ring-2 focus:ring-brand-purple/30 text-sm font-medium">
+                 <button class="w-12 h-12 bg-brand-purple text-white rounded-full flex items-center justify-center shadow-md active:scale-95 transition-transform"><i class="fa-solid fa-paper-plane"></i></button>
+             </div>
+        </div>
+
+        <!-- BOTTOM SHEETS -->
+        <div id="module-sheet" class="absolute inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity" onclick="toggleSheet('module-sheet')"></div>
+            <div class="absolute bottom-0 w-full bg-white rounded-t-[40px] p-6 pb-10 shadow-2xl transform translate-y-full transition-transform duration-400 ease-out" id="module-sheet-content">
+                <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 bg-brand-purple text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-sm">1</div>
+                        <h3 class="font-extrabold text-xl text-gray-900 leading-tight w-4/5 pt-1">Introduction to UI/UX and Product Design</h3>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 border border-gray-100 rounded-3xl bg-gray-50">
+                        <div class="flex gap-4 items-center">
+                            <div class="w-12 h-12 bg-purple-100 text-brand-purple rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-layer-group"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Flashcards</h4>
+                                <p class="text-xs text-gray-500 font-medium">Learn key concepts</p>
+                            </div>
+                        </div>
+                        <div class="bg-green-100 text-brand-green text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1">Completed <i class="fa-solid fa-circle-check"></i></div>
+                    </div>
+
+                    <div onclick="nav('view-quiz-mcq'); toggleSheet('module-sheet'); resetQuiz()" class="flex items-center justify-between p-4 border-2 border-brand-lightPurple rounded-3xl bg-white shadow-[0_5px_15px_rgba(124,58,237,0.08)] cursor-pointer active:scale-[0.98] transition">
+                        <div class="flex gap-4 items-center">
+                            <div class="w-12 h-12 bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">AI Adaptive Quiz</h4>
+                                <p class="text-xs text-gray-500 font-medium">Assess your knowledge</p>
+                            </div>
+                        </div>
+                        <button class="bg-orange-500 text-white text-xs font-bold px-4 py-2.5 rounded-full flex items-center gap-1 shadow-md shadow-orange-500/20">Continue <i class="fa-solid fa-chevron-right ml-1"></i></button>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 border border-gray-100 rounded-3xl bg-gray-50 opacity-60">
+                        <div class="flex gap-4 items-center">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-500 rounded-2xl flex items-center justify-center text-xl"><i class="fa-solid fa-laptop-code"></i></div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Practice Exercise</h4>
+                                <p class="text-xs text-gray-500 font-medium">Apply what you've learned</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-200 text-gray-600 text-xs font-bold px-4 py-2.5 rounded-full">Start</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hint-sheet" class="absolute inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="toggleSheet('hint-sheet')"></div>
+            <div class="absolute bottom-0 w-full bg-[#fde8e8] rounded-t-[40px] p-6 pb-12 shadow-2xl transform translate-y-full transition-transform duration-300" id="hint-sheet-content">
+                <div class="w-12 h-1.5 bg-red-200 rounded-full mx-auto mb-6"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <div class="flex items-center gap-3">
+                        <img src="" class="mascot-small w-12 h-12 object-contain bg-white rounded-full p-1 shadow-sm" alt="Mascot">
+                        <span class="bg-white text-brand-red font-bold px-4 py-2 rounded-2xl text-sm shadow-sm border border-red-100">Let's learn this!</span>
+                    </div>
+                </div>
+                
+                <h3 class="font-extrabold text-2xl text-gray-900 mb-3">Try again</h3>
+                <p class="text-[15px] text-gray-800 mb-4 bg-white/70 p-4 rounded-2xl border border-red-100 leading-relaxed">
+                    Correct answer: <span class="font-bold text-brand-red">Multi-select dropdown</span>.
+                </p>
+                <p class="text-[15px] text-gray-800 leading-relaxed bg-white/70 p-4 rounded-2xl border border-red-100">
+                    <span class="font-bold text-brand-red">Why?</span> A multi-select dropdown lets users choose multiple items without taking up excessive vertical screen space like a fully expanded checkbox group would.
+                </p>
+                <button onclick="toggleSheet('hint-sheet'); nav('view-quiz-text')" class="w-full mt-6 bg-brand-red text-white py-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-transform">Got it, Next Question</button>
+            </div>
+        </div>
+
+        <div id="jora-hint-sheet" class="absolute inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" onclick="toggleSheet('jora-hint-sheet')"></div>
+            <div class="absolute top-1/4 left-6 right-6 bg-brand-lightPurple border-2 border-purple-200 rounded-3xl p-6 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="jora-hint-content">
+                 <div class="flex justify-between items-center mb-4">
+                     <span class="text-brand-purple font-black text-xs uppercase tracking-widest flex items-center gap-1.5 bg-purple-200/50 px-3 py-1.5 rounded-full"><i class="fa-regular fa-lightbulb"></i> Jora's Hint</span>
+                     <button onclick="toggleSheet('jora-hint-sheet')" class="text-gray-400 hover:text-brand-purple transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                 </div>
+                 <div class="flex gap-4 items-start">
+                     <img src="" class="mascot-small w-16 h-16 object-contain bg-white rounded-2xl p-1 shadow-sm" alt="Mascot">
+                     <p class="text-brand-darkPurple text-[15px] font-medium leading-relaxed">
+                         Think about how the software knows which box to move where. If a box is named "Rectangle 1" on screen A and "Button Main" on screen B, will it animate smoothly?
+                     </p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div id="bottom-nav" class="absolute bottom-0 w-full bg-white border-t border-gray-100 rounded-t-[36px] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] px-6 pt-4 pb-[38px] flex justify-between items-center z-40 hidden">
+            
+            <button onclick="navTab('view-dashboard', this)" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400 w-12 transition-colors">
+                <i class="fa-solid fa-bullseye text-2xl"></i>
+                <span class="text-[10px] font-bold">Goal</span>
+            </button>
+            
+            <button onclick="navTab('view-path', this)" class="nav-btn flex flex-col items-center gap-1.5 text-brand-purple w-12 transition-colors">
+                <div class="relative transform -translate-y-1">
+                    <i class="fa-solid fa-route text-2xl"></i>
+                    <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-brand-purple tab-indicator"></div>
+                </div>
+                <span class="text-[10px] font-bold">Path</span>
+            </button>
+            
+            <!-- Center Jora Button -->
+            <div class="relative w-16 flex justify-center -mt-10">
+                <button onclick="navTab('view-ask-jora', null)" class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 transform hover:scale-105 active:scale-95 transition-transform z-50">
+                    <img src="" class="mascot-small w-11 h-11 object-contain" alt="Ask Jora">
+                </button>
+                <span class="absolute -bottom-5 text-[10px] font-bold text-gray-500 w-full text-center">Ask Jora</span>
+            </div>
+            
+            <button onclick="navTab('view-leaderboard', this)" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400 w-12 transition-colors">
+                <i class="fa-solid fa-crown text-2xl"></i>
+                <span class="text-[10px] font-bold">Ranks</span>
+            </button>
+            
+            <button onclick="navTab('view-profile', this)" class="nav-btn flex flex-col items-center gap-1.5 text-gray-400 w-12 transition-colors">
+                <i class="fa-regular fa-user text-2xl"></i>
+                <span class="text-[10px] font-bold">Profile</span>
+            </button>
+        </div>
+        
+        <!-- iOS Home Indicator -->
+        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-[134px] h-[5px] bg-black/80 rounded-full z-[100] pointer-events-none"></div>
+
+    </div>
+
+    <script>
+        // MASCOT INJECTION
+        function injectMascots() {
+            document.querySelectorAll('.mascot-main').forEach(img => img.src = MASCOT_CONFIG.main);
+            document.querySelectorAll('.mascot-small').forEach(img => img.src = MASCOT_CONFIG.small);
+            document.querySelectorAll('.mascot-trophy').forEach(img => img.src = MASCOT_CONFIG.trophy);
+            document.querySelectorAll('.mascot-sad').forEach(img => img.src = MASCOT_CONFIG.sad);
+        }
+
+        // NAVIGATION LOGIC
+        function nav(viewId) {
+            document.querySelectorAll('.view-screen').forEach(el => {
+                el.classList.remove('active', 'animate-fade-in');
+            });
+            
+            const target = document.getElementById(viewId);
+            target.classList.add('active', 'animate-fade-in');
+
+            const bottomNav = document.getElementById('bottom-nav');
+            const viewsWithNav = ['view-dashboard', 'view-path', 'view-leaderboard', 'view-profile', 'view-ask-jora'];
+            
+            if (viewsWithNav.includes(viewId)) {
+                bottomNav.classList.remove('hidden');
+                updateTabHighlight(viewId);
+            } else {
+                bottomNav.classList.add('hidden');
+            }
+        }
+
+        function navTab(viewId, btnElement) {
+            nav(viewId);
+            if(btnElement) updateTabVisuals(btnElement);
+        }
+
+        function updateTabVisuals(activeBtn) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand-purple');
+                btn.classList.add('text-gray-400');
+                
+                // Reset icon transform and indicator dot
+                const iconContainer = btn.querySelector('div.relative');
+                if(iconContainer) {
+                    iconContainer.classList.remove('transform', '-translate-y-1');
+                    const indicator = iconContainer.querySelector('.tab-indicator');
+                    if(indicator) indicator.remove();
+                } else if(btn.querySelector('i')) {
+                     // Create wrapper if it doesn't exist
+                     const i = btn.querySelector('i');
+                     const text = btn.querySelector('span');
+                     btn.innerHTML = '';
+                     btn.appendChild(i);
+                     btn.appendChild(text);
+                }
+            });
+
+            activeBtn.classList.remove('text-gray-400');
+            activeBtn.classList.add('text-brand-purple');
+            
+            // Add transform and indicator to active
+            const i = activeBtn.querySelector('i');
+            if(i) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative transform -translate-y-1 transition-transform';
+                activeBtn.insertBefore(wrapper, i);
+                wrapper.appendChild(i);
+                
+                const dot = document.createElement('div');
+                dot.className = 'absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-brand-purple tab-indicator';
+                wrapper.appendChild(dot);
+            }
+        }
+
+        function updateTabHighlight(viewId) {
+            const mapping = {
+                'view-dashboard': 0,
+                'view-path': 1,
+                'view-leaderboard': 2,
+                'view-profile': 3
+            };
+            const btns = document.querySelectorAll('.nav-btn');
+            if(mapping[viewId] !== undefined) {
+                updateTabVisuals(btns[mapping[viewId]]);
+            } else {
+                btns.forEach(b => { 
+                    b.classList.remove('text-brand-purple'); 
+                    b.classList.add('text-gray-400');
+                    const iconContainer = b.querySelector('div.relative');
+                    if(iconContainer) {
+                        iconContainer.classList.remove('transform', '-translate-y-1');
+                        const indicator = iconContainer.querySelector('.tab-indicator');
+                        if(indicator) indicator.remove();
+                    }
+                });
+            }
+        }
+
+        // SWITCH GOAL DROPDOWN
+        function toggleSwitchGoal() {
+            const dropdown = document.getElementById('switch-goal-dropdown');
+            const backdrop = document.getElementById('switch-goal-backdrop');
+            
+            if (dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('hidden');
+                backdrop.classList.remove('hidden');
+                // Small delay for transition
+                setTimeout(() => {
+                    dropdown.classList.add('opacity-100', 'scale-100');
+                    dropdown.classList.remove('opacity-0', 'scale-95');
+                }, 10);
+            } else {
+                dropdown.classList.remove('opacity-100', 'scale-100');
+                dropdown.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                    backdrop.classList.add('hidden');
+                }, 150);
+            }
+        }
+
+        // BOTTOM SHEETS
+        function toggleSheet(sheetId) {
+            const sheet = document.getElementById(sheetId);
+            const content = sheetId === 'jora-hint-sheet' ? document.getElementById('jora-hint-content') : document.getElementById(sheetId + '-content');
+            
+            if (sheet.classList.contains('hidden')) {
+                sheet.classList.remove('hidden');
+                setTimeout(() => {
+                    if(sheetId === 'jora-hint-sheet') {
+                        content.classList.remove('scale-95', 'opacity-0');
+                        content.classList.add('scale-100', 'opacity-100');
+                    } else {
+                        content.classList.remove('translate-y-full');
+                    }
+                }, 10);
+            } else {
+                if(sheetId === 'jora-hint-sheet') {
+                    content.classList.remove('scale-100', 'opacity-100');
+                    content.classList.add('scale-95', 'opacity-0');
+                } else {
+                    content.classList.add('translate-y-full');
+                }
+                setTimeout(() => {
+                    sheet.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // QUIZ LOGIC
+        let selectedOptionBtn = null;
+        let isCorrectSelection = false;
+
+        function resetQuiz() {
+             document.querySelectorAll('.quiz-option').forEach(btn => {
+                 btn.className = 'quiz-option w-full border-2 border-gray-200 rounded-2xl p-4 text-left flex items-center gap-4 transition-all text-gray-700 font-semibold text-[15px]';
+                 btn.querySelector('.option-circle').className = 'w-6 h-6 rounded-full border-2 border-gray-300 option-circle flex-shrink-0 transition-colors';
+             });
+             const submitBtn = document.getElementById('mcq-submit-btn');
+             submitBtn.className = 'w-full bg-gray-100 text-gray-400 py-4 rounded-2xl font-bold text-lg pointer-events-none transition-colors';
+             submitBtn.innerText = 'Check Answer';
+             submitBtn.onclick = null;
+             
+             document.getElementById('toast-success').style.transform = 'translateY(100%)';
+             document.getElementById('toast-error').style.transform = 'translateY(100%)';
+        }
+
+        function selectOption(btn, isCorrect) {
+            document.querySelectorAll('.quiz-option').forEach(el => {
+                el.classList.remove('border-brand-green', 'bg-green-50', 'border-brand-red', 'bg-red-50');
+                el.querySelector('.option-circle').classList.remove('border-brand-green', 'bg-brand-green', 'border-brand-red', 'bg-brand-red');
+                el.querySelector('.option-circle').innerHTML = ''; 
+            });
+
+            selectedOptionBtn = btn;
+            isCorrectSelection = isCorrect;
+            
+            btn.classList.add('border-brand-purple', 'bg-brand-lightPurple');
+            btn.querySelector('.option-circle').classList.add('border-brand-purple');
+            btn.querySelector('.option-circle').innerHTML = '<div class="w-full h-full bg-brand-purple rounded-full scale-[0.4] transition-transform"></div>';
+
+            const submitBtn = document.getElementById('mcq-submit-btn');
+            submitBtn.className = 'w-full bg-brand-purple text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-brand-darkPurple transition cursor-pointer pointer-events-auto active:scale-95';
+            submitBtn.onclick = checkAnswer;
+        }
+
+        function checkAnswer() {
+            const submitBtn = document.getElementById('mcq-submit-btn');
+            selectedOptionBtn.classList.remove('border-brand-purple', 'bg-brand-lightPurple');
+            const circle = selectedOptionBtn.querySelector('.option-circle');
+            circle.classList.remove('border-brand-purple');
+            circle.innerHTML = '';
+
+            if (isCorrectSelection) {
+                selectedOptionBtn.classList.add('border-brand-green', 'bg-green-50');
+                circle.classList.add('border-brand-green', 'bg-brand-green', 'flex', 'items-center', 'justify-center');
+                circle.innerHTML = '<i class="fa-solid fa-check text-white text-[12px]"></i>';
+                
+                document.getElementById('toast-success').style.transform = 'translateY(0)';
+                
+                submitBtn.innerText = 'CONTINUE';
+                submitBtn.className = 'w-full bg-brand-green text-white py-4 rounded-2xl font-bold text-lg shadow-lg mt-4 active:scale-95 transition-transform';
+                submitBtn.onclick = () => { nav('view-quiz-text') };
+
+            } else {
+                selectedOptionBtn.classList.add('border-brand-red', 'bg-red-50');
+                circle.classList.add('border-brand-red', 'bg-brand-red', 'flex', 'items-center', 'justify-center');
+                circle.innerHTML = '<div class="w-2.5 h-2.5 bg-white rounded-full"></div>';
+                
+                const options = document.querySelectorAll('.quiz-option');
+                options[0].classList.add('border-brand-green', 'bg-green-50'); 
+                
+                document.getElementById('toast-error').style.transform = 'translateY(0)';
+                
+                submitBtn.innerText = 'GOT IT';
+                submitBtn.className = 'w-full bg-brand-red text-white py-4 rounded-2xl font-bold text-lg shadow-lg mt-4 active:scale-95 transition-transform';
+                submitBtn.onclick = () => { toggleSheet('hint-sheet') }; 
+            }
+        }
+
+        window.onload = () => {
+            injectMascots();
+            nav('view-splash');
+        };
+
+    </script>
+</body>
+</html>
