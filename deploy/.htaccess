@@ -1,0 +1,2 @@
+# Serve the new static portfolio first, while preserving the previous PHP homepage.
+DirectoryIndex index.html index.php

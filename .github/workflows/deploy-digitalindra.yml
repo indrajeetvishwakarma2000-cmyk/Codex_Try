@@ -1,0 +1,43 @@
+name: Deploy DigitalIndra portfolio
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'Digital Indra/Index.html'
+      - 'Case Study_JoraIQ.html'
+      - 'Indrajeet_Resume.pdf'
+      - '.github/workflows/deploy-digitalindra.yml'
+      - 'deploy/.htaccess'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Upload portfolio to digitalindra.in
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get website files
+        uses: actions/checkout@v4
+
+      - name: Prepare publish folder
+        run: |
+          mkdir deploy/site
+          cp 'Digital Indra/Index.html' deploy/site/index.html
+          cp 'Case Study_JoraIQ.html' deploy/site/Case\ Study_JoraIQ.html
+          cp 'Indrajeet_Resume.pdf' deploy/site/Indrajeet_Resume.pdf
+          cp deploy/.htaccess deploy/site/.htaccess
+
+      - name: Upload to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./deploy/site/
+          server-dir: ./
+          dangerous-clean-slate: false
