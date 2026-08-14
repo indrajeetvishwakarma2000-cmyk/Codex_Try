@@ -516,8 +516,15 @@
             border-radius: 20px;
             overflow: hidden;
             position: relative;
-            padding: 28px
+            padding: 28px;
+            display: block;
+            transition: transform .25s ease, box-shadow .25s ease
         }
+
+        .brandcard:hover { transform: translateY(-6px); box-shadow: 0 18px 34px #00000030 }
+
+        .brandcard:focus-visible,
+        .showcase-panel:focus-visible { outline: 3px solid var(--lime); outline-offset: 4px }
 
         .milk {
             background: #fff6db;
@@ -935,7 +942,11 @@
             overflow: hidden
         }
 
-        .showcase-panel summary {
+        a.showcase-panel { display: block; color: inherit; transition: transform .25s ease, box-shadow .25s ease }
+        a.showcase-panel:hover { transform: translateY(-5px); box-shadow: var(--shadow) }
+
+        .showcase-panel summary,
+        .panel-summary {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -947,6 +958,9 @@
 
         .showcase-panel summary::-webkit-details-marker { display: none }
         .showcase-panel .showcase-label { display: none }
+        a.showcase-panel .showcase-label,
+        a.showcase-panel .video-showcase,
+        a.showcase-panel .social-showcase { display: none }
 
         .panel-title h3 {
             font-size: clamp(28px, 3.3vw, 42px);
@@ -1154,7 +1168,7 @@
                 margin-top: 12px
             }
 
-            .showcase-panel summary { display: block; padding: 24px }
+            .showcase-panel summary, .panel-summary { display: block; padding: 24px }
             .panel-open { margin-top: 18px }
             .panel-gallery { padding: 0 14px 14px }
 
@@ -1306,15 +1320,15 @@
                     <p>Identity systems that balance strategy, visual distinction and a little bit of delight.</p>
                 </div>
                 <div class="brandgrid">
-                    <article class="brandcard milk">
+                    <a class="brandcard milk" href="Pure_Moo.html" aria-label="View Pure Moo brand project">
                         <div class="cow"></div>
                         <div class="brandlabel"><small>Brand identity</small>Pure Moo — cow milk, made warm.</div>
-                    </article>
-                    <article class="brandcard mascots">
+                    </a>
+                    <a class="brandcard mascots" href="Mascot_Design.html" aria-label="View mascot design project">
                         <div class="char"></div>
                         <div class="char"></div>
                         <div class="brandlabel"><small>Character design</small>Two mascots, built from scratch.</div>
-                    </article>
+                    </a>
                 </div>
             </div>
         </section>
@@ -1327,8 +1341,8 @@
                     <p>A curated collection of video editing, motion graphics and 3D visual work.
                     </p>
                 </div>
-                <details class="showcase-panel">
-                    <summary><div class="panel-title"><span class="eyebrow">Video work</span><h3>Video editing, motion<br>and 3D visual stories.</h3></div><span class="panel-open">Explore video work <i data-lucide="arrow-down" size="16"></i></span></summary>
+                <a class="showcase-panel" href="Video_Work.html">
+                    <div class="panel-summary"><div class="panel-title"><span class="eyebrow">Video work</span><h3>Video editing, motion<br>and 3D visual stories.</h3></div><span class="panel-open">Explore video work <i data-lucide="arrow-right" size="16"></i></span></div>
                     <div class="showcase-label"><div><span class="eyebrow">Video editing</span><h3>Stories made to move.</h3></div><p>A collection of editing, motion and 3D work—each with its own rhythm, message and point of view.</p></div>
                     <div class="video-showcase">
                         <article><video controls preload="metadata" src="Interview/Video/Reasons_5.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>Reasons</div></article>
@@ -1342,9 +1356,9 @@
                         <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/landscaping.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Landscaping — 3D Render</div></article>
                         <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/WALKTH-ARCHIVES%20GAURAV%20GATHA%20GALLERY%20LUCKNOW%20WITH%20SOUND.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Walkth Archives — 3D Render</div></article>
                     </div>
-                </details>
-                <details class="showcase-panel social-work">
-                    <summary><div class="panel-title"><span class="eyebrow">Social media design</span><h3>Posts built to<br>stop the scroll.</h3></div><span class="panel-open">Explore social work <i data-lucide="arrow-down" size="16"></i></span></summary>
+                </a>
+                <a class="showcase-panel social-work" href="Social_Media.html">
+                    <div class="panel-summary"><div class="panel-title"><span class="eyebrow">Social media design</span><h3>Posts built to<br>stop the scroll.</h3></div><span class="panel-open">Explore social work <i data-lucide="arrow-right" size="16"></i></span></div>
                     <div class="showcase-label"><div><span class="eyebrow">Social media design</span><h3>Built to stop the scroll.</h3></div><p>Social posts designed with strong visual hooks, clear brand stories and a consistent system.</p></div>
                     <div class="social-showcase">
                         <a href="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" target="_blank"><img src="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" alt="Aaztech social media post" loading="lazy"></a>
@@ -1357,7 +1371,7 @@
                         <a href="Interview/Social_Media_Post/Wolta.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta.jpg" alt="Wolta social media post" loading="lazy"></a>
                         <a href="Interview/Social_Media_Post/Wolta2.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta2.jpg" alt="Wolta social media post" loading="lazy"></a>
                     </div>
-                </details>
+                </a>
             </div>
         </section>
         <section id="about">
