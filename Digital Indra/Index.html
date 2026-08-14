@@ -727,6 +727,93 @@
             margin-top: 19px
         }
 
+        .showcase-block {
+            margin-top: 64px
+        }
+
+        .showcase-label {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 20px
+        }
+
+        .showcase-label h3 {
+            font-size: clamp(25px, 3vw, 35px);
+            line-height: 1.1;
+            letter-spacing: -.055em;
+            margin: 8px 0 0
+        }
+
+        .showcase-label p {
+            color: var(--muted);
+            font-size: 13px;
+            max-width: 360px;
+            margin: 0
+        }
+
+        .video-showcase {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px
+        }
+
+        .video-showcase article {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            background: #fff;
+            box-shadow: 0 8px 24px #272a3908
+        }
+
+        .video-showcase video {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #191a21;
+            object-fit: cover
+        }
+
+        .video-caption {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 14px;
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .video-caption i {
+            color: var(--purple)
+        }
+
+        .social-showcase {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px
+        }
+
+        .social-showcase a {
+            display: block;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: #fff
+        }
+
+        .social-showcase img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .35s ease
+        }
+
+        .social-showcase a:hover img {
+            transform: scale(1.06)
+        }
+
         .skills {
             display: grid;
             grid-template-columns: .85fr 1.15fr;
@@ -850,6 +937,19 @@
 
             .intro-video {
                 height: 480px
+            }
+
+            .video-showcase,
+            .social-showcase {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .showcase-label {
+                display: block
+            }
+
+            .showcase-label p {
+                margin-top: 12px
             }
 
             .hero-grid,
@@ -1021,19 +1121,34 @@
                     <p>I also edit energetic, purposeful video and create graphics for brands and social communities.
                     </p>
                 </div>
-                <div class="creative">
-                    <article class="video"><span class="eyebrow" style="color:#dcff74">Video editing</span>
-                        <h3>Rhythm, emotion<br>& a strong first second.</h3>
-                        <p>A selection of video edits made to hold attention and tell a story.</p><a class="play"
-                            href="#contact" aria-label="Watch video edits"><i data-lucide="play" fill="currentColor"
-                                size="22"></i></a>
-                    </article>
-                    <article class="graphic"><span class="eyebrow" style="color:#754500">Graphic design & social
-                            media</span>
-                        <h3>Posts, logos and<br>visual systems.</h3>
-                        <p>Scroll-stopping social content and identity-led graphic design.</p>
-                        <div class="poster">DESIGN<br>THAT<br>CONNECTS<i></i></div>
-                    </article>
+                <div class="showcase-block" style="margin-top:0">
+                    <div class="showcase-label"><div><span class="eyebrow">Video editing</span><h3>Stories made to move.</h3></div><p>A collection of editing, motion and 3D work—each with its own rhythm, message and point of view.</p></div>
+                    <div class="video-showcase">
+                        <article><video controls preload="metadata" src="Interview/Video/Reasons_5.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>Reasons</div></article>
+                        <article><video controls preload="metadata" src="Interview/Video/RowWithGreenScreen.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>Green Screen Edit</div></article>
+                        <article><video controls preload="metadata" src="Interview/Video/what_is_data_analytics.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>What Is Data Analytics?</div></article>
+                        <article><video controls preload="metadata" src="Interview/Video/What_Is_Data_Science.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>What Is Data Science?</div></article>
+                        <article><video controls preload="metadata" src="Interview/Video/What_Makes.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>What Makes</div></article>
+                        <article><video controls preload="metadata" src="Interview/Motion%20Graphic/JARVIS%202-0.mp4"></video><div class="video-caption"><i data-lucide="sparkles" size="17"></i>JARVIS 2.0 Motion Graphic</div></article>
+                        <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/Bedroom.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Bedroom — 3D Render</div></article>
+                        <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/Kitchen%20AK%20singh.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Kitchen — 3D Render</div></article>
+                        <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/landscaping.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Landscaping — 3D Render</div></article>
+                        <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/WALKTH-ARCHIVES%20GAURAV%20GATHA%20GALLERY%20LUCKNOW%20WITH%20SOUND.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Walkth Archives — 3D Render</div></article>
+                    </div>
+                </div>
+                <div class="showcase-block">
+                    <div class="showcase-label"><div><span class="eyebrow">Social media design</span><h3>Built to stop the scroll.</h3></div><p>Social posts designed with strong visual hooks, clear brand stories and a consistent system.</p></div>
+                    <div class="social-showcase">
+                        <a href="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" target="_blank"><img src="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" alt="Aaztech social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Geji.jpg" target="_blank"><img src="Interview/Social_Media_Post/Geji.jpg" alt="Geji social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Geji2.jpg" target="_blank"><img src="Interview/Social_Media_Post/Geji2.jpg" alt="Geji social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Geji3.jpg" target="_blank"><img src="Interview/Social_Media_Post/Geji3.jpg" alt="Geji social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/IDG.jpg" target="_blank"><img src="Interview/Social_Media_Post/IDG.jpg" alt="IDG social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Miezu.jpg" target="_blank"><img src="Interview/Social_Media_Post/Miezu.jpg" alt="Miezu social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/shantinursingservices.jpg" target="_blank"><img src="Interview/Social_Media_Post/shantinursingservices.jpg" alt="Shanti Nursing Services social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Wolta.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta.jpg" alt="Wolta social media post" loading="lazy"></a>
+                        <a href="Interview/Social_Media_Post/Wolta2.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta2.jpg" alt="Wolta social media post" loading="lazy"></a>
+                    </div>
                 </div>
             </div>
         </section>
