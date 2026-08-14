@@ -505,6 +505,42 @@
             color: #fff
         }
 
+        .creative-section {
+            padding: 92px 0;
+            background: #202127;
+            color: #fff
+        }
+
+        .creative-section .heading h2 { color: #fff }
+        .creative-section .heading p { color: #bfc1ca }
+        .creative-section > .wrap > .showcase-panel { display: none }
+
+        .creative-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 20px
+        }
+
+        .creative-card {
+            position: relative;
+            min-height: 310px;
+            overflow: hidden;
+            padding: 28px;
+            border-radius: 20px;
+            color: #fff;
+            transition: transform .25s ease, box-shadow .25s ease
+        }
+
+        .creative-card:hover { transform: translateY(-6px); box-shadow: 0 18px 34px #00000030 }
+
+        .creative-video { background: linear-gradient(125deg, #151824, #4d346a) }
+        .creative-video:after { content:''; position:absolute; width:300px; height:300px; border-radius:50%; right:-50px; top:-85px; background:linear-gradient(135deg,#3677ff,#e36df2) }
+        .creative-social { background: linear-gradient(135deg, #ffae52, #e76d8a) }
+        .creative-social:after { content:'@'; position:absolute; right:28px; top:17px; font-size:190px; font-weight:800; line-height:1; color:#ffffff38; letter-spacing:-.15em }
+        .creative-card .card-symbol { position:absolute; right:29px; bottom:28px; width:73px; height:73px; border-radius:50%; display:grid; place-items:center; background:#ffffff24; backdrop-filter:blur(8px) }
+        .creative-card .brandlabel { color:#fff }
+        .creative-card .brandlabel small { color:#ffffffcc }
+
         .brandgrid {
             display: grid;
             grid-template-columns: 1.2fr .8fr;
@@ -1174,6 +1210,7 @@
 
             .hero-grid,
             .brandgrid,
+            .creative-grid,
             .skills,
             .creative {
                 grid-template-columns: 1fr
@@ -1332,13 +1369,13 @@
                 </div>
             </div>
         </section>
-        <section id="creative">
+        <section id="creative" class="creative-section">
             <div class="wrap">
                 <div class="heading">
-                    <div><span class="eyebrow">Video work</span>
-                        <h2>Stories in motion,<br>made to be remembered.</h2>
+                    <div><span class="eyebrow">Creative & social media</span>
+                        <h2>Ideas in motion,<br>made to connect.</h2>
                     </div>
-                    <p>A curated collection of video editing, motion graphics and 3D visual work.
+                    <p>From videos with personality to social content that people want to pause for.
                     </p>
                 </div>
                 <a class="showcase-panel" href="Video_Work.html">
@@ -1372,6 +1409,16 @@
                         <a href="Interview/Social_Media_Post/Wolta2.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta2.jpg" alt="Wolta social media post" loading="lazy"></a>
                     </div>
                 </a>
+                <div class="creative-grid">
+                    <a class="creative-card creative-video" href="Video_Work.html">
+                        <div class="brandlabel"><small>Video editing</small>Stories in motion, made to be remembered.</div>
+                        <div class="card-symbol"><i data-lucide="play" fill="currentColor" size="30"></i></div>
+                    </a>
+                    <a class="creative-card creative-social" href="Social_Media.html">
+                        <div class="brandlabel"><small>Social media design</small>Posts built to stop the scroll.</div>
+                        <div class="card-symbol"><i data-lucide="instagram" size="30"></i></div>
+                    </a>
+                </div>
             </div>
         </section>
         <section id="about">
