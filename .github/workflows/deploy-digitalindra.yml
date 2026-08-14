@@ -7,6 +7,7 @@ on:
       - 'Digital Indra/Index.html'
       - 'Case Study_JoraIQ.html'
       - 'Indrajeet_Resume.pdf'
+      - 'Jora/**'
       - '.github/workflows/deploy-digitalindra.yml'
       - 'deploy/.htaccess'
   workflow_dispatch:
