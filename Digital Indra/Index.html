@@ -927,6 +927,95 @@
             background: #ffffff24
         }
 
+        .showcase-panel {
+            margin-top: 26px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: #fff;
+            overflow: hidden
+        }
+
+        .showcase-panel summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 30px;
+            cursor: pointer;
+            list-style: none
+        }
+
+        .showcase-panel summary::-webkit-details-marker { display: none }
+        .showcase-panel .showcase-label { display: none }
+
+        .panel-title h3 {
+            font-size: clamp(28px, 3.3vw, 42px);
+            line-height: 1.05;
+            letter-spacing: -.06em;
+            margin: 9px 0 0
+        }
+
+        .panel-open {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+            padding: 11px 14px;
+            border-radius: 99px;
+            background: #eff4ff;
+            color: var(--purple);
+            font-size: 12px;
+            font-weight: 800
+        }
+
+        .showcase-panel[open] .panel-open { background: var(--ink); color: #fff }
+        .panel-gallery { padding: 0 24px 24px }
+
+        .showcase-panel[open] .video-showcase,
+        .showcase-panel[open] .social-showcase {
+            display: block;
+            columns: 3 280px;
+            column-gap: 18px
+        }
+
+        .showcase-panel[open] .video-showcase article,
+        .showcase-panel[open] .social-showcase a {
+            display: block;
+            min-height: 0;
+            margin: 0 0 18px;
+            break-inside: avoid;
+            transform: none;
+            box-shadow: none;
+            cursor: default
+        }
+
+        .showcase-panel[open] .video-showcase video {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: auto;
+            background: #171928;
+            object-fit: contain
+        }
+
+        .showcase-panel[open] .video-showcase .video-caption {
+            display: flex;
+            position: static;
+            height: auto;
+            min-height: 0;
+            padding: 12px 13px;
+            color: var(--ink);
+            background: #fff;
+            font-size: 13px;
+            letter-spacing: 0
+        }
+
+        .showcase-panel[open] .video-showcase .video-caption:before { display: none }
+        .showcase-panel[open] .video-showcase .video-caption i { position: static; width:auto; height:auto; padding:0; border-radius:0; color:var(--purple); background:transparent }
+
+        .showcase-panel[open] .social-showcase a { aspect-ratio: auto; border: 0; border-radius: 14px }
+        .showcase-panel[open] .social-showcase img { width: 100%; height: auto; object-fit: initial }
+
         .skills {
             display: grid;
             grid-template-columns: .85fr 1.15fr;
@@ -1064,6 +1153,10 @@
             .showcase-label p {
                 margin-top: 12px
             }
+
+            .showcase-panel summary { display: block; padding: 24px }
+            .panel-open { margin-top: 18px }
+            .panel-gallery { padding: 0 14px 14px }
 
             .hero-grid,
             .brandgrid,
@@ -1234,7 +1327,8 @@
                     <p>A curated collection of video editing, motion graphics and 3D visual work.
                     </p>
                 </div>
-                <div class="showcase-block" style="margin-top:0">
+                <details class="showcase-panel">
+                    <summary><div class="panel-title"><span class="eyebrow">Video work</span><h3>Video editing, motion<br>and 3D visual stories.</h3></div><span class="panel-open">Explore video work <i data-lucide="arrow-down" size="16"></i></span></summary>
                     <div class="showcase-label"><div><span class="eyebrow">Video editing</span><h3>Stories made to move.</h3></div><p>A collection of editing, motion and 3D work—each with its own rhythm, message and point of view.</p></div>
                     <div class="video-showcase">
                         <article><video controls preload="metadata" src="Interview/Video/Reasons_5.mp4"></video><div class="video-caption"><i data-lucide="play-circle" size="17"></i>Reasons</div></article>
@@ -1248,8 +1342,9 @@
                         <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/landscaping.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Landscaping — 3D Render</div></article>
                         <article><video controls preload="metadata" src="Interview/3D%20Video%20Render/WALKTH-ARCHIVES%20GAURAV%20GATHA%20GALLERY%20LUCKNOW%20WITH%20SOUND.mp4"></video><div class="video-caption"><i data-lucide="box" size="17"></i>Walkth Archives — 3D Render</div></article>
                     </div>
-                </div>
-                <div class="showcase-block social-work">
+                </details>
+                <details class="showcase-panel social-work">
+                    <summary><div class="panel-title"><span class="eyebrow">Social media design</span><h3>Posts built to<br>stop the scroll.</h3></div><span class="panel-open">Explore social work <i data-lucide="arrow-down" size="16"></i></span></summary>
                     <div class="showcase-label"><div><span class="eyebrow">Social media design</span><h3>Built to stop the scroll.</h3></div><p>Social posts designed with strong visual hooks, clear brand stories and a consistent system.</p></div>
                     <div class="social-showcase">
                         <a href="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" target="_blank"><img src="Interview/Social_Media_Post/Aaztech26-10-2023.jpg" alt="Aaztech social media post" loading="lazy"></a>
@@ -1262,7 +1357,7 @@
                         <a href="Interview/Social_Media_Post/Wolta.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta.jpg" alt="Wolta social media post" loading="lazy"></a>
                         <a href="Interview/Social_Media_Post/Wolta2.jpg" target="_blank"><img src="Interview/Social_Media_Post/Wolta2.jpg" alt="Wolta social media post" loading="lazy"></a>
                     </div>
-                </div>
+                </details>
             </div>
         </section>
         <section id="about">
@@ -1309,12 +1404,6 @@
     </footer>
     <script>
         lucide.createIcons();
-        document.querySelectorAll('.video-showcase article').forEach((card) => {
-            card.addEventListener('click', () => {
-                const video = card.querySelector('video');
-                if (video) window.open(video.src, '_blank', 'noopener');
-            });
-        });
     </script>
 </body>
 
