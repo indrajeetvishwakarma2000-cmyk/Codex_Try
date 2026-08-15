@@ -6,6 +6,7 @@ on:
     paths:
       - 'Digital Indra/Index.html'
       - 'Case Study_JoraIQ.html'
+      - 'Interview Prep.html'
       - 'Indrajeet_Resume.pdf'
       - 'Jora/**'
       - 'Video_Work.html'
@@ -32,6 +33,7 @@ jobs:
           mkdir deploy/site
           cp 'Digital Indra/Index.html' deploy/site/index.html
           cp 'Case Study_JoraIQ.html' deploy/site/Case\ Study_JoraIQ.html
+          cp 'Interview Prep.html' deploy/site/Interview\ Prep.html
           cp 'Indrajeet_Resume.pdf' deploy/site/Indrajeet_Resume.pdf
           cp 'Video_Work.html' deploy/site/Video_Work.html
           cp 'Social_Media.html' deploy/site/Social_Media.html
