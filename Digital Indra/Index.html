@@ -1,31 +1,809 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="DigitalIndra — UI/UX designer, brand designer and creative technologist.">
-  <title>DigitalIndra — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    :root{--ink:#202127;--muted:#6c7180;--paper:#fafafe;--line:#e7e7ef;--blue:#3e78ff;--purple:#925cff;--dark:#202127;--shadow:0 18px 45px rgba(35,37,52,.10)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Manrope,Arial,sans-serif}a{text-decoration:none;color:inherit}.wrap{width:min(1180px,calc(100% - 48px));margin:auto}.mono{font:500 11px/1 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--purple)}
-    .nav{height:78px;background:linear-gradient(100deg,#6c66f5,#745cf0);color:#fff}.nav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:7px;align-items:center;font-size:22px;font-weight:800;letter-spacing:-1px}.brandmark{width:30px;height:30px;border-radius:7px;background:#fff;color:#6c66f5;display:grid;place-items:center;font-size:20px;font-weight:800}.links{display:flex;gap:30px;font-size:13px;font-weight:700}.links a{opacity:.96}.links a:hover{opacity:.7}.connect{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:999px;background:#202127;color:#fff;font-size:13px;font-weight:800}.connect i{color:#29df80}.menu{display:none;border:0;background:transparent;color:#fff}
-    .hero{padding:90px 0 155px;background:radial-gradient(circle at 76% 15%,#edf1ff 0,transparent 28%)}.hero-grid{display:grid;grid-template-columns:1.18fr .82fr;align-items:center;gap:70px}.hero h1{max-width:650px;margin:0 0 22px;font-size:clamp(48px,6.1vw,76px);line-height:1.04;letter-spacing:-.07em}.grad{color:transparent;background:linear-gradient(100deg,var(--blue),var(--purple));background-clip:text;-webkit-background-clip:text}.hero p{max-width:540px;margin:0 0 31px;color:var(--muted);font-size:17px;line-height:1.75}.actions{display:flex;gap:12px;flex-wrap:wrap}.button{display:inline-flex;align-items:center;gap:9px;padding:14px 18px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:800}.button.primary{border:0;background:linear-gradient(100deg,var(--blue),var(--purple));color:#fff;box-shadow:0 12px 24px #8564ff35}.intro{height:430px;padding:15px;border:1px solid #e5e6ee;border-radius:27px;background:#fff;box-shadow:var(--shadow)}.intro iframe{width:100%;height:100%;border:0;border-radius:17px;background:#ececec}
-    section{padding:100px 0}.heading{margin-bottom:42px}.heading h2{max-width:780px;margin:14px 0 0;font-size:clamp(31px,4vw,50px);line-height:1.1;letter-spacing:-.06em}.case-grid,.creative-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.case{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;transition:transform .25s,box-shadow .25s}.case:hover,.creative-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}.case-thumb{height:234px;padding:21px;overflow:hidden}.case-body{display:flex;flex:1;flex-direction:column;padding:21px 22px 24px}.case h3{margin:0 0 9px;font-size:19px;letter-spacing:-.045em}.case p{margin:0;color:var(--muted);font-size:13px}.case-link{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:22px;color:var(--purple);font-size:13px;font-weight:800}.lms{background:#e4fbf2}.lms img{width:100%;height:100%;object-fit:contain}.interview{background:#f0eaff}.interview-ui{height:100%;padding:14px;border-radius:15px;background:#fff;box-shadow:0 12px 20px #7553c825}.interview-ui b{display:block;width:36%;height:13px;border-radius:5px;background:#ece9fb}.prompt{margin-top:15px;padding:15px;border-radius:8px;background:#513c88;color:#fff;font:10px 'DM Mono'}.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.choices i{height:37px;border-radius:6px;background:#eeebfa}.analytics{background:#fff1d5}.dash{height:100%;padding:17px;border-radius:15px;background:#21212c}.dash b{display:block;height:95px;border-radius:8px;background:linear-gradient(160deg,transparent 0 30%,#ffc54a 31% 34%,transparent 35% 51%,#875dff 52% 55%,transparent 56%),#2d2e39}.dash span{display:block;height:30px;margin-top:12px;border-radius:5px;background:linear-gradient(90deg,#393a48 30%,transparent 30% 34%,#393a48 34% 65%,transparent 65% 69%,#393a48 69%)}
-    .creative{background:var(--dark);color:#fff}.creative .heading h2{color:#fff}.creative .heading p{max-width:900px;margin:14px 0 0;color:#fff;font-size:clamp(22px,3vw,31px);font-weight:700;line-height:1.25;letter-spacing:-.04em}.creative-grid{margin-top:40px}.creative-card{display:flex;flex-direction:column;overflow:hidden;border-radius:20px;background:#fff;color:var(--ink);transition:transform .25s,box-shadow .25s}.creative-thumb{height:235px;padding:21px}.creative-card h3{margin:0 0 9px;font-size:19px;letter-spacing:-.045em}.creative-card p{margin:0;color:var(--muted);font-size:13px}.creative-body{display:flex;flex:1;flex-direction:column;padding:21px 22px 24px}.video-thumb{background:#e4fbf2;position:relative}.video-thumb:before{content:'';position:absolute;inset:29px;border-radius:14px;background:linear-gradient(135deg,#13c6a2,#63dbbd)}.video-thumb:after{content:'▶';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#5540a0;font-size:19px}.social-thumb{background:#f0eaff;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:9px}.social-thumb i{border-radius:9px;background:linear-gradient(145deg,#51408a,#a563f3)}.social-thumb i:nth-child(2){background:linear-gradient(145deg,#01b99c,#b6e471)}.social-thumb i:nth-child(3){background:linear-gradient(145deg,#fbba49,#ed784b)}.social-thumb i:nth-child(4){background:linear-gradient(145deg,#e2e7ff,#7c8cf1)}.brand-thumb{background:#fff1d5;padding:21px}.brand-thumb b{display:block;height:100%;border-radius:14px;background:#21212c;position:relative}.brand-thumb b:after{content:'';position:absolute;left:0;right:0;top:50%;height:4px;background:linear-gradient(90deg,#ffc64a,#8b5dfd);transform:skewY(-10deg)}
-    .skills{display:grid;grid-template-columns:.88fr 1.12fr;gap:76px;align-items:center}.skills h2{margin:13px 0 20px;font-size:clamp(38px,4.8vw,62px);line-height:1.05;letter-spacing:-.07em}.skills p{margin:0 0 28px;color:var(--muted);font-size:16px}.skill-list{display:grid;gap:12px}.skill{display:flex;align-items:center;gap:15px;padding:17px 18px;border:1px solid var(--line);border-radius:14px;background:#fff;font-weight:800}.skill-icon{width:39px;height:39px;display:grid;place-items:center;flex:0 0 auto;border-radius:11px;background:#f0efff;color:var(--purple)}.skill small{margin-left:auto;color:var(--muted);font-size:12px;font-weight:500}
-    .footer{padding:88px 0 25px;background:#fff;border-top:1px solid var(--line)}.footer-top{display:flex;justify-content:space-between;align-items:end;gap:30px;padding-bottom:65px}.footer h2{max-width:700px;margin:13px 0 0;font-size:clamp(44px,5.3vw,72px);line-height:1.02;letter-spacing:-.075em}.footer-bottom{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:12px}
-    @media(max-width:800px){.wrap{width:calc(100% - 32px)}.nav{height:69px}.links,.connect{display:none}.menu{display:block}.hero{padding:55px 0 80px}.hero-grid,.skills{grid-template-columns:1fr;gap:42px}.hero h1{font-size:clamp(43px,12vw,61px)}.intro{height:450px}.case-grid,.creative-grid{grid-template-columns:1fr}.case-thumb{height:215px}section{padding:67px 0}.creative{padding:67px 0}.creative-thumb{height:215px}.skills{gap:45px}.footer{padding-top:65px}.footer-top{display:block;padding-bottom:50px}.footer-top .button{margin-top:28px}.footer-bottom{gap:8px;flex-wrap:wrap}.skill small{font-size:10px}.heading{margin-bottom:28px}}
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="DigitalIndra — UI/UX designer, brand designer and creative technologist.">
+    <title>DigitalIndra — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --ink: #202127;
+            --muted: #6c7180;
+            --paper: #fafafe;
+            --line: #e7e7ef;
+            --blue: #3e78ff;
+            --purple: #925cff;
+            --dark: #202127;
+            --shadow: 0 18px 45px rgba(35, 37, 52, .10)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font: 15px/1.6 Manrope, Arial, sans-serif
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .wrap {
+            width: min(1180px, calc(100% - 48px));
+            margin: auto
+        }
+
+        .mono {
+            font: 500 11px/1 'DM Mono', monospace;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--purple)
+        }
+
+        .nav {
+            height: 78px;
+            background: linear-gradient(100deg, #6c66f5, #745cf0);
+            color: #fff
+        }
+
+        .nav .wrap {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .brand {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -1px
+        }
+
+        .brandmark {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            background: #fff;
+            color: #6c66f5;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            font-weight: 800
+        }
+
+        .links {
+            display: flex;
+            gap: 30px;
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .links a {
+            opacity: .96
+        }
+
+        .links a:hover {
+            opacity: .7
+        }
+
+        .connect {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 20px;
+            border-radius: 999px;
+            background: #202127;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .connect i {
+            color: #fff
+        }
+
+        .menu {
+            display: none;
+            border: 0;
+            background: transparent;
+            color: #fff
+        }
+
+        .hero {
+            padding: 90px 0 155px;
+            background: radial-gradient(circle at 76% 15%, #edf1ff 0, transparent 28%)
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.18fr .82fr;
+            align-items: center;
+            gap: 70px
+        }
+
+        .hero h1 {
+            max-width: 650px;
+            margin: 0 0 22px;
+            font-size: clamp(48px, 6.1vw, 76px);
+            line-height: 1.04;
+            letter-spacing: -.07em
+        }
+
+        .grad {
+            color: transparent;
+            background: linear-gradient(100deg, var(--blue), var(--purple));
+            background-clip: text;
+            -webkit-background-clip: text
+        }
+
+        .hero p {
+            max-width: 540px;
+            margin: 0 0 31px;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.75
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .button.primary {
+            border: 0;
+            background: linear-gradient(100deg, var(--blue), var(--purple));
+            color: #fff;
+            box-shadow: 0 12px 24px #8564ff35
+        }
+
+        .intro {
+            height: 430px;
+            padding: 15px;
+            border: 1px solid #e5e6ee;
+            border-radius: 27px;
+            background: #fff;
+            box-shadow: var(--shadow)
+        }
+
+        .intro iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 17px;
+            background: #ececec
+        }
+
+        section {
+            padding: 100px 0
+        }
+
+        .heading {
+            margin-bottom: 42px
+        }
+
+        .heading h2 {
+            max-width: 780px;
+            margin: 14px 0 0;
+            font-size: clamp(31px, 4vw, 50px);
+            line-height: 1.1;
+            letter-spacing: -.06em
+        }
+
+        .case-grid,
+        .creative-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .case {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: #fff;
+            transition: transform .25s, box-shadow .25s
+        }
+
+        .case:hover,
+        .creative-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow)
+        }
+
+        .case-thumb {
+            height: 234px;
+            padding: 21px;
+            overflow: hidden
+        }
+
+        .case-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 21px 22px 24px
+        }
+
+        .case h3 {
+            margin: 0 0 9px;
+            font-size: 19px;
+            letter-spacing: -.045em
+        }
+
+        .case p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .case-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 22px;
+            color: var(--purple);
+            font-size: 13px;
+            font-weight: 800
+        }
+
+        .lms {
+            background: #e4fbf2
+        }
+
+        .lms img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain
+        }
+
+        .interview {
+            background: #f0eaff
+        }
+
+        .interview-ui {
+            height: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 12px 20px #7553c825
+        }
+
+        .interview-ui b {
+            display: block;
+            width: 36%;
+            height: 13px;
+            border-radius: 5px;
+            background: #ece9fb
+        }
+
+        .prompt {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #513c88;
+            color: #fff;
+            font: 10px 'DM Mono'
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .choices i {
+            height: 37px;
+            border-radius: 6px;
+            background: #eeebfa
+        }
+
+        .analytics {
+            background: #fff1d5
+        }
+
+        .dash {
+            height: 100%;
+            padding: 17px;
+            border-radius: 15px;
+            background: #21212c
+        }
+
+        .dash b {
+            display: block;
+            height: 95px;
+            border-radius: 8px;
+            background: linear-gradient(160deg, transparent 0 30%, #ffc54a 31% 34%, transparent 35% 51%, #875dff 52% 55%, transparent 56%), #2d2e39
+        }
+
+        .dash span {
+            display: block;
+            height: 30px;
+            margin-top: 12px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #393a48 30%, transparent 30% 34%, #393a48 34% 65%, transparent 65% 69%, #393a48 69%)
+        }
+
+        .creative {
+            background: var(--dark);
+            color: #fff
+        }
+
+        .creative .heading h2 {
+            color: #fff
+        }
+
+        .creative .heading p {
+            max-width: 900px;
+            margin: 14px 0 0;
+            color: #fff;
+            font-size: clamp(22px, 3vw, 31px);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -.04em
+        }
+
+        .creative-grid {
+            margin-top: 40px
+        }
+
+        .creative-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #fff;
+            color: var(--ink);
+            transition: transform .25s, box-shadow .25s
+        }
+
+        .creative-thumb {
+            height: 235px;
+            padding: 21px
+        }
+
+        .creative-card h3 {
+            margin: 0 0 9px;
+            font-size: 19px;
+            letter-spacing: -.045em
+        }
+
+        .creative-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .creative-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 21px 22px 24px
+        }
+
+        .video-thumb {
+            background: #e4fbf2;
+            position: relative
+        }
+
+        .video-thumb:before {
+            content: '';
+            position: absolute;
+            inset: 29px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #13c6a2, #63dbbd)
+        }
+
+        .video-thumb:after {
+            content: '▶';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            color: #5540a0;
+            font-size: 19px
+        }
+
+        .social-thumb {
+            background: #f0eaff;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px
+        }
+
+        .social-thumb i {
+            border-radius: 9px;
+            background: linear-gradient(145deg, #51408a, #a563f3)
+        }
+
+        .social-thumb i:nth-child(2) {
+            background: linear-gradient(145deg, #01b99c, #b6e471)
+        }
+
+        .social-thumb i:nth-child(3) {
+            background: linear-gradient(145deg, #fbba49, #ed784b)
+        }
+
+        .social-thumb i:nth-child(4) {
+            background: linear-gradient(145deg, #e2e7ff, #7c8cf1)
+        }
+
+        .brand-thumb {
+            background: #fff1d5;
+            padding: 21px
+        }
+
+        .brand-thumb b {
+            display: block;
+            height: 100%;
+            border-radius: 14px;
+            background: #21212c;
+            position: relative
+        }
+
+        .brand-thumb b:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 4px;
+            background: linear-gradient(90deg, #ffc64a, #8b5dfd);
+            transform: skewY(-10deg)
+        }
+
+        .skills {
+            display: grid;
+            grid-template-columns: .88fr 1.12fr;
+            gap: 76px;
+            align-items: center
+        }
+
+        .skills h2 {
+            margin: 13px 0 20px;
+            font-size: clamp(38px, 4.8vw, 62px);
+            line-height: 1.05;
+            letter-spacing: -.07em
+        }
+
+        .skills p {
+            margin: 0 0 28px;
+            color: var(--muted);
+            font-size: 16px
+        }
+
+        .skill-list {
+            display: grid;
+            gap: 12px
+        }
+
+        .skill {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 17px 18px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fff;
+            font-weight: 800
+        }
+
+        .skill-icon {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            border-radius: 11px;
+            background: #f0efff;
+            color: var(--purple)
+        }
+
+        .skill small {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 500
+        }
+
+        .footer {
+            padding: 88px 0 25px;
+            background: #fff;
+            border-top: 1px solid var(--line)
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 30px;
+            padding-bottom: 65px
+        }
+
+        .footer h2 {
+            max-width: 700px;
+            margin: 13px 0 0;
+            font-size: clamp(44px, 5.3vw, 72px);
+            line-height: 1.02;
+            letter-spacing: -.075em
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--line);
+            padding-top: 20px;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        @media(max-width:800px) {
+            .wrap {
+                width: calc(100% - 32px)
+            }
+
+            .nav {
+                height: 69px
+            }
+
+            .links,
+            .connect {
+                display: none
+            }
+
+            .menu {
+                display: block
+            }
+
+            .hero {
+                padding: 55px 0 80px
+            }
+
+            .hero-grid,
+            .skills {
+                grid-template-columns: 1fr;
+                gap: 42px
+            }
+
+            .hero h1 {
+                font-size: clamp(43px, 12vw, 61px)
+            }
+
+            .intro {
+                height: 450px
+            }
+
+            .case-grid,
+            .creative-grid {
+                grid-template-columns: 1fr
+            }
+
+            .case-thumb {
+                height: 215px
+            }
+
+            section {
+                padding: 67px 0
+            }
+
+            .creative {
+                padding: 67px 0
+            }
+
+            .creative-thumb {
+                height: 215px
+            }
+
+            .skills {
+                gap: 45px
+            }
+
+            .footer {
+                padding-top: 65px
+            }
+
+            .footer-top {
+                display: block;
+                padding-bottom: 50px
+            }
+
+            .footer-top .button {
+                margin-top: 28px
+            }
+
+            .footer-bottom {
+                gap: 8px;
+                flex-wrap: wrap
+            }
+
+            .skill small {
+                font-size: 10px
+            }
+
+            .heading {
+                margin-bottom: 28px
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <header class="nav"><div class="wrap"><a class="brand" href="#home"><span class="brandmark">i</span>Digital Indra</a><nav class="links"><a href="#work">UX Case Studies</a><a href="Pure_Moo.html">Branding</a><a href="#creative">Creative work</a><a href="#about">About</a></nav><a class="connect" href="mailto:hello@digitalindra.com">Let’s Connect <i data-lucide="message-circle" size="19"></i></a><button class="menu" aria-label="Open menu"><i data-lucide="menu"></i></button></div></header>
-  <main>
-    <section id="home" class="hero"><div class="wrap hero-grid"><div><h1>I turn ideas into<br><span class="grad">experiences</span><br>people remember.</h1><p>Hi, I’m Indrajeet — a multidisciplinary designer crafting thoughtful digital products, memorable brands and content that moves people.</p><div class="actions"><a class="button primary" href="#work">Explore my work <i data-lucide="arrow-down-right" size="17"></i></a><a class="button" href="Indrajeet_Resume.pdf" download="Indrajeet_Resume.pdf">Get resume <i data-lucide="download" size="17"></i></a></div></div><div class="intro"><iframe src="https://www.youtube.com/embed/7TNZf8BdeEs" title="Introduction to Indrajeet" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div></section>
-    <section id="work"><div class="wrap"><div class="heading"><span class="mono">Selected UX Case Studies</span><h2>Case studies with purpose behind every pixel.</h2></div><div class="case-grid"><article class="case"><div class="case-thumb lms"><img src="Jora/1st.png" alt="JoraIQ learning platform"></div><div class="case-body"><h3>JoraIQ AI Powered Learning Platform</h3><p>A reimagined LMS app, featuring a fully interactive mascot animation built with Rive and code.</p><a class="case-link" href="Case%20Study_JoraIQ.html">View case study <i data-lucide="arrow-up-right" size="16"></i></a></div></article><article class="case"><div class="case-thumb interview"><div class="interview-ui"><b></b><div class="prompt">How would you approach this problem?</div><div class="choices"><i></i><i></i><i></i><i></i></div></div></div><div class="case-body"><h3>AI Interview Preparation</h3><p>An approachable preparation platform that helps candidates practise, learn and show up ready.</p><a class="case-link" href="Interview%20Prep.html">View case study <i data-lucide="arrow-up-right" size="16"></i></a></div></article><article class="case"><div class="case-thumb analytics"><div class="dash"><b></b><span></span></div></div><div class="case-body"><h3>Analytics Shiksha</h3><p>A clean web experience for a data analytics company—making complex information easy to understand.</p><a class="case-link" href="#contact">View case study <i data-lucide="arrow-up-right" size="16"></i></a></div></article></div></div></section>
-    <section id="creative" class="creative"><div class="wrap"><div class="heading"><span class="mono">Selected Creative Works</span><p>A curated mix of video, social design, branding, and visual storytelling.</p></div><div class="creative-grid"><a class="creative-card" href="Video_Work.html"><div class="creative-thumb video-thumb"></div><div class="creative-body"><h3>Video Works</h3><p>Creative videos, reels, ads, and motion content built to engage and communicate.</p><span class="case-link">Explore Videos <i data-lucide="arrow-up-right" size="16"></i></span></div></a><a class="creative-card" href="Social_Media.html"><div class="creative-thumb social-thumb"><i></i><i></i><i></i><i></i></div><div class="creative-body"><h3>Post Design</h3><p>Scroll-stopping social media creatives, campaigns, and visual content designed for impact.</p><span class="case-link">Explore Designs <i data-lucide="arrow-up-right" size="16"></i></span></div></a><a class="creative-card" href="Pure_Moo.html"><div class="creative-thumb brand-thumb"><b></b></div><div class="creative-body"><h3>Branding Works</h3><p>Distinctive brand identities, logos, and visual systems that make brands memorable.</p><span class="case-link">Explore Branding <i data-lucide="arrow-up-right" size="16"></i></span></div></a></div></div></section>
-    <section id="about"><div class="wrap skills"><div><span class="mono">Designer with a builder mindset</span><h2>Creative craft,<br>plus the power to<br>make it real.</h2><p>My design thinking is supported by practical front-end knowledge. I use AI thoughtfully as a vibe coder to explore, prototype and bring ideas closer to life.</p><a class="button primary" href="mailto:hello@digitalindra.com">Work with me <i data-lucide="arrow-up-right" size="17"></i></a></div><div class="skill-list"><div class="skill"><span class="skill-icon"><i data-lucide="layout-template"></i></span>UI/UX & product design <small>Figma · Rive</small></div><div class="skill"><span class="skill-icon"><i data-lucide="palette"></i></span>Brand & graphic design <small>Identity · Social</small></div><div class="skill"><span class="skill-icon"><i data-lucide="code-2"></i></span>HTML, CSS & JavaScript <small>Front-end basics</small></div><div class="skill"><span class="skill-icon"><i data-lucide="sparkles"></i></span>AI vibe coding <small>Rapid prototyping</small></div></div></div></section>
-  </main>
-  <footer id="contact" class="footer"><div class="wrap"><div class="footer-top"><div><span class="mono">Have a project in mind?</span><h2>Let’s create<br><span class="grad">something meaningful.</span></h2></div><a class="button primary" href="mailto:hello@digitalindra.com">hello@digitalindra.com <i data-lucide="arrow-up-right" size="17"></i></a></div><div class="footer-bottom"><span>© 2026 DigitalIndra. All rights reserved.</span><span>Creative. Strategic. Impactful.</span></div></div></footer>
-  <script>lucide.createIcons();</script>
-</body></html>
+    <header class="nav">
+        <div class="wrap"><a class="brand" href="#home"><span class="brandmark">i</span>Digital Indra</a>
+            <nav class="links"><a href="#work">UX Case Studies</a><a href="Pure_Moo.html">Branding</a><a
+                    href="#creative">Creative work</a><a href="#about">About</a></nav><a class="connect"
+                href="https://www.linkedin.com/in/indra" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <i data-lucide="linkedin"
+                    size="18"></i></a><button class="menu" aria-label="Open menu"><i data-lucide="menu"></i></button>
+        </div>
+    </header>
+    <main>
+        <section id="home" class="hero">
+            <div class="wrap hero-grid">
+                <div>
+                    <h1>I turn ideas into<br><span class="grad">experiences</span><br>people remember.</h1>
+                    <p>Hi, I’m Indrajeet — a multidisciplinary designer crafting thoughtful digital products, memorable
+                        brands and content that moves people.</p>
+                    <div class="actions"><a class="button primary" href="#work">Explore my work <i
+                                data-lucide="arrow-down-right" size="17"></i></a><a class="button"
+                            href="Indrajeet_Resume.pdf" download="Indrajeet_Resume.pdf">Get resume <i
+                                data-lucide="download" size="17"></i></a></div>
+                </div>
+                <div class="intro"><iframe src="https://www.youtube.com/embed/7TNZf8BdeEs"
+                        title="Introduction to Indrajeet" loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe></div>
+            </div>
+        </section>
+        <section id="work">
+            <div class="wrap">
+                <div class="heading"><span class="mono">Selected UX Case Studies</span>
+                    <h2>Case studies with purpose behind every pixel.</h2>
+                </div>
+                <div class="case-grid">
+                    <article class="case">
+                        <div class="case-thumb lms"><img src="Jora/1st.png" alt="JoraIQ learning platform"></div>
+                        <div class="case-body">
+                            <h3>JoraIQ AI Powered Learning Platform</h3>
+                            <p>A reimagined LMS app, featuring a fully interactive mascot animation built with Rive and
+                                code.</p><a class="case-link" href="Case%20Study_JoraIQ.html">View case study <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
+                        </div>
+                    </article>
+                    <article class="case">
+                        <div class="case-thumb interview">
+                            <div class="interview-ui"><b></b>
+                                <div class="prompt">How would you approach this problem?</div>
+                                <div class="choices"><i></i><i></i><i></i><i></i></div>
+                            </div>
+                        </div>
+                        <div class="case-body">
+                            <h3>AI Interview Preparation</h3>
+                            <p>An approachable preparation platform that helps candidates practise, learn and show up
+                                ready.</p><a class="case-link" href="Interview%20Prep.html">View case study <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
+                        </div>
+                    </article>
+                    <article class="case">
+                        <div class="case-thumb analytics">
+                            <div class="dash"><b></b><span></span></div>
+                        </div>
+                        <div class="case-body">
+                            <h3>Analytics Shiksha</h3>
+                            <p>A clean web experience for a data analytics company—making complex information easy to
+                                understand.</p><a class="case-link" href="#contact">View case study <i
+                                    data-lucide="arrow-up-right" size="16"></i></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section id="creative" class="creative">
+            <div class="wrap">
+                <div class="heading"><span class="mono">Selected Creative Works</span>
+                    <p>A curated mix of video, social design, branding, and visual storytelling.</p>
+                </div>
+                <div class="creative-grid"><a class="creative-card" href="Video_Work.html">
+                        <div class="creative-thumb video-thumb"></div>
+                        <div class="creative-body">
+                            <h3>Video Works</h3>
+                            <p>Creative videos, reels, ads, and motion content built to engage and communicate.</p><span
+                                class="case-link">Explore Videos <i data-lucide="arrow-up-right" size="16"></i></span>
+                        </div>
+                    </a><a class="creative-card" href="Social_Media.html">
+                        <div class="creative-thumb social-thumb"><i></i><i></i><i></i><i></i></div>
+                        <div class="creative-body">
+                            <h3>Post Design</h3>
+                            <p>Scroll-stopping social media creatives, campaigns, and visual content designed for
+                                impact.</p><span class="case-link">Explore Designs <i data-lucide="arrow-up-right"
+                                    size="16"></i></span>
+                        </div>
+                    </a><a class="creative-card" href="Pure_Moo.html">
+                        <div class="creative-thumb brand-thumb"><b></b></div>
+                        <div class="creative-body">
+                            <h3>Branding Works</h3>
+                            <p>Distinctive brand identities, logos, and visual systems that make brands memorable.</p>
+                            <span class="case-link">Explore Branding <i data-lucide="arrow-up-right"
+                                    size="16"></i></span>
+                        </div>
+                    </a></div>
+            </div>
+        </section>
+        <section id="about">
+            <div class="wrap skills">
+                <div><span class="mono">Designer with a builder mindset</span>
+                    <h2>Creative craft,<br>plus the power to<br>make it real.</h2>
+                    <p>My design thinking is supported by practical front-end knowledge. I use AI thoughtfully as a vibe
+                        coder to explore, prototype and bring ideas closer to life.</p><a class="button primary"
+                        href="mailto:hello@digitalindra.com">Work with me <i data-lucide="arrow-up-right"
+                            size="17"></i></a>
+                </div>
+                <div class="skill-list">
+                    <div class="skill"><span class="skill-icon"><i data-lucide="layout-template"></i></span>UI/UX &
+                        product design <small>Figma · Rive</small></div>
+                    <div class="skill"><span class="skill-icon"><i data-lucide="palette"></i></span>Brand & graphic
+                        design <small>Identity · Social</small></div>
+                    <div class="skill"><span class="skill-icon"><i data-lucide="code-2"></i></span>HTML, CSS &
+                        JavaScript <small>Front-end basics</small></div>
+                    <div class="skill"><span class="skill-icon"><i data-lucide="sparkles"></i></span>AI vibe coding
+                        <small>Rapid prototyping</small></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer id="contact" class="footer">
+        <div class="wrap">
+            <div class="footer-top">
+                <div><span class="mono">Have a project in mind?</span>
+                    <h2>Let’s create<br><span class="grad">something meaningful.</span></h2>
+                </div><a class="button primary" href="mailto:hello@digitalindra.com">hello@digitalindra.com <i
+                        data-lucide="arrow-up-right" size="17"></i></a>
+            </div>
+            <div class="footer-bottom"><span>© 2026 DigitalIndra. All rights reserved.</span><span>Creative. Strategic.
+                    Impactful.</span></div>
+        </div>
+    </footer>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
