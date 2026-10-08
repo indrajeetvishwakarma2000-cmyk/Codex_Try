@@ -3,29 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JoraIQ Product Design Case Study | Indra</title>
+    <title>JoraIQ Product Design Case Study — DigitalIndra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        mono: ['DM Mono', 'monospace'],
                     },
                     colors: {
                         jora: {
-                            purple: '#7E57C2', // JoraIQ primary accent
-                            bg: '#F7F7F5',
-                            surface: '#FFFFFF',
-                            textPrimary: '#111111',
-                            textSecondary: '#6B6B6B',
-                            border: '#E8E8E8',
-                            dark: '#111111'
+                            purple: '#a159ff',
+                            cyan: '#1abcfe',
+                            bg: '#000000',
+                            surface: '#121212',
+                            textPrimary: '#ffffff',
+                            textSecondary: '#a0a0a5',
+                            border: '#1c1c1c',
+                            dark: '#ffffff'
                         }
                     },
+                    borderRadius: {
+                        '4xl': '24px',
+                    },
+                    transitionTimingFunction: {
+                        'custom-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+                    }
+                }
+            }
+        },
                     borderRadius: {
                         '4xl': '20px',
                     },
@@ -37,12 +48,112 @@
         }
     </script>
     <style>
+        :root {
+            --bg: #000000;
+            --surface: #121212;
+            --border: #1c1c1c;
+            --purple: #a159ff;
+            --cyan: #1abcfe;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F7F7F5;
-            color: #111111;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+            background-color: #000000 !important;
+            color: #ffffff !important;
             scroll-behavior: smooth;
         }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #8e8e93;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid #1c1c1c;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: #2e2e2e;
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(-2px);
+        }
+
+        /* Dark Theme Component Overrides */
+        .bg-white {
+            background-color: #121212 !important;
+            border-color: #1c1c1c !important;
+            color: #ffffff !important;
+        }
+
+        .bg-purple-50, .bg-purple-100 {
+            background-color: #161226 !important;
+            border-color: #2b1f48 !important;
+        }
+
+        .text-purple-700, .text-purple-950 {
+            color: #c084fc !important;
+        }
+
+        .bg-blue-100 {
+            background-color: #101626 !important;
+            border-color: #1c2c48 !important;
+        }
+
+        .text-blue-700, .text-blue-950 {
+            color: #7dd3fc !important;
+        }
+
+        .bg-emerald-100 {
+            background-color: #0f1c18 !important;
+            border-color: #18382c !important;
+        }
+
+        .text-emerald-700, .text-emerald-950 {
+            color: #6ee7b7 !important;
+        }
+
+        .bg-orange-100 {
+            background-color: #221812 !important;
+            border-color: #422618 !important;
+        }
+
+        .text-orange-700, .text-orange-950 {
+            color: #fdba74 !important;
+        }
+
+        .border-purple-100, .border-purple-200 {
+            border-color: #281e3e !important;
+        }
+
+        .border-blue-200 {
+            border-color: #182842 !important;
+        }
+
+        .border-emerald-200 {
+            border-color: #163628 !important;
+        }
+
+        .border-orange-200 {
+            border-color: #3e2416 !important;
+        }
+
+        .text-gray-400 {
+            color: #9c9c9c !important;
+        }
+
+        .img-placeholder {
+            background-color: #141418 !important;
+            border-color: #22222a !important;
+            color: #55555e !important;
+        }
+
 
         /* Typography Fluidity */
         .text-fluid-hero { font-size: clamp(40px, 8vw, 140px); line-height: 1.1; letter-spacing: -0.02em; }
@@ -103,7 +214,7 @@
             top: 0;
             left: 0;
             height: 4px;
-            background-color: #7E57C2;
+            background: linear-gradient(90deg, #1abcfe, #a159ff);
             width: 0%;
             z-index: 100;
             transition: width 0.1s;
@@ -115,7 +226,7 @@
             top: 20px;
             z-index: 50;
             backdrop-filter: blur(10px);
-            background-color: rgba(247, 247, 245, 0.8);
+            background-color: rgba(0, 0, 0, 0.88); border-bottom: 1px solid #1c1c1c;
         }
 
         /* Hide scrollbar for horizontal galleries */
@@ -142,6 +253,16 @@
 <body class="antialiased">
 
     <div id="progress-bar"></div>
+    <!-- BRAND NAVIGATION HEADER -->
+    <nav class="max-w-[1200px] mx-auto w-full px-6 md:px-12 pt-8 pb-4 flex items-center justify-between border-b border-[#1c1c1c]">
+        <a href="index.html" aria-label="Digital Indra Home">
+            <img src="Jora/Logo_Web.png" alt="Digital Indra Logo" style="height: 48px; width: auto;" onerror="this.onerror=null; this.src='../Jora/Logo_Web.png';">
+        </a>
+        <a href="index.html" class="back-btn">
+            ← Back to Portfolio
+        </a>
+    </nav>
+
 
     <header id="overview" class="min-h-[90vh] flex flex-col justify-center px-6 md:px-12 max-w-[1440px] mx-auto pt-20">
         <div class="max-w-[1200px] mx-auto w-full fade-up">
@@ -169,10 +290,10 @@
             <img src="Jora/1st.png" alt="JoraIQ Hero Mockup" class="object-contain">
         </div>
         <div class="w-full max-w-[1200px] mx-auto mt-6 md:mt-8 grid grid-cols-[43%_1fr] gap-2 md:gap-4 fade-up">
-            <a href="https://www.analyticsshiksha.com/student/" target="_blank" rel="noopener noreferrer" class="group inline-flex min-w-0 items-center justify-between rounded-xl border-2 border-emerald-500 bg-white px-3 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-200 md:px-5 md:py-4 md:text-base">
+            <a href="https://www.analyticsshiksha.com/student/" target="_blank" rel="noopener noreferrer" class="group inline-flex min-w-0 items-center justify-between rounded-xl border border-[#1c1c1c] bg-[#121212] px-3 py-3 text-sm font-semibold text-[#1abcfe] transition hover:bg-emerald-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-200 md:px-5 md:py-4 md:text-base">
                 <span>Explore Old LMS</span><span aria-hidden="true" class="text-xl transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
             </a>
-            <a href="http://analytics.joraiq.ai/" target="_blank" rel="noopener noreferrer" class="group inline-flex min-w-0 items-center justify-between rounded-xl border-2 border-emerald-500 bg-white px-3 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-200 md:px-5 md:py-4 md:text-base">
+            <a href="http://analytics.joraiq.ai/" target="_blank" rel="noopener noreferrer" class="group inline-flex min-w-0 items-center justify-between rounded-xl border border-[#1c1c1c] bg-[#121212] px-3 py-3 text-sm font-semibold text-[#1abcfe] transition hover:bg-emerald-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-emerald-200 md:px-5 md:py-4 md:text-base">
                 <span>Explore New LMS</span><span aria-hidden="true" class="text-xl transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
             </a>
         </div>
