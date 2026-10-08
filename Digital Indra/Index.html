@@ -3,270 +3,669 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="DigitalIndra — UI/UX designer, brand designer and creative technologist.">
-    <title>DigitalIndra — Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DigitalIndra — UI/UX designer, brand designer, video creator and front-end developer.">
+    <title>Digital Indra — Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --ink: #202127;
-            --muted: #6c7180;
-            --paper: #fafafe;
-            --line: #e7e7ef;
-            --blue: #3e78ff;
-            --purple: #925cff;
-            --dark: #202127;
-            --shadow: 0 18px 45px rgba(35, 37, 52, .10)
+            --bg: #000000;
+            --paper: #121212;
+            --card-bg: #121212;
+            --card-border: #1c1c1c;
+            --card-border-hover: #2e2e2e;
+            --ink: #ffffff;
+            --text-secondary: #d9d9d9;
+            --muted: #8e8e93;
+            --muted-light: #636366;
+            --border: #1c1c1c;
+            --line: #1c1c1c;
+            --dark: #000000;
+            --blue-accent: #0368ff;
+            --cyan-accent: #1abcfe;
+            --purple: #a159ff;
+            --purple-grad: linear-gradient(135deg, #1abcfe 0%, #a159ff 100%);
+            --purple-dot: #1abcfe;
+            --shadow-subtle: 0 4px 20px -2px rgba(0, 0, 0, 0.7);
+            --shadow-card: 0 20px 45px -4px rgba(0, 0, 0, 0.95);
+            --radius-pill: 9999px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         html {
-            scroll-behavior: smooth
+            scroll-behavior: smooth;
         }
 
         body {
-            margin: 0;
-            background: var(--paper);
+            background: var(--bg);
             color: var(--ink);
-            font: 15px/1.6 Manrope, Arial, sans-serif
+            font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
             text-decoration: none;
-            color: inherit
+            color: inherit;
         }
 
         .wrap {
             width: min(1180px, calc(100% - 48px));
-            margin: auto
+            margin-inline: auto;
         }
 
-        .mono {
-            font: 500 11px/1 'DM Mono', monospace;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--purple)
-        }
-
-        .nav {
-            height: 78px;
-            background: linear-gradient(100deg, #6c66f5, #745cf0);
-            color: #fff
-        }
-
-        .nav .wrap {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between
-        }
-
-        .brand {
-            display: flex;
-            gap: 7px;
-            align-items: center;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -1px
-        }
-
-        .brandmark {
-            width: 30px;
-            height: 30px;
-            border-radius: 7px;
-            background: #fff;
-            color: #6c66f5;
-            display: grid;
-            place-items: center;
-            font-size: 20px;
-            font-weight: 800
-        }
-
-        .links {
-            display: flex;
-            gap: 30px;
-            font-size: 13px;
-            font-weight: 700
-        }
-
-        .links a {
-            opacity: .96
-        }
-
-        .links a:hover {
-            opacity: .7
-        }
-
-        .connect {
+        /* SECTION BADGE / EYEBROW (SALMAN AHMED STYLE PILL CHIP) */
+        .section-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 13px 20px;
-            border-radius: 999px;
-            background: #202127;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 800
-        }
-
-        .connect i {
-            color: #fff
-        }
-
-        .menu {
-            display: none;
-            border: 0;
-            background: transparent;
-            color: #fff
-        }
-
-        .hero {
-            padding: 90px 0 155px;
-            background: radial-gradient(circle at 76% 15%, #edf1ff 0, transparent 28%)
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.18fr .82fr;
-            align-items: center;
-            gap: 70px
-        }
-
-        .hero h1 {
-            max-width: 650px;
-            margin: 0 0 22px;
-            font-size: clamp(48px, 6.1vw, 76px);
-            line-height: 1.04;
-            letter-spacing: -.07em
-        }
-
-        .grad {
-            color: transparent;
-            background: linear-gradient(100deg, var(--blue), var(--purple));
-            background-clip: text;
-            -webkit-background-clip: text
-        }
-
-        .hero p {
-            max-width: 540px;
-            margin: 0 0 31px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             color: var(--muted);
-            font-size: 17px;
-            line-height: 1.75
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 16px;
+            width: fit-content;
         }
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap
+        .purple-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple-dot);
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(26, 188, 254, 0.75);
         }
 
-        .button {
+        .text-gradient-purple {
+            background: var(--purple-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* BUTTONS */
+        .btn {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid var(--line);
-            background: #fff;
-            font-size: 13px;
-            font-weight: 800
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: var(--radius-pill);
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            text-decoration: none;
         }
 
-        .button.primary {
-            border: 0;
-            background: linear-gradient(100deg, var(--blue), var(--purple));
-            color: #fff;
-            box-shadow: 0 12px 24px #8564ff35
+        .btn-dark {
+            background: #ffffff;
+            color: #000000;
+            font-weight: 700;
+            box-shadow: 0 4px 18px rgba(255, 255, 255, 0.12);
         }
 
-        .intro {
-            height: 430px;
-            padding: 15px;
-            border: 1px solid #e5e6ee;
-            border-radius: 27px;
-            background: #fff;
-            box-shadow: var(--shadow)
+        .btn-dark:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 26px rgba(255, 255, 255, 0.25);
         }
 
-        .intro iframe {
+        .btn-outline {
+            background: #121212;
+            color: #ffffff;
+            border: 1px solid #262626;
+        }
+
+        .btn-outline:hover {
+            background: #1c1c1c;
+            border-color: #383838;
+            transform: translateY(-2px);
+        }
+
+        .btn-white {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-white:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.22);
+        }
+
+        /* ========================================================
+           1. HERO & VIDEO SECTION (ALWAYS FIT EDGE TO EDGE)
+        ======================================================== */
+        .hero-wrapper {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .hero-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 16 / 9;
+            height: auto;
+            margin: 0;
+            border-radius: 0; /* Always fit edge to edge */
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .hero-video {
             width: 100%;
             height: 100%;
-            border: 0;
-            border-radius: 17px;
-            background: #ececec
+            object-fit: contain; /* Full width and height, ZERO CROP */
+            object-position: center center;
+            display: block;
+            border-radius: 0;
+            background: #000000;
         }
 
-        section {
-            padding: 100px 0
+        /* Top Overlay & Nav */
+        .hero-top-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px clamp(18px, 4vw, 50px);
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 70%, transparent 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 25;
+            box-sizing: border-box;
         }
 
-        .heading {
-            margin-bottom: 42px
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        .heading h2 {
-            max-width: 780px;
-            margin: 14px 0 0;
-            font-size: clamp(31px, 4vw, 50px);
-            line-height: 1.1;
-            letter-spacing: -.06em
+        .brand-logo-img {
+            height: 58px;
+            width: auto;
+            max-width: 270px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
+            transition: transform 0.25s ease, opacity 0.25s ease;
         }
 
-        .case-grid,
-        .creative-grid {
+        .brand-logo:hover .brand-logo-img {
+            transform: scale(1.03);
+            opacity: 0.95;
+        }
+
+        /* Unmute Floating Pill Badge */
+        .unmute-pill {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 11px 22px;
+            border-radius: var(--radius-pill);
+            font-size: 13.5px;
+            font-weight: 700;
+            display: none;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+            z-index: 30;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            transition: transform 0.2s ease, background 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .unmute-pill:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            background: #000000;
+            border-color: var(--cyan-accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .nav-links a {
+            transition: color 0.2s, opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            opacity: 1;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .btn-talk {
+            padding: 10px 22px;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        /* Bottom Controls Overlay */
+        .hero-bottom-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 40px clamp(20px, 4.5vw, 60px) 24px;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.45) 50%, transparent 100%);
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-sizing: border-box;
+        }
+
+        /* Scroll to explore badge */
+        .scroll-explore {
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            user-select: none;
+            margin-bottom: 4px;
+        }
+
+        .scroll-explore:hover {
+            opacity: 1;
+            transform: translateY(2px);
+        }
+
+        .mouse-icon {
+            width: 17px;
+            height: 27px;
+            border: 1.8px solid rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mouse-wheel {
+            width: 2.5px;
+            height: 5px;
+            background: #ffffff;
+            border-radius: 2px;
+            margin-top: 5px;
+            animation: mouseBob 1.6s ease-in-out infinite;
+        }
+
+        @keyframes mouseBob {
+            0% { transform: translateY(0); opacity: 1; }
+            70% { transform: translateY(8px); opacity: 0.2; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Controls row */
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .ctrl-btn {
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(255, 255, 255, 0.26);
+            transform: scale(1.06);
+        }
+
+        .time-display {
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+        }
+
+        .scrubber-wrap {
+            flex: 1;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .scrubber-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            transition: height 0.15s ease;
+        }
+
+        .scrubber-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .scrubber-wrap:hover .scrubber-track {
+            height: 6px;
+        }
+
+        /* ========================================================
+           2. ABOUT ME SECTION
+        ======================================================== */
+        .section-about {
+            padding: 85px 0 65px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-title {
+            font-size: clamp(34px, 4.3vw, 48px);
+            font-weight: 800;
+            line-height: 1.14;
+            letter-spacing: -0.04em;
+            color: var(--ink);
+            margin-bottom: 20px;
+        }
+
+        .about-desc {
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin-bottom: 32px;
+        }
+
+        .about-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* Stats on Right */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px
+            gap: 24px;
+            padding-left: 20px;
         }
 
-        .case {
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-num {
+            font-size: clamp(34px, 3.8vw, 46px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--ink);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.3;
+            color: var(--muted);
+        }
+
+        /* ========================================================
+           3. SELECTED UX CASE STUDIES (PREVIOUS CONTENT PRESERVED)
+        ======================================================== */
+        .section-case-studies {
+            padding: 60px 0 85px;
+        }
+
+        .section-header {
+            margin-bottom: 36px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(30px, 3.8vw, 46px);
+            font-weight: 800;
+            line-height: 1.12;
+            letter-spacing: -0.04em;
+            color: var(--ink);
+            margin-top: 4px;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .case-card {
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: 1px solid var(--line);
+            border: 1px solid var(--border);
             border-radius: 20px;
-            background: #fff;
-            transition: transform .25s, box-shadow .25s
+            background: var(--card-bg);
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
         }
 
-        .case:hover,
-        .creative-card:hover {
+        .case-card:hover {
             transform: translateY(-6px);
-            box-shadow: var(--shadow)
+            border-color: var(--card-border-hover);
+            box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
         .case-thumb {
-            height: 234px;
-            padding: 21px;
-            overflow: hidden
+            height: 235px;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #161616;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .case-thumb.lms {
+            background: #161616;
+        }
+
+        .case-thumb.lms img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.35s ease;
+        }
+
+        .case-card:hover .case-thumb.lms img {
+            transform: scale(1.03);
+        }
+
+        .case-thumb.interview {
+            background: #161616;
+        }
+
+        .interview-ui {
+            width: 100%;
+            height: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            background: #1c1c22;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .interview-ui b {
+            display: block;
+            width: 40%;
+            height: 12px;
+            border-radius: 5px;
+            background: #2b2b36;
+        }
+
+        .prompt-box {
+            margin-top: 14px;
+            padding: 13px 14px;
+            border-radius: 8px;
+            background: #252233;
+            border: 1px solid rgba(161, 89, 255, 0.25);
+            color: #ffffff;
+            font: 11.5px/1.4 'DM Mono', monospace;
+        }
+
+        .choices-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .choices-box i {
+            height: 34px;
+            border-radius: 6px;
+            background: #22222a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: block;
+        }
+
+        .case-thumb.analytics {
+            background: #161616;
+        }
+
+        .dash-box {
+            width: 100%;
+            height: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            background: #1c1c22;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dash-box b {
+            display: block;
+            height: 95px;
+            border-radius: 8px;
+            background: linear-gradient(160deg, transparent 0 30%, #1abcfe 31% 34%, transparent 35% 51%, #a159ff 52% 55%, transparent 56%), #24242c;
+        }
+
+        .dash-box span {
+            display: block;
+            height: 28px;
+            margin-top: 12px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #2a2a34 30%, transparent 30% 34%, #2a2a34 34% 65%, transparent 65% 69%, #2a2a34 69%);
         }
 
         .case-body {
             display: flex;
             flex: 1;
             flex-direction: column;
-            padding: 21px 22px 24px
+            padding: 22px 24px 24px;
         }
 
-        .case h3 {
-            margin: 0 0 9px;
+        .case-card h3 {
+            margin: 0 0 8px;
             font-size: 19px;
-            letter-spacing: -.045em
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            color: #ffffff;
         }
 
-        .case p {
+        .case-card p {
             margin: 0;
-            color: var(--muted);
-            font-size: 13px
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            line-height: 1.55;
         }
 
         .case-link {
@@ -274,111 +673,47 @@
             align-items: center;
             gap: 8px;
             margin-top: auto;
-            padding-top: 22px;
+            padding-top: 20px;
             color: var(--purple);
             font-size: 13px;
-            font-weight: 800
-        }
-
-        .lms {
-            background: #e4fbf2
-        }
-
-        .lms img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain
-        }
-
-        .interview {
-            background: #f0eaff
-        }
-
-        .interview-ui {
-            height: 100%;
-            padding: 14px;
-            border-radius: 15px;
-            background: #fff;
-            box-shadow: 0 12px 20px #7553c825
-        }
-
-        .interview-ui b {
-            display: block;
-            width: 36%;
-            height: 13px;
-            border-radius: 5px;
-            background: #ece9fb
-        }
-
-        .prompt {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #513c88;
-            color: #fff;
-            font: 10px 'DM Mono'
-        }
-
-        .choices {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px
-        }
-
-        .choices i {
-            height: 37px;
-            border-radius: 6px;
-            background: #eeebfa
-        }
-
-        .analytics {
-            background: #fff1d5
-        }
-
-        .dash {
-            height: 100%;
-            padding: 17px;
-            border-radius: 15px;
-            background: #21212c
-        }
-
-        .dash b {
-            display: block;
-            height: 95px;
-            border-radius: 8px;
-            background: linear-gradient(160deg, transparent 0 30%, #ffc54a 31% 34%, transparent 35% 51%, #875dff 52% 55%, transparent 56%), #2d2e39
-        }
-
-        .dash span {
-            display: block;
-            height: 30px;
-            margin-top: 12px;
-            border-radius: 5px;
-            background: linear-gradient(90deg, #393a48 30%, transparent 30% 34%, #393a48 34% 65%, transparent 65% 69%, #393a48 69%)
-        }
-
-        .creative {
-            background: var(--dark);
-            color: #fff
-        }
-
-        .creative .heading h2 {
-            color: #fff
-        }
-
-        .creative .heading p {
-            max-width: 900px;
-            margin: 14px 0 0;
-            color: #fff;
-            font-size: clamp(22px, 3vw, 31px);
             font-weight: 700;
-            line-height: 1.25;
-            letter-spacing: -.04em
+            transition: all 0.2s;
+        }
+
+        .case-card:hover .case-link {
+            transform: translateX(4px);
+            color: var(--cyan-accent);
+        }
+
+        /* ========================================================
+           4. SELECTED CREATIVE WORKS (VIDEO, POST, BRANDING)
+        ======================================================== */
+        .section-creative {
+            background: #000000;
+            color: #ffffff;
+            padding: 95px 0 100px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .creative-header {
+            margin-bottom: 40px;
+        }
+
+        .creative-header p {
+            max-width: 900px;
+            margin: 12px 0 0;
+            color: #ffffff;
+            font-size: clamp(22px, 2.9vw, 32px);
+            font-weight: 700;
+            line-height: 1.28;
+            letter-spacing: -0.04em;
         }
 
         .creative-grid {
-            margin-top: 40px
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
         }
 
         .creative-card {
@@ -386,46 +721,41 @@
             flex-direction: column;
             overflow: hidden;
             border-radius: 20px;
-            background: #fff;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
             color: var(--ink);
-            transition: transform .25s, box-shadow .25s
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+
+        .creative-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--card-border-hover);
+            box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
         .creative-thumb {
             height: 235px;
-            padding: 21px
-        }
-
-        .creative-card h3 {
-            margin: 0 0 9px;
-            font-size: 19px;
-            letter-spacing: -.045em
-        }
-
-        .creative-card p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 13px
-        }
-
-        .creative-body {
+            padding: 21px;
             display: flex;
-            flex: 1;
-            flex-direction: column;
-            padding: 21px 22px 24px
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #161616;
+            border-bottom: 1px solid var(--border);
         }
 
+        /* Video Thumb Card */
         .video-thumb {
-            background: #e4fbf2;
-            position: relative
+            background: #161616;
         }
 
         .video-thumb:before {
             content: '';
             position: absolute;
-            inset: 29px;
+            inset: 28px;
             border-radius: 14px;
-            background: linear-gradient(135deg, #13c6a2, #63dbbd)
+            background: linear-gradient(135deg, rgba(26, 188, 254, 0.25), rgba(161, 89, 255, 0.25));
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .video-thumb:after {
@@ -439,371 +769,1271 @@
             border-radius: 50%;
             display: grid;
             place-items: center;
-            background: #fff;
-            color: #5540a0;
-            font-size: 19px
+            background: #ffffff;
+            color: #000000;
+            font-size: 18px;
+            padding-left: 3px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .creative-card:hover .video-thumb:after {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Social / Post Design Thumb Card */
         .social-thumb {
-            background: #f0eaff;
-            padding: 20px;
+            background: #161616;
+            padding: 22px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 9px
+            gap: 9px;
         }
 
         .social-thumb i {
             border-radius: 9px;
-            background: linear-gradient(145deg, #51408a, #a563f3)
+            background: linear-gradient(145deg, #1c1c24, #2d263f);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: block;
         }
 
         .social-thumb i:nth-child(2) {
-            background: linear-gradient(145deg, #01b99c, #b6e471)
+            background: linear-gradient(145deg, #182220, #1b3830);
         }
 
         .social-thumb i:nth-child(3) {
-            background: linear-gradient(145deg, #fbba49, #ed784b)
+            background: linear-gradient(145deg, #261f18, #3b2c1c);
         }
 
         .social-thumb i:nth-child(4) {
-            background: linear-gradient(145deg, #e2e7ff, #7c8cf1)
+            background: linear-gradient(145deg, #181d28, #222e47);
         }
 
+        /* Branding Thumb Card */
         .brand-thumb {
-            background: #fff1d5;
-            padding: 21px
+            background: #161616;
+            padding: 22px;
         }
 
         .brand-thumb b {
             display: block;
+            width: 100%;
             height: 100%;
             border-radius: 14px;
-            background: #21212c;
-            position: relative
+            background: #1c1c24;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
         }
 
         .brand-thumb b:after {
             content: '';
             position: absolute;
-            left: 0;
-            right: 0;
+            left: -10%;
+            right: -10%;
             top: 50%;
-            height: 4px;
-            background: linear-gradient(90deg, #ffc64a, #8b5dfd);
-            transform: skewY(-10deg)
+            height: 3px;
+            background: linear-gradient(90deg, #1abcfe, #a159ff);
+            transform: skewY(-10deg);
         }
 
-        .skills {
+        .creative-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 22px 24px 24px;
+        }
+
+        .creative-card h3 {
+            margin: 0 0 8px;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            color: #ffffff;
+        }
+
+        .creative-card p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            line-height: 1.55;
+        }
+
+        .creative-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 20px;
+            color: var(--purple);
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .creative-card:hover .creative-link {
+            transform: translateX(4px);
+            color: var(--cyan-accent);
+        }
+
+        /* ========================================================
+           5. SKILLS & BUILDER MINDSET SECTION
+        ======================================================== */
+        .section-skills {
+            padding: 90px 0 75px;
+        }
+
+        .builder-grid {
             display: grid;
-            grid-template-columns: .88fr 1.12fr;
-            gap: 76px;
-            align-items: center
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 60px;
+            align-items: center;
+            margin-bottom: 50px;
         }
 
-        .skills h2 {
-            margin: 13px 0 20px;
-            font-size: clamp(38px, 4.8vw, 62px);
-            line-height: 1.05;
-            letter-spacing: -.07em
+        .builder-grid h2 {
+            font-size: clamp(34px, 4.4vw, 54px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.04em;
+            margin: 12px 0 18px;
         }
 
-        .skills p {
-            margin: 0 0 28px;
-            color: var(--muted);
-            font-size: 16px
+        .builder-grid p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.65;
+            margin-bottom: 28px;
         }
 
-        .skill-list {
+        .core-skill-list {
             display: grid;
-            gap: 12px
+            gap: 12px;
         }
 
-        .skill {
+        .core-skill {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 17px 18px;
-            border: 1px solid var(--line);
+            padding: 16px 18px;
+            border: 1px solid var(--border);
             border-radius: 14px;
-            background: #fff;
-            font-weight: 800
+            background: var(--card-bg);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: var(--shadow-subtle);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-        .skill-icon {
-            width: 39px;
-            height: 39px;
+        .core-skill:hover {
+            transform: translateX(4px);
+            border-color: var(--card-border-hover);
+        }
+
+        .core-skill-icon {
+            width: 38px;
+            height: 38px;
             display: grid;
             place-items: center;
-            flex: 0 0 auto;
-            border-radius: 11px;
-            background: #f0efff;
-            color: var(--purple)
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: rgba(161, 89, 255, 0.12);
+            color: var(--purple);
         }
 
-        .skill small {
+        .core-skill small {
             margin-left: auto;
             color: var(--muted);
             font-size: 12px;
-            font-weight: 500
+            font-weight: 500;
         }
 
+        /* 7 SKILLS & TOOLS ROW */
+        .tools-header {
+            margin-bottom: 18px;
+        }
+
+        .skills-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 14px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 10px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-border-hover);
+            background: #171717;
+            box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.6);
+        }
+
+        .skill-icon {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+        }
+
+        .skill-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            letter-spacing: -0.01em;
+        }
+
+        /* ========================================================
+           6. TESTIMONIALS SECTION
+        ======================================================== */
+        .section-testimonials {
+            padding: 30px 0 90px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 26px 26px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 22px;
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.25s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            border-color: var(--card-border-hover);
+        }
+
+        .testimonial-quote {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #181818;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-avatar.purple-user {
+            background: rgba(161, 89, 255, 0.12);
+            color: var(--purple);
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+        }
+
+        .author-role {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* ========================================================
+           7. FOOTER SECTION
+        ======================================================== */
         .footer {
-            padding: 88px 0 25px;
-            background: #fff;
-            border-top: 1px solid var(--line)
+            border-top: 1px solid var(--border);
+            padding: 85px 0 35px;
+            background: #000000;
         }
 
         .footer-top {
             display: flex;
+            align-items: flex-end;
             justify-content: space-between;
-            align-items: end;
             gap: 30px;
-            padding-bottom: 65px
+            margin-bottom: 60px;
         }
 
-        .footer h2 {
-            max-width: 700px;
-            margin: 13px 0 0;
-            font-size: clamp(44px, 5.3vw, 72px);
-            line-height: 1.02;
-            letter-spacing: -.075em
+        .footer-title {
+            font-size: clamp(34px, 4.5vw, 56px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.04em;
         }
 
         .footer-bottom {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            border-top: 1px solid var(--line);
-            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
             color: var(--muted);
-            font-size: 12px
+            font-size: 13px;
         }
 
-        @media(max-width:800px) {
-            .wrap {
-                width: calc(100% - 32px)
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            font-weight: 600;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        /* MOBILE MENU DRAWER */
+        .mobile-drawer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(16px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-drawer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .mobile-drawer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .short-label {
+            display: none;
+        }
+
+        /* ========================================================
+           RESPONSIVE BREAKPOINTS
+        ======================================================== */
+        @media (max-width: 960px) {
+            .nav-links, .nav-actions .btn-talk {
+                display: none;
             }
 
-            .nav {
-                height: 69px
+            .mobile-menu-btn {
+                display: block;
             }
 
-            .links,
-            .connect {
-                display: none
+            .hero-container {
+                aspect-ratio: 16 / 9;
+                height: auto;
             }
 
-            .menu {
-                display: block
+            .hero-video {
+                object-fit: contain;
+                object-position: center center;
             }
 
-            .hero {
-                padding: 55px 0 80px
+            .brand-logo-img {
+                height: 52px;
+                max-width: 240px;
             }
 
-            .hero-grid,
-            .skills {
+            .hero-top-overlay {
+                padding: 14px 20px;
+            }
+
+            .about-grid, .builder-grid {
                 grid-template-columns: 1fr;
-                gap: 42px
+                gap: 36px;
             }
 
-            .hero h1 {
-                font-size: clamp(43px, 12vw, 61px)
+            .stats-grid {
+                padding-left: 0;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
             }
 
-            .intro {
-                height: 450px
+            .case-grid, .creative-grid {
+                grid-template-columns: 1fr;
             }
 
-            .case-grid,
-            .creative-grid {
-                grid-template-columns: 1fr
+            .skills-row {
+                grid-template-columns: repeat(4, 1fr);
             }
 
-            .case-thumb {
-                height: 215px
-            }
-
-            section {
-                padding: 67px 0
-            }
-
-            .creative {
-                padding: 67px 0
-            }
-
-            .creative-thumb {
-                height: 215px
-            }
-
-            .skills {
-                gap: 45px
-            }
-
-            .footer {
-                padding-top: 65px
+            .testimonials-grid {
+                grid-template-columns: 1fr;
             }
 
             .footer-top {
-                display: block;
-                padding-bottom: 50px
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .full-label {
+                display: none;
+            }
+            .short-label {
+                display: inline;
             }
 
-            .footer-top .button {
-                margin-top: 28px
+            .wrap {
+                width: calc(100% - 32px);
+            }
+
+            .hero-container {
+                /* Exact 16:9 ratio - fits left to right, top to bottom with ZERO crop on phones */
+                aspect-ratio: 16 / 9;
+                height: auto;
+            }
+
+            .hero-video {
+                object-fit: contain;
+                object-position: center center;
+            }
+
+            .brand-logo-img {
+                height: 46px;
+                max-width: 210px;
+            }
+
+            .hero-top-overlay {
+                padding: 8px 12px;
+            }
+
+            .hero-bottom-overlay {
+                padding: 6px 12px 8px;
+                gap: 6px;
+            }
+
+            .scroll-explore {
+                display: none;
+            }
+
+            .controls-row {
+                gap: 8px;
+            }
+
+            .ctrl-btn {
+                width: 30px;
+                height: 30px;
+            }
+
+            .time-display {
+                font-size: 10.5px;
+            }
+
+            .about-title {
+                font-size: clamp(28px, 7.8vw, 36px);
+                line-height: 1.15;
+            }
+
+            .about-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 12px;
+            }
+
+            .about-actions .btn {
+                width: 100%;
+                padding: 14px 20px;
+            }
+
+            .stats-grid {
+                display: flex;
+                justify-content: space-between;
+                border-top: 1px solid var(--border);
+                padding-top: 24px;
+                margin-top: 16px;
+            }
+
+            .stat-num {
+                font-size: 28px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            /* Horizontal Scroll Skills on Mobile */
+            .skills-row {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+                margin-inline: -16px;
+                padding-inline: 16px;
+            }
+
+            .skills-row::-webkit-scrollbar {
+                display: none;
+            }
+
+            .skill-card {
+                flex: 0 0 96px;
+                padding: 14px 8px;
             }
 
             .footer-bottom {
-                gap: 8px;
-                flex-wrap: wrap
+                flex-direction: column;
+                gap: 14px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-height: 520px) and (orientation: landscape) {
+            .hero-container {
+                height: 100svh;
+                min-height: 100vh;
             }
 
-            .skill small {
-                font-size: 10px
+            .hero-top-overlay {
+                padding: 10px 20px;
             }
 
-            .heading {
-                margin-bottom: 28px
+            .hero-bottom-overlay {
+                padding: 10px 20px;
+                gap: 6px;
+            }
+
+            .scroll-explore {
+                display: none;
             }
         }
     </style>
 </head>
 
 <body>
-    <header class="nav">
-        <div class="wrap"><a class="brand" href="#home"><span class="brandmark">i</span>Digital Indra</a>
-            <nav class="links"><a href="#work">UX Case Studies</a><a href="Pure_Moo.html">Branding</a><a
-                    href="#creative">Creative work</a><a href="#about">About</a></nav><a class="connect"
-                href="https://www.linkedin.com/in/indrajeet-vishwakarma-50029020a/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn <i data-lucide="linkedin"
-                    size="18"></i></a><button class="menu" aria-label="Open menu"><i data-lucide="menu"></i></button>
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="mobile-drawer-header">
+            <a href="#home" class="brand-logo" aria-label="Digital Indra Home">
+                <img src="Jora/Logo_Web.png" alt="Digital Indra Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='../Jora/Logo_Web.png';">
+            </a>
+            <button class="mobile-menu-btn" id="closeMenuBtn" aria-label="Close Menu">
+                <i data-lucide="x" size="26"></i>
+            </button>
+        </div>
+        <nav class="mobile-drawer-links">
+            <a href="#work" class="drawer-link">UX Case Studies</a>
+            <a href="#creative" class="drawer-link">Creative Work</a>
+            <a href="#about" class="drawer-link">About</a>
+            <a href="#skills" class="drawer-link">Skills & Tools</a>
+            <a href="#testimonials" class="drawer-link">Testimonials</a>
+            <a href="#contact" class="drawer-link">Contact</a>
+        </nav>
+        <div style="margin-top: auto; padding-top: 30px;">
+            <a href="mailto:hello@digitalindra.com" class="btn btn-white" style="width: 100%;">Let's Talk <i data-lucide="arrow-right" size="16"></i></a>
+        </div>
+    </div>
+
+    <!-- 1. HERO VIDEO SECTION (ALWAYS FIT EDGE TO EDGE & AUTO ADJUST) -->
+    <header class="hero-wrapper" id="home">
+        <div class="hero-container" id="heroContainer">
+            <!-- Video Element (Full Edge to Edge, Auto-Adjust Layout, Always Starts Unmuted) -->
+            <video id="heroVideo" class="hero-video" playsinline autoplay loop poster="assets/strip_hero.png">
+                <source src="Jora/Video Resume.mp4" type="video/mp4">
+                <source src="../Jora/Video Resume.mp4" type="video/mp4">
+            </video>
+
+            <!-- Top Nav Overlay -->
+            <div class="hero-top-overlay">
+                <a href="#home" class="brand-logo" aria-label="Digital Indra Home">
+                    <img src="Jora/Logo_Web.png" alt="Digital Indra Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='../Jora/Logo_Web.png';">
+                </a>
+                <nav class="nav-links">
+                    <a href="#work">UX Case Studies</a>
+                    <a href="#creative">Creative Work</a>
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <div class="nav-actions">
+                    <a href="mailto:hello@digitalindra.com" class="btn btn-white btn-talk">Let's Talk <i data-lucide="arrow-right" size="16"></i></a>
+                    <button class="mobile-menu-btn" id="openMenuBtn" aria-label="Open Menu">
+                        <i data-lucide="menu" size="26"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Unmute Floating Badge (appears only if browser autoplay policy holds sound before first tap) -->
+            <button class="unmute-pill" id="unmutePill" aria-label="Tap for sound">
+                <i data-lucide="volume-2" size="16"></i> Tap for sound
+            </button>
+
+            <!-- Bottom Controls Overlay -->
+            <div class="hero-bottom-overlay">
+                <!-- Scroll to Explore -->
+                <div class="scroll-explore" id="scrollExploreBtn" title="Scroll down">
+                    <span>SCROLL TO EXPLORE</span>
+                    <div class="mouse-icon">
+                        <div class="mouse-wheel"></div>
+                    </div>
+                </div>
+
+                <!-- Custom Video Controls -->
+                <div class="controls-row">
+                    <button class="ctrl-btn" id="playPauseBtn" aria-label="Play/Pause">
+                        <i data-lucide="pause" id="playIcon" size="17"></i>
+                    </button>
+                    <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                    
+                    <div class="scrubber-wrap" id="scrubberWrap">
+                        <div class="scrubber-track">
+                            <div class="scrubber-fill" id="scrubberFill"></div>
+                        </div>
+                    </div>
+
+                    <button class="ctrl-btn" id="muteBtn" aria-label="Mute/Unmute">
+                        <i data-lucide="volume-2" id="volumeIcon" size="17"></i>
+                    </button>
+                    <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen">
+                        <i data-lucide="maximize" id="fullscreenIcon" size="17"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
+
     <main>
-        <section id="home" class="hero">
-            <div class="wrap hero-grid">
-                <div>
-                    <h1>I turn ideas into<br><span class="grad">experiences</span><br>people remember.</h1>
-                    <p>Hi, I’m Indrajeet — a multidisciplinary designer crafting thoughtful digital products, memorable
-                        brands and content that moves people.</p>
-                    <div class="actions"><a class="button primary" href="#work">Explore my work <i
-                                data-lucide="arrow-down-right" size="17"></i></a><a class="button"
-                            href="Indrajeet_Resume.pdf" download="Indrajeet_Resume.pdf">Get resume <i
-                                data-lucide="download" size="17"></i></a></div>
+        <!-- 2. ABOUT ME SECTION -->
+        <section class="section-about" id="about">
+            <div class="wrap">
+                <div class="about-grid">
+                    <div>
+                        <div class="section-badge"><span class="purple-dot"></span>ABOUT ME</div>
+                        <h1 class="about-title">
+                            A Designer & Front-end Developer who turns ideas into <span class="text-gradient-purple">real products.</span>
+                        </h1>
+                        <p class="about-desc">
+                            Hi, I’m Indra — a multidisciplinary designer crafting thoughtful digital products, memorable brands and content that moves people.
+                        </p>
+                        <div class="about-actions">
+                            <a href="#work" class="btn btn-dark">View My Work <i data-lucide="arrow-right" size="16"></i></a>
+                            <a href="Indrajeet_Resume.pdf" download="Indrajeet_Resume.pdf" class="btn btn-outline">Download Resume <i data-lucide="download" size="16"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-num">5+</span>
+                            <span class="stat-label">Years<br>Experience</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">50+</span>
+                            <span class="stat-label">Projects<br>Completed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">15+</span>
+                            <span class="stat-label">Happy<br>Clients</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="intro"><iframe src="https://www.youtube.com/embed/7TNZf8BdeEs"
-                        title="Introduction to Indrajeet" loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe></div>
             </div>
         </section>
-        <section id="work">
+
+        <!-- 3. SELECTED UX CASE STUDIES (PREVIOUS CONTENT PRESERVED) -->
+        <section class="section-case-studies" id="work">
             <div class="wrap">
-                <div class="heading"><span class="mono">Selected UX Case Studies</span>
+                <div class="section-header">
+                    <div class="section-badge"><span class="purple-dot"></span>SELECTED UX CASE STUDIES</div>
                     <h2>Case studies with purpose behind every pixel.</h2>
                 </div>
+
                 <div class="case-grid">
-                    <article class="case">
-                        <div class="case-thumb lms"><img src="Jora/1st.png" alt="JoraIQ learning platform"></div>
+                    <!-- Case Study 1: JoraIQ -->
+                    <article class="case-card">
+                        <div class="case-thumb lms">
+                            <img src="Jora/1st.png" alt="JoraIQ learning platform">
+                        </div>
                         <div class="case-body">
                             <h3>JoraIQ AI Powered Learning Platform</h3>
-                            <p>A reimagined LMS app, featuring a fully interactive mascot animation built with Rive and
-                                code.</p><a class="case-link" href="Case%20Study_JoraIQ.html">View case study <i
-                                    data-lucide="arrow-up-right" size="16"></i></a>
+                            <p>A reimagined LMS app, featuring a fully interactive mascot animation built with Rive and code.</p>
+                            <a class="case-link" href="Case Study_JoraIQ.html">View case study <i data-lucide="arrow-up-right" size="16"></i></a>
                         </div>
                     </article>
-                    <article class="case">
+
+                    <!-- Case Study 2: AI Interview Prep -->
+                    <article class="case-card">
                         <div class="case-thumb interview">
-                            <div class="interview-ui"><b></b>
-                                <div class="prompt">How would you approach this problem?</div>
-                                <div class="choices"><i></i><i></i><i></i><i></i></div>
+                            <div class="interview-ui">
+                                <b></b>
+                                <div class="prompt-box">How would you approach this problem?</div>
+                                <div class="choices-box">
+                                    <i></i><i></i><i></i><i></i>
+                                </div>
                             </div>
                         </div>
                         <div class="case-body">
                             <h3>AI Interview Preparation</h3>
-                            <p>An approachable preparation platform that helps candidates practise, learn and show up
-                                ready.</p><a class="case-link" href="Interview%20Prep.html">View case study <i
-                                    data-lucide="arrow-up-right" size="16"></i></a>
+                            <p>An approachable preparation platform that helps candidates practise, learn and show up ready.</p>
+                            <a class="case-link" href="Interview Prep.html">View case study <i data-lucide="arrow-up-right" size="16"></i></a>
                         </div>
                     </article>
-                    <article class="case">
+
+                    <!-- Case Study 3: Analytics Shiksha -->
+                    <article class="case-card">
                         <div class="case-thumb analytics">
-                            <div class="dash"><b></b><span></span></div>
+                            <div class="dash-box">
+                                <b></b>
+                                <span></span>
+                            </div>
                         </div>
                         <div class="case-body">
                             <h3>Analytics Shiksha</h3>
-                            <p>A clean web experience for a data analytics company—making complex information easy to
-                                understand.</p><a class="case-link" href="#contact">View case study <i
-                                    data-lucide="arrow-up-right" size="16"></i></a>
+                            <p>A clean web experience for a data analytics company—making complex information easy to understand.</p>
+                            <a class="case-link" href="#contact">View case study <i data-lucide="arrow-up-right" size="16"></i></a>
                         </div>
                     </article>
                 </div>
             </div>
         </section>
-        <section id="creative" class="creative">
+
+        <!-- 4. SELECTED CREATIVE WORKS (VIDEO, POST, BRANDING - FULLY PRESERVED) -->
+        <section class="section-creative" id="creative">
             <div class="wrap">
-                <div class="heading"><span class="mono">Selected Creative Works</span>
+                <div class="creative-header">
+                    <div class="section-badge"><span class="purple-dot"></span>SELECTED CREATIVE WORKS</div>
                     <p>A curated mix of video, social design, branding, and visual storytelling.</p>
                 </div>
-                <div class="creative-grid"><a class="creative-card" href="Video_Work.html">
+
+                <div class="creative-grid">
+                    <!-- 1. Video Works -->
+                    <a class="creative-card" href="Video_Work.html">
                         <div class="creative-thumb video-thumb"></div>
                         <div class="creative-body">
                             <h3>Video Works</h3>
-                            <p>Creative videos, reels, ads, and motion content built to engage and communicate.</p><span
-                                class="case-link">Explore Videos <i data-lucide="arrow-up-right" size="16"></i></span>
+                            <p>Creative videos, reels, ads, and motion content built to engage and communicate.</p>
+                            <span class="creative-link">Explore Videos <i data-lucide="arrow-up-right" size="16"></i></span>
                         </div>
-                    </a><a class="creative-card" href="Social_Media.html">
-                        <div class="creative-thumb social-thumb"><i></i><i></i><i></i><i></i></div>
+                    </a>
+
+                    <!-- 2. Post Design -->
+                    <a class="creative-card" href="Social_Media.html">
+                        <div class="creative-thumb social-thumb">
+                            <i></i><i></i><i></i><i></i>
+                        </div>
                         <div class="creative-body">
                             <h3>Post Design</h3>
-                            <p>Scroll-stopping social media creatives, campaigns, and visual content designed for
-                                impact.</p><span class="case-link">Explore Designs <i data-lucide="arrow-up-right"
-                                    size="16"></i></span>
+                            <p>Scroll-stopping social media creatives, campaigns, and visual content designed for impact.</p>
+                            <span class="creative-link">Explore Designs <i data-lucide="arrow-up-right" size="16"></i></span>
                         </div>
-                    </a><a class="creative-card" href="Pure_Moo.html">
-                        <div class="creative-thumb brand-thumb"><b></b></div>
+                    </a>
+
+                    <!-- 3. Branding Works -->
+                    <a class="creative-card" href="Pure_Moo.html">
+                        <div class="creative-thumb brand-thumb">
+                            <b></b>
+                        </div>
                         <div class="creative-body">
                             <h3>Branding Works</h3>
                             <p>Distinctive brand identities, logos, and visual systems that make brands memorable.</p>
-                            <span class="case-link">Explore Branding <i data-lucide="arrow-up-right"
-                                    size="16"></i></span>
+                            <span class="creative-link">Explore Branding <i data-lucide="arrow-up-right" size="16"></i></span>
                         </div>
-                    </a></div>
+                    </a>
+                </div>
             </div>
         </section>
-        <section id="about">
-            <div class="wrap skills">
-                <div><span class="mono">Designer with a builder mindset</span>
-                    <h2>Creative craft,<br>plus the power to<br>make it real.</h2>
-                    <p>My design thinking is supported by practical front-end knowledge. I use AI thoughtfully as a vibe
-                        coder to explore, prototype and bring ideas closer to life.</p><a class="button primary"
-                        href="mailto:hello@digitalindra.com">Work with me <i data-lucide="arrow-up-right"
-                            size="17"></i></a>
+
+        <!-- 5. DESIGNER WITH A BUILDER MINDSET & TOOLS -->
+        <section class="section-skills" id="skills">
+            <div class="wrap">
+                <!-- Builder Mindset Overview -->
+                <div class="builder-grid">
+                    <div>
+                        <div class="section-badge"><span class="purple-dot"></span>BUILDER MINDSET</div>
+                        <h2>Creative craft,<br>plus the power to<br><span class="text-gradient-purple">make it real.</span></h2>
+                        <p>My design thinking is supported by practical front-end knowledge. I use AI thoughtfully as a vibe coder to explore, prototype and bring ideas closer to life.</p>
+                        <a class="btn btn-dark" href="mailto:hello@digitalindra.com">Work with me <i data-lucide="arrow-up-right" size="16"></i></a>
+                    </div>
+                    <div class="core-skill-list">
+                        <div class="core-skill">
+                            <span class="core-skill-icon"><i data-lucide="layout-template"></i></span>
+                            UI/UX & product design <small>Figma · Rive</small>
+                        </div>
+                        <div class="core-skill">
+                            <span class="core-skill-icon"><i data-lucide="palette"></i></span>
+                            Brand & graphic design <small>Identity · Social</small>
+                        </div>
+                        <div class="core-skill">
+                            <span class="core-skill-icon"><i data-lucide="code-2"></i></span>
+                            HTML, CSS & JavaScript <small>Front-end basics</small>
+                        </div>
+                        <div class="core-skill">
+                            <span class="core-skill-icon"><i data-lucide="sparkles"></i></span>
+                            AI vibe coding <small>Rapid prototyping</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="skill-list">
-                    <div class="skill"><span class="skill-icon"><i data-lucide="layout-template"></i></span>UI/UX &
-                        product design <small>Figma · Rive</small></div>
-                    <div class="skill"><span class="skill-icon"><i data-lucide="palette"></i></span>Brand & graphic
-                        design <small>Identity · Social</small></div>
-                    <div class="skill"><span class="skill-icon"><i data-lucide="code-2"></i></span>HTML, CSS &
-                        JavaScript <small>Front-end basics</small></div>
-                    <div class="skill"><span class="skill-icon"><i data-lucide="sparkles"></i></span>AI vibe coding
-                        <small>Rapid prototyping</small></div>
+
+                <!-- 7 Skills & Tools Row -->
+                <div class="tools-header">
+                    <div class="section-badge"><span class="purple-dot"></span>SKILLS & TOOLS</div>
+                </div>
+                <div class="skills-row">
+                    <!-- Figma -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="26" height="26" viewBox="0 0 38 57" fill="none">
+                                <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE"/>
+                                <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83"/>
+                                <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262"/>
+                                <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E"/>
+                                <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF"/>
+                            </svg>
+                        </div>
+                        <span class="skill-name"><span class="full-label">UI/UX Design</span><span class="short-label">UI/UX</span></span>
+                    </div>
+
+                    <!-- Photoshop -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="7" fill="#001e36"/>
+                                <text x="6" y="22" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="800" fill="#31a8ff">Ps</text>
+                            </svg>
+                        </div>
+                        <span class="skill-name"><span class="full-label">Graphic Design</span><span class="short-label">Graphic</span></span>
+                    </div>
+
+                    <!-- Illustrator -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="7" fill="#330000"/>
+                                <text x="6" y="22" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="800" fill="#ff9a00">Ai</text>
+                            </svg>
+                        </div>
+                        <span class="skill-name"><span class="full-label">Brand Design</span><span class="short-label">Brand</span></span>
+                    </div>
+
+                    <!-- Front-end Dev -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="7" fill="#4f46e5"/>
+                                <path d="M11 11L6 16L11 21M21 11L26 16L21 21M18 9L14 23" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <span class="skill-name"><span class="full-label">Front-end Dev</span><span class="short-label">Front-end</span></span>
+                    </div>
+
+                    <!-- Premiere Pro -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="7" fill="#00005b"/>
+                                <text x="7" y="22" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" font-weight="800" fill="#9999ff">Pr</text>
+                            </svg>
+                        </div>
+                        <span class="skill-name">Video Editing</span>
+                    </div>
+
+                    <!-- Social Media (Instagram) -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <defs>
+                                    <radialGradient id="igIconGrad2" cx="30%" cy="107%" r="150%">
+                                        <stop offset="0%" stop-color="#fdf497"/>
+                                        <stop offset="50%" stop-color="#fd5949"/>
+                                        <stop offset="68%" stop-color="#d6249f"/>
+                                        <stop offset="100%" stop-color="#285AEB"/>
+                                    </radialGradient>
+                                </defs>
+                                <rect width="32" height="32" rx="7" fill="url(#igIconGrad2)"/>
+                                <rect x="7" y="7" width="18" height="18" rx="5" stroke="#ffffff" stroke-width="2"/>
+                                <circle cx="16" cy="16" r="4.5" stroke="#ffffff" stroke-width="2"/>
+                                <circle cx="21" cy="11" r="1.2" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <span class="skill-name">Social Media</span>
+                    </div>
+
+                    <!-- 3D & AI Tools -->
+                    <div class="skill-card">
+                        <div class="skill-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <defs>
+                                    <linearGradient id="aiIconGrad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                                        <stop stop-color="#7c3aed"/>
+                                        <stop offset="1" stop-color="#3b82f6"/>
+                                    </linearGradient>
+                                </defs>
+                                <rect width="32" height="32" rx="7" fill="url(#aiIconGrad2)"/>
+                                <path d="M16 6L18.5 13.5L26 16L18.5 18.5L16 26L13.5 18.5L6 16L13.5 13.5L16 6Z" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <span class="skill-name">3D & AI Tools</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. TESTIMONIALS SECTION -->
+        <section class="section-testimonials" id="testimonials">
+            <div class="wrap">
+                <div class="tools-header">
+                    <div class="section-badge"><span class="purple-dot"></span>TESTIMONIALS</div>
+                </div>
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">"Creative, reliable and always delivers high quality work. A pleasure to work with."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="assets/avatar_anmol.png" alt="Anmol Tomar">
+                            </div>
+                            <div class="author-info">
+                                <span class="author-name">Anmol Tomar</span>
+                                <span class="author-role">Co-founder, Analytics Shiksha</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">"Loved the brand design and attention to detail. Highly recommended!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <img src="assets/avatar_akshay.png" alt="Akshay">
+                            </div>
+                            <div class="author-info">
+                                <span class="author-name">Akshay</span>
+                                <span class="author-role">Marketing Head</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">"Converted complex ideas into a clean and easy to use product experience."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar purple-user">
+                                <i data-lucide="user" size="20"></i>
+                            </div>
+                            <div class="author-info">
+                                <span class="author-name">Client</span>
+                                <span class="author-role">Edtech Startup</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
-    <footer id="contact" class="footer">
+
+    <!-- 7. FOOTER SECTION -->
+    <footer class="footer" id="contact">
         <div class="wrap">
             <div class="footer-top">
-                <div><span class="mono">Have a project in mind?</span>
-                    <h2>Let’s create<br><span class="grad">something meaningful.</span></h2>
-                </div><a class="button primary" href="mailto:hello@digitalindra.com">hello@digitalindra.com <i
-                        data-lucide="arrow-up-right" size="17"></i></a>
+                <div>
+                    <div class="section-badge"><span class="purple-dot"></span>HAVE A PROJECT IN MIND?</div>
+                    <h2 class="footer-title">Let’s create<br><span class="text-gradient-purple">something meaningful.</span></h2>
+                </div>
+                <a href="mailto:hello@digitalindra.com" class="btn btn-dark">
+                    hello@digitalindra.com <i data-lucide="arrow-up-right" size="16"></i>
+                </a>
             </div>
-            <div class="footer-bottom"><span>© 2026 DigitalIndra. All rights reserved.</span><span>Creative. Strategic.
-                    Impactful.</span></div>
+
+            <div class="footer-bottom">
+                <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                    <img src="Jora/Logo_Web.png" alt="Digital Indra Logo" style="height: 36px; width: auto; opacity: 0.95;" onerror="this.onerror=null; this.src='../Jora/Logo_Web.png';">
+                    <span>© 2026 DigitalIndra. All rights reserved.</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/indrajeet-vishwakarma-50029020a/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="Case Study_JoraIQ.html">UX Case Studies</a>
+                    <a href="Pure_Moo.html">Branding</a>
+                    <a href="#home">Back to top ↑</a>
+                </div>
+            </div>
         </div>
     </footer>
-    <script>lucide.createIcons();</script>
+
+    <!-- INTERACTION SCRIPT -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Drawer Toggle
+        const openMenuBtn = document.getElementById('openMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function toggleMenu(open) {
+            mobileDrawer.classList.toggle('active', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
+        if (openMenuBtn) openMenuBtn.addEventListener('click', () => toggleMenu(true));
+        if (closeMenuBtn) closeMenuBtn.addEventListener('click', () => toggleMenu(false));
+        drawerLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+        // Scroll to Explore Button
+        const scrollExploreBtn = document.getElementById('scrollExploreBtn');
+        if (scrollExploreBtn) {
+            scrollExploreBtn.addEventListener('click', () => {
+                const aboutSec = document.getElementById('about');
+                if (aboutSec) aboutSec.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Custom Video Controls
+        const video = document.getElementById('heroVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const scrubberWrap = document.getElementById('scrubberWrap');
+        const scrubberFill = document.getElementById('scrubberFill');
+        const muteBtn = document.getElementById('muteBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const heroContainer = document.getElementById('heroContainer');
+        const unmutePill = document.getElementById('unmutePill');
+
+        let userManuallyMuted = false;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function updatePlayIcon() {
+            const isPaused = video.paused;
+            playPauseBtn.innerHTML = `<i data-lucide="${isPaused ? 'play' : 'pause'}" size="17"></i>`;
+            lucide.createIcons();
+        }
+
+        function updateVolumeIcon() {
+            const isMuted = userManuallyMuted || video.muted;
+            muteBtn.innerHTML = `<i data-lucide="${isMuted ? 'volume-x' : 'volume-2'}" size="17"></i>`;
+            lucide.createIcons();
+        }
+
+        function unmuteAudio() {
+            if (userManuallyMuted) return;
+            video.muted = false;
+            video.volume = 1.0;
+            if (unmutePill) unmutePill.style.display = 'none';
+            updateVolumeIcon();
+        }
+
+        if (video) {
+            // Guarantee unmuted initial state
+            video.muted = false;
+            video.volume = 1.0;
+            updateVolumeIcon();
+
+            // Attempt unmuted autoplay immediately
+            const startPlayPromise = video.play();
+            if (startPlayPromise !== undefined) {
+                startPlayPromise.then(() => {
+                    // Browser allowed unmuted autoplay directly
+                    unmuteAudio();
+                }).catch(() => {
+                    // Browser policy requires user gesture: start visual playback, show tap pill, unmute on first gesture
+                    video.muted = true;
+                    video.play().catch(() => {});
+                    if (unmutePill) unmutePill.style.display = 'inline-flex';
+                    muteBtn.innerHTML = `<i data-lucide="volume-2" size="17"></i>`;
+                    lucide.createIcons();
+                });
+            }
+
+            // Sync aspect ratio to video's exact width & height (no crop on any device)
+            function syncVideoRatio() {
+                if (video.videoWidth && video.videoHeight) {
+                    heroContainer.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
+                }
+            }
+            video.addEventListener('loadedmetadata', syncVideoRatio);
+            if (video.readyState >= 1) syncVideoRatio();
+
+            // Unmute Pill click
+            if (unmutePill) {
+                unmutePill.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    unmuteAudio();
+                    if (video.paused) video.play();
+                });
+            }
+
+            // Clicking hero video area unmutes if muted, or toggles pause/play
+            heroContainer.addEventListener('click', (e) => {
+                if (e.target.closest('.ctrl-btn') || e.target.closest('.scrubber-wrap') || e.target.closest('.hero-top-overlay') || e.target.closest('#unmutePill')) {
+                    return;
+                }
+                if (video.muted) {
+                    unmuteAudio();
+                } else {
+                    if (video.paused) video.play();
+                    else video.pause();
+                }
+            });
+
+            // Global interaction: instantly unmutes on the user's very first touch/click/scroll
+            const onFirstGesture = () => {
+                if (!userManuallyMuted && video.muted) {
+                    unmuteAudio();
+                }
+            };
+            ['click', 'touchstart', 'touchend', 'scroll', 'pointerdown', 'keydown'].forEach(evt => {
+                window.addEventListener(evt, onFirstGesture, { passive: true });
+                document.addEventListener(evt, onFirstGesture, { passive: true });
+            });
+
+            video.addEventListener('timeupdate', () => {
+                if (video.duration) {
+                    const percent = (video.currentTime / video.duration) * 100;
+                    scrubberFill.style.width = `${percent}%`;
+                    timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+                }
+            });
+
+            video.addEventListener('loadedmetadata', () => {
+                timeDisplay.textContent = `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+            });
+
+            video.addEventListener('play', updatePlayIcon);
+            video.addEventListener('pause', updatePlayIcon);
+
+            // Play / Pause Button
+            playPauseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            });
+
+            // Scrubber Seeking
+            function seek(e) {
+                const rect = scrubberWrap.getBoundingClientRect();
+                const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                if (video.duration) {
+                    video.currentTime = pos * video.duration;
+                }
+            }
+
+            let isDragging = false;
+            scrubberWrap.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                seek(e);
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging) seek(e);
+            });
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Mute / Unmute manual toggle (User manually clicks to mute)
+            muteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (video.muted) {
+                    userManuallyMuted = false;
+                    video.muted = false;
+                    video.volume = 1.0;
+                    if (unmutePill) unmutePill.style.display = 'none';
+                } else {
+                    userManuallyMuted = true;
+                    video.muted = true;
+                }
+                updateVolumeIcon();
+            });
+
+            // Fullscreen
+            fullscreenBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!document.fullscreenElement) {
+                    if (heroContainer.requestFullscreen) {
+                        heroContainer.requestFullscreen();
+                    } else if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+
+            document.addEventListener('fullscreenchange', () => {
+                const isFs = !!document.fullscreenElement;
+                fullscreenBtn.innerHTML = `<i data-lucide="${isFs ? 'minimize' : 'maximize'}" size="17"></i>`;
+                lucide.createIcons();
+            });
+        }
+    </script>
 </body>
 
 </html>
