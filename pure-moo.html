@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pure Moo Brand Identity — DigitalIndra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #121212;
+            --card-border: #1c1c1c;
+            --card-border-hover: #2e2e2e;
+            --ink: #ffffff;
+            --text-secondary: #d9d9d9;
+            --muted: #8e8e93;
+            --border: #1c1c1c;
+            --purple: #a159ff;
+            --cyan: #1abcfe;
+            --purple-grad: linear-gradient(135deg, #1abcfe 0%, #a159ff 100%);
+            --radius-pill: 9999px;
+            --radius-lg: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .wrap {
+            width: min(1080px, calc(100% - 48px));
+            margin-inline: auto;
+            padding: 30px 0 80px;
+        }
+
+        /* TOP NAV */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-logo-img {
+            height: 48px;
+            width: auto;
+            display: block;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+            border-color: var(--card-border-hover);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(-2px);
+        }
+
+        /* SECTION BADGE */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 20px;
+        }
+
+        .purple-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--cyan);
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(26, 188, 254, 0.75);
+        }
+
+        .text-gradient {
+            background: var(--purple-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 60px 0 50px;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 10vw, 110px);
+            line-height: 0.95;
+            letter-spacing: -0.05em;
+            margin: 16px 0 24px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            max-width: 580px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 34px 30px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--card-border-hover);
+            box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0 0 12px;
+            color: #ffffff;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 650px) {
+            .wrap {
+                width: calc(100% - 32px);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .hero {
+                padding-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header class="top-nav">
+            <a href="index.html" aria-label="Digital Indra Home">
+                <img src="Jora/Logo_Web.png" alt="Digital Indra Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='../Jora/Logo_Web.png';">
+            </a>
+            <a class="back-btn" href="index.html">
+                <i data-lucide="arrow-left" size="16"></i> Back to Portfolio
+            </a>
+        </header>
+
+        <section class="hero">
+            <div class="section-badge"><span class="purple-dot"></span>BRAND IDENTITY / PURE MOO</div>
+            <h1>PURE<br><span class="text-gradient">MOO.</span></h1>
+            <p>A warm, friendly cow milk brand identity designed to feel as wholesome, fresh, and approachable as the product itself.</p>
+        </section>
+
+        <main class="grid">
+            <article class="card">
+                <h2>The idea</h2>
+                <p>Make everyday milk feel playful, pure and easy to trust through a soft visual world that connects with families.</p>
+            </article>
+            <article class="card">
+                <h2>Identity direction</h2>
+                <p>Comforting cream tones, sky blue typography and joyful cow-inspired forms bring distinct personality to life.</p>
+            </article>
+            <article class="card">
+                <h2>Brand touchpoints</h2>
+                <p>From packaging cartons to digital social campaigns, the design system is built to stay instantly recognisable in every format.</p>
+            </article>
+            <article class="card">
+                <h2>Role</h2>
+                <p>Brand strategy, visual identity design, art direction, and packaging graphic design.</p>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

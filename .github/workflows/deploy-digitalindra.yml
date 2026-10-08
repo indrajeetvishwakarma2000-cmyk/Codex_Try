@@ -7,13 +7,20 @@ on:
       - 'Digital Indra/Index.html'
       - 'Digital Indra/assets/**'
       - 'Case Study_JoraIQ.html'
+      - 'joraiq.html'
+      - 'case-study-joraiq.html'
       - 'Interview Prep.html'
+      - 'interview-prep.html'
       - 'Indrajeet_Resume.pdf'
       - 'Jora/**'
       - 'Video_Work.html'
+      - 'video-work.html'
       - 'Social_Media.html'
+      - 'social-media.html'
       - 'Pure_Moo.html'
+      - 'pure-moo.html'
       - 'Mascot_Design.html'
+      - 'mascot-design.html'
       - '.github/workflows/deploy-digitalindra.yml'
       - 'deploy/.htaccess'
       - '.gitattributes'
@@ -36,12 +43,19 @@ jobs:
         run: |
           mkdir -p deploy/site
           cp 'Digital Indra/Index.html' deploy/site/index.html
+          cp 'Case Study_JoraIQ.html' deploy/site/joraiq.html
+          cp 'Case Study_JoraIQ.html' deploy/site/case-study-joraiq.html
           cp 'Case Study_JoraIQ.html' deploy/site/Case\ Study_JoraIQ.html
+          cp 'Interview Prep.html' deploy/site/interview-prep.html
           cp 'Interview Prep.html' deploy/site/Interview\ Prep.html
           cp 'Indrajeet_Resume.pdf' deploy/site/Indrajeet_Resume.pdf
+          cp 'Video_Work.html' deploy/site/video-work.html
           cp 'Video_Work.html' deploy/site/Video_Work.html
+          cp 'Social_Media.html' deploy/site/social-media.html
           cp 'Social_Media.html' deploy/site/Social_Media.html
+          cp 'Pure_Moo.html' deploy/site/pure-moo.html
           cp 'Pure_Moo.html' deploy/site/Pure_Moo.html
+          cp 'Mascot_Design.html' deploy/site/mascot-design.html
           cp 'Mascot_Design.html' deploy/site/Mascot_Design.html
           cp -R Jora deploy/site/Jora
           cp -R 'Digital Indra/assets' deploy/site/assets

@@ -1,2 +1,39 @@
-# Serve the new static portfolio first, while preserving the previous PHP homepage.
+# Serve the new static portfolio first
 DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. 301 Redirect old ugly URLs with spaces/underscores to clean slugs
+    RewriteCond %{THE_REQUEST} /Case(?:%20|\s)Study_JoraIQ(?:\.html)? [NC]
+    RewriteRule ^ joraiq [R=301,L]
+
+    RewriteCond %{THE_REQUEST} /Interview(?:%20|\s)Prep(?:\.html)? [NC]
+    RewriteRule ^ interview-prep [R=301,L]
+
+    RewriteCond %{THE_REQUEST} /Video_Work(?:\.html)? [NC]
+    RewriteRule ^ video-work [R=301,L]
+
+    RewriteCond %{THE_REQUEST} /Social_Media(?:\.html)? [NC]
+    RewriteRule ^ social-media [R=301,L]
+
+    RewriteCond %{THE_REQUEST} /Pure_Moo(?:\.html)? [NC]
+    RewriteRule ^ pure-moo [R=301,L]
+
+    RewriteCond %{THE_REQUEST} /Mascot_Design(?:\.html)? [NC]
+    RewriteRule ^ mascot-design [R=301,L]
+
+    # 2. 301 Redirect direct .html requests to clean URLs (e.g. /joraiq.html -> /joraiq)
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/([^.]+)\.html [NC]
+    RewriteRule ^ %1 [R=301,L]
+
+    # 3. Transparently serve corresponding .html file when requested without extension
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+?)/?$ $1.html [L]
+
+    # 4. Fallback aliases for case-study routes
+    RewriteRule ^case-study-joraiq/?$ joraiq.html [L,NC]
+</IfModule>
